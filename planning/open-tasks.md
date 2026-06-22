@@ -3,6 +3,22 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## ⛔ ACTION REQUIRED — migration baseline squash (2026-06-22)
+
+The app-repo migrations were **squashed to a baseline** because the old 85
+incremental migrations could not rebuild a clean DB from scratch (the
+Lovable-origin tables `users` / `parent_profiles` / `provider_profiles` / the
+`provider_groups` family had no `CREATE TABLE`, so `supabase db start` failed).
+Old migrations are archived in `supabase/_archived_migrations/`; two baselines
+(`20250101000000_baseline_public_schema.sql`,
+`20250101000001_baseline_storage_policies.sql`) now equal the live schema.
+
+**Sivan: before the next `supabase db push` you MUST run `supabase migration
+repair`** (bookkeeping only — it does NOT change the live schema), otherwise the
+push will try to re-create objects that already exist on live. Exact commands +
+rollback + verification: **`docs/planning/MIGRATION_BASELINE_HANDOFF.md`** in the
+app repo. No live database changes have been made.
+
 ## 🔐 Security audit (2026-06-09) — STATUS
 
 **Maor ran a security audit and FIXED the holes in code** (app repo, commit
