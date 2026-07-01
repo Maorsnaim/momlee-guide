@@ -14,6 +14,14 @@ then Android, then Web**. The stack is **Expo / React Native / NativeWind /
 Tailwind / Supabase**. The web app that was built earlier is **shelved** — it is
 not the active target.
 
+> **Update (2026-07-01):** platform direction is under active revision — a lean
+> **Web MVP** pivot is in play (native paused for cost), and the product is now
+> planned in a structured **Notion "Momlee OS"** documented under
+> `knowledge/os/` (read `os/00-foundations.md`). The native-first framing above
+> predates this; until this section is rewritten, treat `knowledge/os/` +
+> `planning/open-tasks.md` as the current source of truth for scope and
+> architecture.
+
 ## Critical: this is a separate repo
 
 This plugin lives in a **separate repo from the live MomLee code repo.** It
@@ -88,6 +96,11 @@ Directories:
   truth — never invent user-facing text), `data-inventory` (living registry of
   every data point we collect — feeds the privacy policy + store privacy
   labels).
+- **`knowledge/os/`** — the **Notion "Momlee OS"** book (`00-foundations` …
+  `90-dispositions`): the **Epic → Feature → Story → Task** planning model, every
+  registry (Permissions / Roles / User Types / Eligibility / Events / Automations
+  / Product Rules / Schema / Entities / Channels / …), the locked conventions, and
+  the live-Notion alignment/disposition tracker. Read `os/00-foundations.md` first.
 - **`planning/`** — `roadmap`, `features`, `open-tasks` (live status + pending
   actions — **read it on every plugin update**), `from-sivan` (Sivan→Maor
   tasks/updates channel).

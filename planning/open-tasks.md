@@ -19,6 +19,57 @@ push will try to re-create objects that already exist on live. Exact commands +
 rollback + verification: **`docs/planning/MIGRATION_BASELINE_HANDOFF.md`** in the
 app repo. No live database changes have been made.
 
+> **Reaffirmed 2026-07-01 — STILL PENDING.** Sivan has not yet run
+> `supabase migration repair`; it remains a **hard prerequisite before any
+> `supabase db push`**. It also aligns with the direction we're leaning (a clean
+> schema re-baseline — see the "Notion OS" note below): the squash already
+> produced clean baselines that equal live, so the repair is the bookkeeping step
+> that makes the clean baseline and the live DB agree.
+
+## 🧭 Notion OS — now the planning source of truth (2026-07-01)
+
+The product is planned in a structured **Notion "Momlee OS"**, documented in this
+plugin under **`knowledge/os/`** (`00-foundations` → `90-dispositions`). Read
+`00-foundations.md` first.
+
+**Structure (the spine):** **Epic → Feature → Story → Task**, with registries
+hanging off Stories — Permissions, Roles, User Types, Eligibility, Events,
+Automations, Product Rules, Schema Registry, Entities, Communication Channels,
+Message Categories, Design Screens / Components. A Story carries a small
+human-authored core; Claude proposes the wiring; the approved result compiles to
+an unambiguous spec for dev.
+
+**Recent structural work (2026-06-29 → 07-01), all reflected in the book:**
+
+- Epic **boundary rules LOCKED** (one capability = one owning Epic; surface ≠
+  ownership; actor ≠ ownership; lifecycle boundary).
+- New Epics: **Profile & Settings** (ongoing profile + cross-actor settings
+  layer), **Browse & Discovery** (home / index / discovery layer; renamed from
+  "Home / Discover"), **Provider Profile & Services** (Post-MVP stub reserving the
+  professional-profile domain).
+- MVP decision: meetup discovery = a simple index scoped to a **single experiment
+  neighborhood**, **no proximity ranking** (Post-MVP; per Sivan's experiment).
+- Naming locked to the **live code terms** for keys: **`parent` / `provider`**
+  (not mom / professional). Names stay Mom / Professional for UI.
+- Conventions: Decision Log titles in English + bilingual bodies; one decision per
+  row; canonical rows first; no emojis / em-dashes; Hebrew-lead everywhere except
+  Decision Log titles.
+- Cleanups **verified**: Permissions + Privacy Notes DBs are dedup-clean.
+  **UI-only leftovers (do in the Notion UI):** delete the 4 deprecated
+  Communication Channels rows (marked "- delete"), remove the stray empty data
+  source inside the Stories DB, remove the `.is` auto-links in Eligibility.
+
+**⚠️ OPEN architecture decision (pending Maor's final go) — "Plan C":** a broad
+audit (live DB + governance docs + client code + the OS model) concluded the live
+DB is **pre-launch** (seed data only) and **provider-heavy**: the
+provider / verification / admin / audit / RLS subsystem is mature and worth
+**KEEPING**, but the product core (meetups, organizations, subscriptions,
+messaging, role / status enums) is barely modeled and effectively greenfield.
+Recommendation: **not a full rewrite and not incremental patching, but a clean
+schema RE-BASELINE** of the product core on top of the kept backend, driven by the
+OS as the spec — done now while pre-launch (near-zero migration cost). **Not
+started; awaiting Maor's decision.**
+
 ## 🔐 Security audit (2026-06-09) — STATUS
 
 **Maor ran a security audit and FIXED the holes in code** (app repo, commit
