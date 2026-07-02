@@ -26,6 +26,22 @@ app repo. No live database changes have been made.
 > produced clean baselines that equal live, so the repair is the bookkeeping step
 > that makes the clean baseline and the live DB agree.
 
+> **PRE-FLIGHT DONE 2026-07-02 — the handoff commands were INCOMPLETE; use the
+> UPDATED doc.** A read-only verification against live confirmed the baseline
+> equals the live schema object-for-object (tables/policies/views/triggers/
+> functions/enums/indexes all reconcile — safe to repair). BUT live bookkeeping
+> holds 91 versions vs 85 archived files: **nine provider_groups versions
+> (20260602100000..20260604120000) have no local file**, so the original repair
+> loop leaves them dangling and `db push` would still complain. The app-repo
+> handoff doc (`docs/planning/MIGRATION_BASELINE_HANDOFF.md`, commit `537a9a7`)
+> now carries the corrected sequence: step 3b (revert those 9), a final
+> `supabase db push --dry-run` gate ("Remote database is up to date" or STOP),
+> and a rollback recipe from
+> `docs/planning/live_schema_migrations_backup_2026-07-02.csv` (a backup of all
+> 91 live bookkeeping rows). **Sivan: `git pull` on `momlee-native` first** (Maor
+> pushes it), then follow the UPDATED section 3 end-to-end. Repair edits
+> bookkeeping only — it cannot touch schema or data.
+
 ## 🧭 Notion OS — now the planning source of truth (2026-07-01)
 
 The product is planned in a structured **Notion "Momlee OS"**, documented in this
