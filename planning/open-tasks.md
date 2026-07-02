@@ -3,7 +3,17 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
-## ⛔ ACTION REQUIRED — migration baseline squash (2026-06-22)
+## ✅ RESOLVED 2026-07-02 — migration baseline squash + repair (was ⛔ since 2026-06-22)
+
+**The `supabase migration repair` was EXECUTED and verified on 2026-07-02
+(Maor + Claude).** Live bookkeeping now equals exactly the 2 baselines
+(`migration list` local==remote, `db push --dry-run` = "Remote database is up
+to date", direct table read = 2 rows, data untouched). **Sivan: nothing to run
+anymore** — just `git pull` on `momlee-native`; future `db push` is safe. Full
+detail + rollback backup: `docs/planning/MIGRATION_BASELINE_HANDOFF.md` in the
+app repo. The original context is kept below for history.
+
+## ~~⛔ ACTION REQUIRED~~ — migration baseline squash (2026-06-22)
 
 The app-repo migrations were **squashed to a baseline** because the old 85
 incremental migrations could not rebuild a clean DB from scratch (the
