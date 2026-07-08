@@ -24,6 +24,13 @@ If installed, refresh once per work session:
 
 Then read the plugin's `planning/open-tasks.md` for pending actions.
 
+**Also required: the Notion MCP must be CONNECTED** (`/mcp` → claude.ai
+Notion, with access to Maor's "Momlee OS" workspace). The worklog (Dev
+Changelog) and the OS-intake skill write to Notion. The token expires
+periodically — on a "requires re-authorization" error, run `/mcp` and
+reconnect. If Notion is unavailable, worklog entries MUST go to the plugin's
+`planning/from-sivan.md` (git fallback) — logging is never skipped.
+
 ## The binding gates (non-negotiable, enforced by the plugin's skills)
 
 - **momlee-figma-first** — the ENTRY GATE for all UI work. Figma is the source

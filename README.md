@@ -36,6 +36,12 @@ Before this plugin is useful, Sivan needs:
 
 - **Figma MCP connected**, with the **Figma skills available** (e.g.
   `figma-use`).
+- **Notion MCP connected** (`/mcp` → claude.ai Notion) **with access to Maor's
+  "Momlee OS" workspace** — the worklog (Dev Changelog) and the OS-intake skill
+  write to Notion. Note the token EXPIRES periodically: if a Notion call fails
+  with "requires re-authorization", run `/mcp` and reconnect. Without Notion,
+  worklog entries go to `planning/from-sivan.md` (the git fallback) — never
+  skip logging.
 - An **Expo / React Native** project to build into. Native work happens on the
   **`momlee-native`** branch of the app repo.
 - Accounts: an **Apple Developer account**, an **Expo (EAS) account**, and a
