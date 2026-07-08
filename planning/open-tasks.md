@@ -54,14 +54,26 @@ gates, closing the full contract on web:**
 Ratchet rule reminder: when your change LOWERS a count, lower the matching
 BASELINE constant in the same commit (the gate prints the number).
 
-**DB changes — what is actually required (also asked):** you CAN author
-migrations, run local Supabase, test and commit freely; the Migration Gate is
-a discipline (migration file + rollback + RLS in the same change — CI checks
-it), not an approval. What stays Maor-coordinated: applying to the LIVE DB
-(`db push`) and destructive changes. PROPOSED (pending Maor): replace the
-manual coordination with a pipeline — merge to `momlee-web` after green CI
-auto-applies additive migrations to live via a GitHub Action; destructive
-still needs human review.
+**DB changes — the pipeline is LIVE (2026-07-08, Maor approved).** You CAN do
+everything yourself now, end to end:
+
+1. Author a migration (`supabase/migrations/`), test locally
+   (`supabase db start` + `supabase test db`), commit.
+2. Merge/push to `momlee-web`. After `checks` + `rls-tests` pass, the new
+   **`db-deploy` CI job applies the new migrations to the LIVE database
+   automatically** and prints `migration list` for verification.
+3. **Nobody runs `supabase db push` against live by hand — the pipeline is
+   the only path.** (This is standard prod discipline, not a restriction on
+   you: the same rule binds Maor and Claude.)
+4. **Destructive migrations** (DROP TABLE/COLUMN, TRUNCATE, DELETE FROM) are
+   blocked by the guard unless the file carries
+   `-- destructive-approved: <name> <date> <reason>` after review with Maor.
+
+**One-time setup (Maor/Sivan, whoever has repo-settings access):** add the
+repository secret **`SUPABASE_ACCESS_TOKEN`** (Settings → Secrets and
+variables → Actions) — a Supabase personal access token. Until the secret
+exists, the `db-deploy` job fails on auth and migrations simply stay pending
+(nothing breaks).
 
 ## ✅ RESOLVED 2026-07-02 — migration baseline squash + repair (was ⛔ since 2026-06-22)
 
