@@ -55,25 +55,38 @@ Ratchet rule reminder: when your change LOWERS a count, lower the matching
 BASELINE constant in the same commit (the gate prints the number).
 
 **DB changes — the pipeline is LIVE (2026-07-08, Maor approved).** You CAN do
-everything yourself now, end to end:
+everything yourself now, end to end — **no local DB required**:
 
-1. Author a migration (`supabase/migrations/`), test locally
-   (`supabase db start` + `supabase test db`), commit.
-2. Merge/push to `momlee-web`. After `checks` + `rls-tests` pass, the new
-   **`db-deploy` CI job applies the new migrations to the LIVE database
-   automatically** and prints `migration list` for verification.
-3. **Nobody runs `supabase db push` against live by hand — the pipeline is
-   the only path.** (This is standard prod discipline, not a restriction on
-   you: the same rule binds Maor and Claude.)
-4. **Destructive migrations** (DROP TABLE/COLUMN, TRUNCATE, DELETE FROM) are
-   blocked by the guard unless the file carries
-   `-- destructive-approved: <name> <date> <reason>` after review with Maor.
+1. Author a migration file in `supabase/migrations/`, commit, push/merge to
+   `momlee-web`. That's it.
+2. **CI tests it on a fresh database FOR you** (the `rls-tests` job spins up
+   a clean Postgres in Docker, applies ALL migrations from scratch, runs the
+   pgTAP invariants). Running `supabase db start` locally is optional — a
+   faster feedback loop if you want it, never a requirement.
+3. After `checks` + `rls-tests` are green, the **`db-deploy` job applies the
+   new migrations to the LIVE database automatically** and prints
+   `migration list` for verification.
+4. **Nobody runs `supabase db push` against live by hand — the pipeline is
+   the only path.** Standard prod discipline; the same rule binds Maor and
+   Claude.
+5. **Destructive migrations** (DROP TABLE/COLUMN, TRUNCATE, DELETE FROM) are
+   paused by a guard until the file carries
+   `-- destructive-approved: <your-name> <date> <reason>`. **You approve it
+   yourself** — it is not a permission request, it is a deliberate stop,
+   because destructive SQL deletes data with NO undo. Before adding the
+   marker ask: is there a backup? is the data truly unneeded? would a
+   soft-delete or rename-and-deprecate be safer? When unsure, consult Maor —
+   but the call is yours.
 
-**One-time setup (Maor/Sivan, whoever has repo-settings access):** add the
-repository secret **`SUPABASE_ACCESS_TOKEN`** (Settings → Secrets and
-variables → Actions) — a Supabase personal access token. Until the secret
-exists, the `db-deploy` job fails on auth and migrations simply stay pending
-(nothing breaks).
+**One-time setup (Sivan — you have the repo-settings access):**
+1. Create a Supabase personal access token: supabase.com dashboard → your
+   avatar → **Account → Access Tokens → Generate new token** (name it e.g.
+   `momlee-ci-deploy`).
+2. In GitHub `sivanhasson/MomLee` → **Settings → Secrets and variables →
+   Actions → New repository secret**: name **`SUPABASE_ACCESS_TOKEN`**,
+   value = the token.
+Until the secret exists, the `db-deploy` job fails on auth and migrations
+simply stay pending — nothing breaks.
 
 ## ✅ RESOLVED 2026-07-02 — migration baseline squash + repair (was ⛔ since 2026-06-22)
 
