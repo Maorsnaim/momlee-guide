@@ -46,6 +46,18 @@ Verdict: REUSE <X> | EXTEND <X> (new variant/prop) | CREATE (no match anywhere)
 
 **If the verdict is CREATE:** the component must exist in Figma first with Maor's name (**momlee-prompt-guard** — a component not in Figma is blocked, not invented), and the same change registers it in `components.md` (**momlee-docs**).
 
+**The receipt is MECHANICALLY ENFORCED (web, 2026-07-08):** every new
+component file must carry the audit's receipt as a header comment — CI
+(`scripts/momlee/check-component-dupes.mjs` in the app repo) fails any new
+component without it:
+
+```
+// reuse-audit: searched="badge, chip, pill" checked="ui/badge" verdict=CREATE reason="animated numeric pill not covered"
+```
+
+Writing the receipt without actually running the three searches is a
+violation of this skill, not a workaround.
+
 ## Annotations are logic
 
 Figma annotations are the behavior spec — states (loading/empty/error/full), visibility conditions, validations, role permissions, edge cases. Code that contradicts an annotation is a bug. See `../../design-system/annotations.md`.

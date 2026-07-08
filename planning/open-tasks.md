@@ -77,6 +77,20 @@ gates, closing the full contract on web:**
 Ratchet rule reminder: when your change LOWERS a count, lower the matching
 BASELINE constant in the same commit (the gate prints the number).
 
+**Round 2.1 (2026-07-08, per Maor): the reuse gate is now SEMANTIC, not just
+name-level.** Every NEW component file (not in the pre-pivot inventory of
+185) must carry a **reuse-audit receipt** header proving the semantic REUSE
+AUDIT ran before creation:
+
+```
+// reuse-audit: searched="badge, chip, pill" checked="ui/badge" verdict=CREATE reason="animated numeric pill not covered"
+```
+
+Claude runs the three searches (components.md + Figma + code, names AND
+synonyms, by FUNCTION not just name), decides REUSE -> EXTEND -> CREATE, and
+records the receipt; CI fails any new component without it. Writing a receipt
+without running the audit violates momlee-design-system.
+
 **DB changes — the pipeline is LIVE (2026-07-08, Maor approved).** You CAN do
 everything yourself now, end to end — **no local DB required**:
 
