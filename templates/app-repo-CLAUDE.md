@@ -22,7 +22,10 @@ If installed, refresh once per work session:
 /plugin install momlee-guide@momlee
 ```
 
-Then read the plugin's `planning/open-tasks.md` for pending actions.
+Then run the **`momlee-standup`** protocol: pull the open work from the
+plugin's `planning/open-tasks.md` AND live Notion (Dev Changelog open rows +
+the Momlee OS Tasks DB) and give the user one short prioritized summary.
+Also run it whenever the user asks "מה חדש" / "standup" / "תעדכן אותי".
 
 **Also required: the Notion MCP must be CONNECTED** (`/mcp` → claude.ai
 Notion, with access to Maor's "Momlee OS" workspace). The worklog (Dev

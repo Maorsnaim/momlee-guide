@@ -3,6 +3,29 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## ⛔ ACTION REQUIRED (Sivan, one-time, ~2 minutes) — add the deploy secret (2026-07-08)
+
+The new DB pipeline (below) cannot reach Supabase until you add the repo
+secret — only you have the access:
+
+1. supabase.com → avatar → **Account → Access Tokens → Generate new token**
+   (name: `momlee-ci-deploy`; copy it — shown once).
+2. GitHub `sivanhasson/MomLee` → **Settings → Secrets and variables →
+   Actions → New repository secret** → Name: **`SUPABASE_ACCESS_TOKEN`**,
+   Value: the token.
+
+Until then the `db-deploy` job fails on auth and migrations stay pending
+(harmless, but nothing deploys).
+
+## 🆕 NEW skill: `/momlee-standup` — session-start updates from git + Notion (2026-07-08)
+
+Per Sivan's request: opening a session and asking **"מה חדש?" / "תעדכן
+אותי" / "standup"** now pulls open work from BOTH channels — this file
+(git) AND live Notion (Dev Changelog open rows + the Momlee OS Tasks DB,
+including Blocked tasks) — and returns one short prioritized Hebrew summary.
+Refresh the plugin and it is active (restart the session so hooks/skills
+load).
+
 ## 🌿 Web MVP work happens on the NEW `momlee-web` branch (2026-07-08)
 
 **Sivan: `git fetch && git checkout momlee-web`.** The branch was cut from the
