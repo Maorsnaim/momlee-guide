@@ -31,6 +31,29 @@ UNCOVERED, not blocked (CI even excludes web lint explicitly). What changed on
   the count, lower the BASELINE in the same change.
 - `ci.yml` runs on pushes/PRs to `momlee-web` as well.
 
+**Web gates round 2 (2026-07-08, commit `53cad5f`) — three more mechanical
+gates, closing the full contract on web:**
+
+- **check-component-dupes** — the mechanical half of the REUSE AUDIT: no two
+  component files may share a normalized base name (3 legacy dups
+  grandfathered: button / input / serviceslist), and no NEW primitive may
+  enter an existing synonym family (Sheet/Modal/Drawer/Dialog · Badge/Chip/Tag
+  · Toast/Snackbar · Select/Dropdown/Picker · Avatar · Tooltip) in
+  `components/ui`, `components/shared` or `packages/ui` — extend the existing
+  primitive (13 stock shadcn primitives grandfathered).
+- **check-web-arch** — Supabase lives ONLY in the data layer
+  (`services/`, `lib/`, `app/api/`, `app/actions/`): files touching it
+  elsewhere are ratcheted (baseline 28, may only go down — move queries into
+  services as you touch them); `select('*')` ratcheted (baseline 25);
+  **direct PostHog is hard-banned (0)** — analytics only via the
+  `@momlee/core` wrapper.
+- **check-tokens-web** — hardcoded color literals (arbitrary Tailwind color
+  classes `bg-[#...]` + `style` hex) ratcheted (baseline 101, may only go
+  down) — new code uses design-system token classes only.
+
+Ratchet rule reminder: when your change LOWERS a count, lower the matching
+BASELINE constant in the same commit (the gate prints the number).
+
 **DB changes — what is actually required (also asked):** you CAN author
 migrations, run local Supabase, test and commit freely; the Migration Gate is
 a discipline (migration file + rollback + RLS in the same change — CI checks
