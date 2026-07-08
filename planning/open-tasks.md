@@ -3,6 +3,43 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🌿 Web MVP work happens on the NEW `momlee-web` branch (2026-07-08)
+
+**Sivan: `git fetch && git checkout momlee-web`.** The branch was cut from the
+tip of `momlee-native` (so it carries the migration baseline, the security
+fixes, the CI gates, and fresh generated types — branching from
+`improved_momlee_by_claude` would have lost all of those). `momlee-native`
+stays frozen as the intact native reference for the future iOS return.
+
+**Fact-check (Sivan asked): the plugin does NOT block web development.** The
+plugin itself ships only the worklog hook. The CLI gates live in the app repo,
+and until today they only scanned `apps/mobile` + `packages/*` — web was
+UNCOVERED, not blocked (CI even excludes web lint explicitly). What changed on
+`momlee-web` (commit `032cb39`): the gates now cover web too —
+
+- **check-naming** scans `apps/web/src` (glossary synonyms, auto Figma names).
+- **check-deps** enforces `apps/web/package.json`; the existing web stack
+  (Next.js / Radix / Mapbox / testing, 60 packages) is allowlisted as the
+  approved web set; NEW dependencies still require the DEPENDENCY GATE.
+- **check-figma-refs**: every NEW web `page.tsx` declares its Figma source
+  node (`// figma: <nodeId>`); the 32 pre-pivot pages are grandfathered until
+  rebuilt from Figma.
+- **NEW check-rtl-web**: a logical-properties RATCHET — the count of physical
+  Tailwind direction classes (`ml-/mr-/pl-/pr-/left-/right-/text-left/...`) in
+  `apps/web/src` may only DECREASE (baseline 543). New code uses logical
+  utilities only (`ms/me/ps/pe/start/end/text-start/text-end`). When you lower
+  the count, lower the BASELINE in the same change.
+- `ci.yml` runs on pushes/PRs to `momlee-web` as well.
+
+**DB changes — what is actually required (also asked):** you CAN author
+migrations, run local Supabase, test and commit freely; the Migration Gate is
+a discipline (migration file + rollback + RLS in the same change — CI checks
+it), not an approval. What stays Maor-coordinated: applying to the LIVE DB
+(`db push`) and destructive changes. PROPOSED (pending Maor): replace the
+manual coordination with a pipeline — merge to `momlee-web` after green CI
+auto-applies additive migrations to live via a GitHub Action; destructive
+still needs human review.
+
 ## ✅ RESOLVED 2026-07-02 — migration baseline squash + repair (was ⛔ since 2026-06-22)
 
 **The `supabase migration repair` was EXECUTED and verified on 2026-07-02
