@@ -57,8 +57,19 @@ Before writing a single line of UI code, you MUST pull context from Figma. No ex
 2. **Pull design context** — `get_design_context` (+ `get_metadata`, screenshot) on the node. Understand structure, layout, hierarchy, states.
 3. **Map values → tokens** — read the variables from the design context; map every value to the token system. NEVER copy a raw hex/px into code. Missing token → add it in Figma first, then mirror in `../../design-system/tokens.md`.
 4. **Read annotations** — they are the spec (states, visibility, validations, role permissions, edge cases). Code that contradicts an annotation is a bug. See `../../design-system/annotations.md`.
-5. **Component Reuse Audit** — before building ANY new component, run the mandatory audit from **momlee-design-system**: search `../../design-system/components.md`, the Figma component inventory, and the code (name + synonyms), and print the `REUSE AUDIT` proof block with a REUSE / EXTEND / CREATE verdict. No audit block = no new component.
-6. **Build it** — following the four iron rules, RTL-first, with the security/privacy gates wired in.
+5. **Instance map (screens/composites) — enumerate BEFORE building.** A Figma
+   screen is COMPOSED of component instances, and instances nest (a card is
+   built from chips, avatars, buttons...). From `get_metadata` / the design
+   context, list EVERY component (set) instance in the node with its node-id,
+   then resolve each against the code: grep the codebase for `figma: <node-id>`
+   (every component file carries its source node) + check
+   `../../design-system/components.md`. **Mapped → IMPORT the existing
+   component — re-implementing it, including INLINE inside the screen JSX, is
+   forbidden.** Unmapped → it goes through step 6 as its own component (never
+   built inline into the screen). CI enforces this: one Figma node = one code
+   component (`check-component-dupes` Rule D fails a second claim).
+6. **Component Reuse Audit** — before building ANY new component, run the mandatory audit from **momlee-design-system**: search `../../design-system/components.md`, the Figma component inventory, and the code (name + synonyms), and print the `REUSE AUDIT` proof block with a REUSE / EXTEND / CREATE verdict. No audit block = no new component. A CREATE writes BOTH headers into the new file: the `// reuse-audit:` receipt AND its `// figma: <node-id>` identity.
+7. **Build it** — following the four iron rules, RTL-first, with the security/privacy gates wired in.
 
 ## Four iron rules
 

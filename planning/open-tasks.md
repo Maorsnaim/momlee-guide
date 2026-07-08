@@ -97,6 +97,26 @@ Three facts every UI session must know:
    covers both. Full rationale: ADR-016 in the OS; the work: Feature
    `platform.web_design_foundation` (Critical) + 4 tasks.
 
+**Round 2.2 (2026-07-08, per Maor): Figma node identity — one node, one
+component.** A Figma screen is composed of nested component instances; the
+danger is re-implementing a nested sub-component that already exists. Now:
+
+- Every NEW component file declares its source node (`// figma: 17297:8153`;
+  non-visual files: `// figma: none - <reason>`) alongside the reuse-audit
+  receipt — CI fails it otherwise.
+- **One Figma node = one code component**: a second file claiming the same
+  node FAILS CI (this catches re-implementations even under a new name —
+  verified against the real inventory: the native `Input` already carries its
+  node, and a synthetic second claim was caught).
+- Before building a SCREEN, Claude must enumerate its component instances
+  from the Figma metadata and resolve each node against the code
+  (`grep "figma: <node>"` + components.md): mapped → IMPORT (inline
+  re-implementation is forbidden); unmapped → full REUSE AUDIT → CREATE with
+  both headers. See momlee-figma-first step 5.
+- Code Connect mappings (Figma MCP) added as a task under
+  `platform.web_design_foundation` — once mapped, the design context itself
+  hands Claude the existing component.
+
 **Round 2.1 (2026-07-08, per Maor): the reuse gate is now SEMANTIC, not just
 name-level.** Every NEW component file (not in the pre-pivot inventory of
 185) must carry a **reuse-audit receipt** header proving the semantic REUSE
