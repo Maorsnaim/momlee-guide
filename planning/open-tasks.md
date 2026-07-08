@@ -77,6 +77,26 @@ gates, closing the full contract on web:**
 Ratchet rule reminder: when your change LOWERS a count, lower the matching
 BASELINE constant in the same commit (the gate prints the number).
 
+## 🏛️ ADR-016 (2026-07-08, Maor decided): per-platform primitives with a SHARED CONTRACT
+
+Three facts every UI session must know:
+
+1. **The existing web UI is a DEMO, not the product.** Every screen gets
+   rebuilt Figma-first (that is why the 32 pages are grandfathered in the
+   figma-refs gate). Do not extend demo components as if they were canonical.
+2. **One design system, one token source.** The real web runs on
+   **`packages/tokens`** (Figma-sourced; the same package that feeds native)
+   and **Noto Sans Hebrew** (Heebo is wrong and gets removed). A [GAP]
+   Validator tracks wiring the preset into the web Tailwind — until that
+   task closes, treat any stock-shadcn value as demo debt.
+3. **native<->web reuse = a SHARED CONTRACT, not shared render code**
+   (universal/react-native-web was rejected): each primitive has a native
+   implementation (packages/ui, RN+NativeWind) and a web implementation
+   (apps/web components/ui, DOM+Radix+Tailwind) with the **same name, same
+   props API, same Figma node, same tokens** — one row in components.md
+   covers both. Full rationale: ADR-016 in the OS; the work: Feature
+   `platform.web_design_foundation` (Critical) + 4 tasks.
+
 **Round 2.1 (2026-07-08, per Maor): the reuse gate is now SEMANTIC, not just
 name-level.** Every NEW component file (not in the pre-pivot inventory of
 185) must carry a **reuse-audit receipt** header proving the semantic REUSE
