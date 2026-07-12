@@ -181,14 +181,18 @@ management) stays in **Auth & Access** - Profile & Settings only provides the
 surface / nav entry point to it. This is boundary rule 1 applied: profile is
 owned by its domain, not by the screen or the shared settings layer.
 
-**Provider Profile & Services (Epic, Post-MVP stub, 2026-06-30).** Created as a
-*proposed* stub to reserve the ownership boundary of the professional domain so
-provider-profile work is not misplaced under Profile & Settings, Admin, or
-Onboarding. Reserved scope: `provider_profiles`, professional services, business
-information, credentials/certifications, verification documents, availability /
-service areas, and provider-facing profile management. Admin *actions* on
-professionals (verification approval etc.) remain a Trust & Safety capability via
-the Admin console (boundary rule 3); account-level auth stays in Auth & Access.
+**Provider Profile & Services (Epic, Post-MVP; key `provider_profile`).**
+The refocused former `Professionals` actor-Epic (one page — a 2026-06-30 stub
+duplicate was merged back into it on 2026-07-12 after the external audit caught
+it; dedup lesson: scan the live DB, not the book, before creating). It owns the
+professional domain and reserves its boundary so provider-profile work is not
+misplaced under Profile & Settings, Admin, or Onboarding. Reserved scope:
+`provider_profiles`, professional services, business information,
+credentials/certifications, verification documents, availability / service
+areas, leads/dashboard, and provider-facing profile management. Admin *actions*
+on professionals (verification approval etc.) remain a Trust & Safety capability
+via the Admin console (boundary rule 3); account-level auth stays in Auth &
+Access.
 
 **Browse & Discovery (Epic, MVP, confirmed 2026-06-30; was "Home / Discover").**
 The cross-domain browse/discovery layer - how a user finds and browses content.
