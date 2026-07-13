@@ -3,6 +3,24 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## ⛔ ACTION REQUIRED (Sivan) — your from-sivan.md log never reached Maor (2026-07-13)
+
+You told Maor your log lives in `from-sivan.md` — but on GitHub the file is
+EMPTY and there are zero commits from you: **the entries exist only on your
+machine** (written locally, never committed/pushed). To deliver them:
+
+```
+cd <your momlee-guide clone>            # NOT the plugin cache folder
+git add planning/from-sivan.md
+git commit -m "from-sivan: worklog + tasks for Maor"
+git push origin main
+```
+
+If your Claude wrote them into the plugin CACHE copy (a ~/.claude/plugins/...
+path), copy the content into a real clone of `Maorsnaim/momlee-guide` (you
+have write access) and push from there — or simply paste the entries to Maor.
+From now on the worklog skill requires commit+push+verify in the same step.
+
 ## ⛔ ACTION REQUIRED (Sivan, one-time, ~2 minutes) — add the deploy secret (2026-07-08)
 
 The new DB pipeline (below) cannot reach Supabase until you add the repo

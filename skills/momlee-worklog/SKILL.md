@@ -58,8 +58,9 @@ Keep entries in **English**, concise, and factual.
 ## Fallback — no Notion MCP connected
 
 If the Notion MCP is not available in this session:
-1. Append the entry to **`../../planning/from-sivan.md`** (the git channel) under "Worklog (pending Notion sync)" with the same fields, commit, and push the plugin repo.
-2. Tell the user the entry is queued and will reach Notion when someone with Notion access syncs it.
+1. Append the entry to **`../../planning/from-sivan.md`** (the git channel) under "Worklog (pending Notion sync)" with the same fields.
+2. **The write alone delivers NOTHING — you MUST `git commit` AND `git push origin main` immediately.** A from-sivan.md entry that was never pushed exists only on your machine; Maor cannot see it (this exactly happened on 2026-07-13). If the file you edited lives inside the plugin CACHE (a `~/.claude/plugins/...` path) and cannot push, do NOT leave it there — either clone `Maorsnaim/momlee-guide` properly and write+push there, or paste the entry to Maor directly.
+3. **VERIFY delivery:** `git log origin/main -1 -- planning/from-sivan.md` must show your commit after the push. Only then tell the user the entry is queued.
 
 ## Two-way: Sivan → Maor (tasks & updates)
 
