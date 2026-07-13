@@ -3,23 +3,29 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
-## ⛔ ACTION REQUIRED (Sivan) — your from-sivan.md log never reached Maor (2026-07-13)
+## ⛔ ACTION REQUIRED (Sivan, 1 minute) — ACCEPT the GitHub invitation; your from-sivan.md log is stranded (2026-07-13)
 
-You told Maor your log lives in `from-sivan.md` — but on GitHub the file is
-EMPTY and there are zero commits from you: **the entries exist only on your
-machine** (written locally, never committed/pushed). To deliver them:
+Root cause found: your push to the plugin repo failed because **the
+collaborator invitation to `sivan@applee.dev` is still Pending — you never
+accepted it** (Maor verified in the repo settings). Until you accept, every
+push to `Maorsnaim/momlee-guide` is rejected, so your from-sivan.md entries
+exist only on your machine.
 
-```
-cd <your momlee-guide clone>            # NOT the plugin cache folder
-git add planning/from-sivan.md
-git commit -m "from-sivan: worklog + tasks for Maor"
-git push origin main
-```
-
-If your Claude wrote them into the plugin CACHE copy (a ~/.claude/plugins/...
-path), copy the content into a real clone of `Maorsnaim/momlee-guide` (you
-have write access) and push from there — or simply paste the entries to Maor.
-From now on the worklog skill requires commit+push+verify in the same step.
+1. **Accept the invite:** check the GitHub invitation email to
+   `sivan@applee.dev`, or open
+   **github.com/Maorsnaim/momlee-guide/invitations** while logged in to your
+   GitHub account. (Invites expire after 7 days — if it expired, tell Maor to
+   re-send.)
+2. **Deliver the stranded entries:** from your momlee-guide clone (not the
+   plugin cache folder):
+   ```
+   git add planning/from-sivan.md
+   git commit -m "from-sivan: worklog + tasks for Maor"
+   git push origin main
+   ```
+3. **Verify:** `git log origin/main -1 -- planning/from-sivan.md` shows your
+   commit. From now on the worklog skill requires commit+push+verify in the
+   same step, so a silent failure like this cannot recur.
 
 ## ⛔ ACTION REQUIRED (Sivan, one-time, ~2 minutes) — add the deploy secret (2026-07-08)
 
