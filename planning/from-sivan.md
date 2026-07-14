@@ -88,7 +88,12 @@ Dev Changelog later)_
   confirms `rounded-md` is still demo-shadowed (the radius A/B decision above).
   Heebo→Noto font swap intentionally left for its own task. Committed as `6d7d4e1`
   and **pushed** to `momlee-web` (`08cfa3c..dc3ee32`, alongside a `/checkpoint`
-  skill tweak `dc3ee32`); CI runs, `db-deploy` is a no-op (no migration).
+  skill tweak `dc3ee32`); `db-deploy` is a no-op (no migration). Follow-up
+  `fe25276` fixed a **tsc-only** type error the first push missed (the
+  framework-agnostic `as const` preset needed `as unknown as Partial<Config>`;
+  runtime was always fine) — CI is now **GREEN** end-to-end (checks ✓ rls-tests ✓
+  db-deploy ✓, run 29314383827). Lesson: run `pnpm type-check`, not just a
+  Tailwind compile, before pushing a `tailwind.config.ts` change.
 - 2026-07-14 (security cleanup CLOSED OUT — Sivan + Claude): **All live
   security-audit cleanup is DONE.** Edge Functions deleted (curl → 404) after
   archiving (commit `8ffe06f`); Supabase test phone numbers configured with a
