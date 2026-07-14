@@ -28,6 +28,15 @@
   migration `20260712000000` was amended (commit `08cfa3c`) to `DELETE` those 16
   rows first (destructive-approved), then trim the enum. FYI only — no action
   for Maor.
+- [ ] 2026-07-14 (**Maor — please fix**): **The worklog HOOK's git fallback
+  writes to the plugin CACHE, so entries never reach you.** The momlee-worklog
+  hook/skill fallback appends to `<plugin-cache>/planning/from-sivan.md`, but the
+  cache dir is NOT a git repo — so weeks of worklog/task entries piled up locally
+  and never reached this repo (this is why the entries above only landed now, via
+  a manual flush — commit `b9f77e5`). Sivan's `/checkpoint` skill now writes to a
+  real clone (`C:\Users\sivan\workspace\momlee-guide`) + commits/pushes, but the
+  ENFORCED hook still points at the cache for every session/contributor. Please
+  repoint it (write to a cloned repo + commit/push, or another synced location).
 
 ## Updates / questions
 
@@ -50,6 +59,15 @@
 _(entries logged here only when the Notion MCP wasn't available; synced to the
 Dev Changelog later)_
 
+- 2026-07-14 (security cleanup CLOSED OUT — Sivan + Claude): **All live
+  security-audit cleanup is DONE.** Edge Functions deleted (curl → 404) after
+  archiving (commit `8ffe06f`); Supabase test phone numbers configured with a
+  "Valid Until" expiry and verified end-to-end via the Auth API (`/otp` → 200
+  no-SMS, `/verify` with the fixed code → session). Added `LAUNCH_CHECKLIST.md`
+  (app-repo root) with "clear test OTPs before launch". service_role + Resend
+  keys marked Sensitive in Vercel (verified never leaked — no rotation). Mapbox +
+  Twilio rotated (see prior entries). Remaining are Maor-only: delete the June
+  temp Supabase access token + fix the worklog hook (see Tasks for Maor).
 - 2026-07-13 (commit `8ffe06f`, `momlee-web` — not yet pushed): **Archived the 7
   legacy Edge Functions** to `supabase/_archived_functions/` (mirrors
   `_archived_migrations/`), downloaded from the Supabase dashboard before
