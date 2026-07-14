@@ -129,6 +129,19 @@ Rules:
   own `meetup_type`; `context_type` stays `meetup`. Re-conflating axes into one
   field is exactly the trap this principle prevents.
 
+**State machines live ON the Entity (LOCKED 2026-07-13, option A).** Every
+stateful Entity carries a "### מכונת מצבים / State Machine" body section: a
+uniform transitions table (Transition | Who may | Prerequisites | Effects +
+Events) + terminal states + the principle "status is not a mutable label -
+every change is a validated transition". No separate Transitions DB (rejected:
+maintenance weight), no book-only chapter (rejected: invisible to the OS). The
+`Lifecycle States` multi-select on the Entity is the STATE VOCABULARY (23
+shared options); the body section is the MACHINE. Written for the 8 stateful
+entities: Meetup, Meetup Registration, Verification Application, Report,
+Moderation Case, User, Subscription (model-only, D6), Child. A new stateful
+Entity is not complete without this section (the [GAP] State Machine validator
+tracks it).
+
 Current Epic set. Capability Epics: App Shell & Navigation · Browse & Discovery ·
 Auth & Access · Onboarding · Profile & Settings · Meetups · Provider Profile &
 Services · Organization & Team · Subscriptions · Communication · Notifications ·
