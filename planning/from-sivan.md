@@ -18,6 +18,26 @@
 > hook message + skill fallback now explicitly require writing to a REAL CLONE
 > of momlee-guide (never the plugin cache) + commit+push+verify.
 
+- [ ] 2026-07-14 (**Maor — please decide + re-sync tokens; BLOCKS the web Button**):
+  **`bg-brand-solid` token drift — Figma vs the package/snapshot disagree on the
+  primary CTA.** Building the first web primitives figma-first, the live Figma
+  node `3287:428579` (Buttons/Button · xl/Primary/Default) renders
+  `bg-brand-solid = #f0e4e6` (light pink) with label `text-primary-(900) #171717`
+  (dark). But your own snapshot `design-system/tokens.md` AND the `@momlee/tokens`
+  package AND native Button all say `bg-brand-solid = #b05f64` (mauve) with WHITE
+  primary text. So the whole primary treatment differs: **(mauve bg + white text)
+  in code vs (light-pink bg + dark text) in live Figma**, and the file is marked
+  "not final". Two questions:
+  1. **Is the Figma retint final** (`bg-brand-solid` → `#f0e4e6`)? If yes it's a
+     **token re-sync** of `@momlee/tokens` (via momlee-sync-tokens) that affects
+     **web AND native**, and likely the broader "palette retint".
+  2. **Primary button text — white or dark `#171717`?** (pairs with whichever bg
+     is canonical.)
+  I've **held the web Button** until you rule (per figma-first "never ship a
+  guess"). AppText + Input were unaffected — their tokens matched Figma exactly
+  (`#a3a3a3`/`#404040`/`#b54141`/`#d4d4d4`) — and are built + verified. Details in
+  the worklog below.
+
 - [ ] 2026-07-12 (**Maor — please handle**): **Dev Changelog DB appears GONE.**
   The standup skill's collection id (`ee6d4bbb-1444-479c-b818-36f7e3951988`)
   and the 2026-07-08 changelog row (`397450ad0ae681c7bceee1cfae7414ac`) both
@@ -93,6 +113,18 @@ Dev Changelog later)_
 > `39d450ad...2735` (Done). The Noto-font entry below lands as its own row.
 > Reminder: commits `6d7d4e1` + `6b3bf0d` are still LOCAL on your machine —
 > push them so CI runs and the Validator can flip Active.)_
+
+- 2026-07-14 (`apps/web`, branch `sivan/web-primitives`, commit `17cda9b` — Sivan
+  + Claude): **First web primitives, figma-first — AppText + Input built + verified;
+  Button held.** Per ADR-016 (shared contract, per-platform impl), mirrored native
+  `@momlee/ui` as DOM+Tailwind on the token preset, in
+  `apps/web/src/components/ui/primitives/`. AppText (RTL text primitive; weight via
+  CSS font-weight — Noto weights are native on web) + Input (figma `17297:8153`:
+  underline, 5 states, Extras slots; tokens confirmed against Figma). tsc clean,
+  next build ok, token classes emit. NOT merged to `momlee-web` (task incomplete —
+  Button blocked on the `bg-brand-solid` drift above; throwaway `/primitives-preview`
+  harness stays on the branch until merge). Next: Maor's Button ruling → build
+  Button → delete preview → merge via handle-next-issue.
 
 - 2026-07-14 (`apps/web`, `momlee-web`, commit `6b3bf0d` — Sivan + Claude):
   **Web is now on the official font — Noto Sans Hebrew, self-hosted** (OS task
