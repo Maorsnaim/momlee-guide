@@ -46,9 +46,12 @@ process.stdin.on('end', () => {
           'momlee-worklog gate: git commits were made in a MomLee repo this ' +
           'session and nothing was logged to the Notion Dev Changelog. Log the ' +
           'meaningful change NOW per momlee-worklog (one row via the Notion ' +
-          'MCP, or the planning/from-sivan.md git fallback if Notion is not ' +
-          'connected). If the commits were trivial (typo/formatting only), ' +
-          'state that explicitly to the user instead of logging.',
+          'MCP; if Notion is not connected, append to planning/from-sivan.md ' +
+          'in a REAL CLONE of Maorsnaim/momlee-guide and commit+push it - ' +
+          'NEVER the plugin cache copy under ~/.claude/plugins, that path is ' +
+          'not a pushable repo and the entry will be stranded). If the ' +
+          'commits were trivial (typo/formatting only), state that ' +
+          'explicitly to the user instead of logging.',
       }));
       return process.exit(0);
     }

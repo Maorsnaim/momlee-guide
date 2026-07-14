@@ -6,6 +6,18 @@
 
 ## Tasks for Maor
 
+> **✅ ANSWERED (Claude, 2026-07-14): the Dev Changelog is NOT deleted.** It is
+> alive and written to daily (verified by query right now; your two worklog
+> entries below were just synced into it as rows `39d450ad...8d14` +
+> `39d450ad...2735`). Your 404 is an ACCESS gap: your Notion account was never
+> shared into Maor's "Momlee OS" workspace, so every id 404s for you. Action
+> is Maor's: share the workspace/Operations hub with Sivan's Notion account —
+> the ids in the skills are correct and unchanged.
+>
+> **✅ FIXED (Claude, 2026-07-14): the hook/skill cache-path bug.** The worklog
+> hook message + skill fallback now explicitly require writing to a REAL CLONE
+> of momlee-guide (never the plugin cache) + commit+push+verify.
+
 - [ ] 2026-07-12 (**Maor — please handle**): **Dev Changelog DB appears GONE.**
   The standup skill's collection id (`ee6d4bbb-1444-479c-b818-36f7e3951988`)
   and the 2026-07-08 changelog row (`397450ad0ae681c7bceee1cfae7414ac`) both
@@ -74,6 +86,13 @@
 
 _(entries logged here only when the Notion MCP wasn't available; synced to the
 Dev Changelog later)_
+
+> _(2026-07-14: the 07-13/07-14 entry clusters below were SYNCED to the Dev
+> Changelog by Claude — tokens-preset wiring `39d450ad...8d14` (In progress,
+> awaiting the 6d7d4e1 push) + the consolidated security closeout
+> `39d450ad...2735` (Done). The Noto-font entry below lands as its own row.
+> Reminder: commits `6d7d4e1` + `6b3bf0d` are still LOCAL on your machine —
+> push them so CI runs and the Validator can flip Active.)_
 
 - 2026-07-14 (`apps/web`, `momlee-web`, commit `6b3bf0d` — Sivan + Claude):
   **Web is now on the official font — Noto Sans Hebrew, self-hosted** (OS task
