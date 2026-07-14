@@ -40,25 +40,55 @@
 
 ## Updates / questions
 
-- [ ] 2026-07-12 (**Maor — please decide**): **Web token-preset wiring is on HOLD
-  per Sivan.** The task "Wire `@momlee/tokens` preset into `apps/web` Tailwind"
-  was scoped and planned (dep declare → `presets:[momleePreset]` → Heebo→Noto
-  swap → CI assertion, all zero-visual-regression; plus an optional Step 4 that
-  retints the shadcn CSS variables to the token palette = a real visible design
-  change). Sivan chose **Hold — don't edit yet**. Two items are yours:
-  1. **[GAP] Validator "flip to Active":** the status entry almost certainly
-     lives in the momlee-guide plugin's `knowledge/`/`planning/` channel (not in
-     the app-repo checkout), so it can't be edited from a repo session. Please
-     flip it when the wiring lands, or tell Sivan where it lives.
-  2. **Step 4 (palette retint):** deferred to you — it changes how existing
-     screens look (moves the demo shadcn palette onto the MomLee brand tokens
-     per ADR-016). Needs your design sign-off before anyone ships it.
+- [x] 2026-07-14: **Web token-preset wiring is now DONE** (supersedes the
+  2026-07-12 "on HOLD" note). `apps/web` declares `@momlee/tokens` + registers
+  `presets:[momleePreset]`; token classes (`bg-bg-primary`, `text-text-primary`,
+  `gap-xl`, `font-sans`=Noto, …) resolve and emit. **Additive / zero visual
+  regression** — the demo shadcn theme is untouched (Heebo font swap intentionally
+  left for its own task). CI assertion added to `check-tokens-web.mjs` so the
+  wiring can't regress. See worklog below.
+- [ ] 2026-07-14 (**Maor — please decide**): **Radius A/B — should the Figma token
+  radii win on `rounded-sm/md/lg`?** The preset and the demo's shadcn theme both
+  define `sm/md/lg`; on a Tailwind preset merge the **main config wins**, so the
+  demo's CSS-var radii keep those keys and the preset's Figma values
+  (`radius-md`=8px, `sm`=6px, `lg`=10px) are **shadowed** (verified: `rounded-md`
+  still resolves to `calc(var(--radius) - 2px)`). Consequence: a NEW Figma
+  component writing `rounded-md` expecting 8px silently gets the demo's ~10px.
+  - **Option A (shipped, non-breaking):** demo radii keep winning during the
+    demo-coexistence window; new primitives must NOT rely on `rounded-md/sm/lg`
+    meaning the Figma value — use non-colliding keys until the demo is retired.
+  - **Option B:** pull the demo's `sm/md/lg` radii out of `theme.extend` so the
+    token radii win — a **3-line follow-up**, but it changes the corner radius of
+    every Radix/shadcn component across all 32 demo pages at once. Your design call.
+- [ ] 2026-07-14 (**Maor — please handle**): **[GAP] Validator "flip to Active".**
+  The wiring that the Validator tracks is now live, so it can be flipped. The
+  status entry lives in the momlee-guide plugin's `knowledge/`/`planning/` channel
+  (not the app-repo checkout), so it can't be edited from a repo session — please
+  flip it, or tell Sivan where it lives.
+- [ ] 2026-07-14 (**Maor — design sign-off**): **Palette retint (separate, future).**
+  Retinting the demo shadcn CSS variables onto the MomLee brand tokens (a real
+  visible design change per ADR-016) is deferred to you — not part of the wiring
+  above, needs your sign-off before anyone ships it.
 
 ## Worklog (pending Notion sync)
 
 _(entries logged here only when the Notion MCP wasn't available; synced to the
 Dev Changelog later)_
 
+- 2026-07-14 (`apps/web`, `momlee-web` — Sivan + Claude): **Wired the shared
+  `@momlee/tokens` preset into the web Tailwind config** (OS task
+  `platform.web_design_foundation`, Critical). Declared `@momlee/tokens` as a web
+  workspace dep, added `import momleePreset from "@momlee/tokens/preset"` +
+  `presets:[momleePreset]` to `apps/web/tailwind.config.ts`, and added a
+  non-regressable CI assertion in `check-tokens-web.mjs` (fails if the preset
+  import/registration is dropped). **Additive, zero visual regression** — the demo
+  shadcn theme stays; new token-namespaced classes (`bg-bg-primary`,
+  `text-text-primary`, `gap-xl`, `font-sans`) now emit. Verified end-to-end: pnpm
+  symlink present, gate green, a Tailwind compile emits the token classes and
+  confirms `rounded-md` is still demo-shadowed (the radius A/B decision above).
+  Heebo→Noto font swap intentionally left for its own task. Committed as `6d7d4e1`
+  on `momlee-web` (local — not pushed to remote yet, so CI/`db-deploy` not
+  triggered).
 - 2026-07-14 (security cleanup CLOSED OUT — Sivan + Claude): **All live
   security-audit cleanup is DONE.** Edge Functions deleted (curl → 404) after
   archiving (commit `8ffe06f`); Supabase test phone numbers configured with a
