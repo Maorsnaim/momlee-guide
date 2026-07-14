@@ -75,6 +75,16 @@
 _(entries logged here only when the Notion MCP wasn't available; synced to the
 Dev Changelog later)_
 
+- 2026-07-14 (`apps/web`, `momlee-web`, commit `6b3bf0d` — Sivan + Claude):
+  **Web is now on the official font — Noto Sans Hebrew, self-hosted** (OS task
+  `platform.web_design_foundation`; Heebo removed per ADR-016). Swapped the
+  runtime Google Fonts Heebo `@import` for `next/font/google` Noto Sans Hebrew,
+  self-hosted at build → **zero runtime external font request**, no layout shift
+  (display:swap + size-adjusted fallback). `--font-sans` variable; web
+  `tailwind.config` maps `font-sans`→`var(--font-sans)`; `heebo` key removed. The
+  shared `@momlee/tokens` literal family is untouched, so **mobile is unaffected**.
+  Verified: `tsc` clean, `next build` ok, 4 woff2 self-hosted, no Google Fonts
+  refs remain. FYI (visible typography change) — no decision needed from you.
 - 2026-07-14 (`apps/web`, `momlee-web` — Sivan + Claude): **Wired the shared
   `@momlee/tokens` preset into the web Tailwind config** (OS task
   `platform.web_design_foundation`, Critical). Declared `@momlee/tokens` as a web
