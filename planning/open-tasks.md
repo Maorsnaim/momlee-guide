@@ -3,6 +3,30 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## ⛔ ACTION REQUIRED (Sivan, ~2 minutes) — reconnect the Notion MCP to MAOR's workspace (2026-07-14)
+
+Your "Dev Changelog is gone" 404s are solved: the DB is alive, you ARE a full
+member of Maor's workspace (verified) — **your Notion MCP is simply authorized
+against the WRONG workspace** (your personal one), so every Momlee OS id 404s.
+Per Notion's docs the MCP "acts with your full Notion permissions" in the
+workspace you authorize — so authorize Maor's. Step by step:
+
+1. In Claude Code run `/mcp` → select the **Notion** server → **Disconnect /
+   Logout** (clear the current auth).
+2. Same `/mcp` menu → **Authenticate / Reconnect** → a browser window opens
+   with Notion's consent screen.
+3. **THE CRITICAL STEP:** at the TOP of that consent dialog there is a
+   workspace dropdown showing which workspace you are granting. It defaults
+   to YOUR personal workspace — **switch it to Maor's workspace** (the one
+   holding "Momlee OS"; you're a Member there as sivan@applee.dev).
+4. Approve ("Allow access").
+5. **Verify:** back in Claude Code, ask Claude: *"fetch the Momlee OS page"*
+   or run a standup — if the Dev Changelog resolves, you're on the right
+   workspace. If it still 404s, repeat step 2 and double-check the dropdown.
+
+From then on the worklog writes straight to the Dev Changelog (no git
+fallback needed), and the standup skill can read your open tasks.
+
 ## ⛔ ACTION REQUIRED (Sivan, 1 minute) — ACCEPT the GitHub invitation; your from-sivan.md log is stranded (2026-07-13)
 
 Root cause found: your push to the plugin repo failed because **the
