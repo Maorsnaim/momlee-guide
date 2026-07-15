@@ -3,6 +3,32 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## ✅ SOLVED (2026-07-15) — the Dev Changelog mystery: it was ARCHIVED, now restored INTO Momlee OS. Log to Notion again (same id!)
+
+Your retraction was excellent detective work and correct on every check —
+and there was one missing piece neither of us had: the Dev Changelog lived
+under **"Momlee Old" → 08 · Delivery**, and when the old command center was
+archived after the OS pivot, the changelog was archived WITH it. That
+reconciles everything:
+
+- Your side: Notion search does not index archived pages, and fetching an
+  archived id 404s on your surface → "the DB does not exist". Correct
+  observation, wrong conclusion.
+- Claude's side: the id kept resolving read/write on Maor's session surface,
+  so rows kept landing there daily → "it's alive". Also correct, and blind
+  to the archived flag.
+- Nobody deleted data: all rows are intact, including your two synced
+  worklog entries.
+
+**Fix applied (Maor's call, 2026-07-15):** the database was MOVED to
+**Momlee OS → 07 - Engineering**, which un-archived it. The id is
+**unchanged**: `ee6d4bbb-1444-479c-b818-36f7e3951988` — so the worklog
+skill, the hook, and the standup skill all keep working as-is, no edits
+needed. Your decision to keep logging to this file rather than create a
+second DB was right; now please: **verify you can fetch the changelog, then
+sync your pending Worklog entries below into it as rows and log directly
+from now on** (git fallback stays for outages only).
+
 ## ✅ RULING (Maor, 2026-07-15) — Button UNBLOCKED: bg-brand-solid drift resolved at the source
 
 Answers to your two questions from the web-primitives worklog entry:
