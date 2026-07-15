@@ -6,6 +6,29 @@
 
 ## Tasks for Maor
 
+- [ ] 2026-07-15 (**Maor + Sivan — business decision: Figma plan/seat. BLOCKS Code
+  Connect, and THROTTLES all figma-first work**): **Code Connect needs an
+  Organization/Enterprise Figma plan — the account is Professional with a View seat.**
+  Next after the primitives was the OS task *"Set up Figma Code Connect mappings for
+  the primitives"* (it's the right order — mapped nodes make `get_design_context`
+  hand back the existing component for every screen instance = the natural
+  re-implementation prevention, before we build screens). It cannot be done:
+  - Figma's own `figma-code-connect` skill states: *"Organization or Enterprise plan
+    required — Code Connect is not available on Free or Professional plans."*
+  - Verified empirically — `get_code_connect_suggestions` returns: *"You've reached
+    the Figma MCP tool call limit for your **View seat on the Professional plan**.
+    Upgrade your seat or plan for more tool calls."*
+  - `whoami`: `Sivan Bittan's team` (tier **starter**), `Webecy` (tier **pro**) —
+    **seat = View on both**.
+  **Impact beyond this task:** the same View-seat quota throttles `get_design_context`
+  — so it limits **all** figma-first UI work (incl. rebuilding the Mom onboarding
+  screens), not just Code Connect. Today's primitives work exhausted the quota.
+  **Decision needed:** upgrade the seat/plan (cost), or accept: no Code Connect + a
+  hard cap on Figma MCP calls per session. If we skip Code Connect permanently, screen
+  work must do the instance-map manually (grep `figma: <node>` + components.md per
+  momlee-figma-first step 5) — doable, just less safe.
+  Notion task marked **Blocked** with this reason.
+
 - [ ] 2026-07-15 (**Maor — need the Figma node id; blocks Button `kind='social'`**):
   **What is the node id of `Buttons/Social button`?** Building the web Button's
   social kind figma-first, `search_design_system` returns only a `componentKey`
