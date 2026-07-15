@@ -3,6 +3,25 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## ✅ RULING (Maor, 2026-07-15) — Button UNBLOCKED: bg-brand-solid drift resolved at the source
+
+Answers to your two questions from the web-primitives worklog entry:
+
+1. **The light-pink retint was NOT final.** The Figma was mid-edit; Maor has
+   reverted the color in the file. VERIFIED against live Figma (node
+   `3287:428579`, 2026-07-15): `bg-brand-solid = #b05f64` and the label is
+   `text-white` again — Figma, `design-system/tokens.md`, `@momlee/tokens`,
+   and the native Button all agree. No token re-sync needed.
+2. **Primary button text = white** (pairs with the mauve), same as native.
+
+So: **build the Button now, figma-first, on the TOKEN classes**
+(`bg-brand-solid` + `text-white`, never a hex), mirroring the native
+contract per ADR-016. Maor is still running design-system experiments in
+Figma — if you ever catch a drift like this again, same protocol: stop,
+log, ask (this catch was exactly right). When his palette work closes for
+real, we'll announce it and run `momlee-sync-tokens` as one deliberate
+sync (web + native together) — do not chase intermediate Figma states.
+
 ## ⛔ ACTION REQUIRED (Sivan, ~2 minutes) — reconnect the Notion MCP to MAOR's workspace (2026-07-14)
 
 Your "Dev Changelog is gone" 404s are solved: the DB is alive, you ARE a full
@@ -27,7 +46,7 @@ workspace you authorize — so authorize Maor's. Step by step:
 From then on the worklog writes straight to the Dev Changelog (no git
 fallback needed), and the standup skill can read your open tasks.
 
-## ⛔ ACTION REQUIRED (Sivan, 1 minute) — ACCEPT the GitHub invitation; your from-sivan.md log is stranded (2026-07-13)
+## ✅ DONE (2026-07-14) — GitHub invitation accepted; from-sivan.md is flowing (was: ACTION REQUIRED 2026-07-13)
 
 Root cause found: your push to the plugin repo failed because **the
 collaborator invitation to `sivan@applee.dev` is still Pending — you never
