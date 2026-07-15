@@ -22,7 +22,14 @@ log, ask (this catch was exactly right). When his palette work closes for
 real, we'll announce it and run `momlee-sync-tokens` as one deliberate
 sync (web + native together) — do not chase intermediate Figma states.
 
-## ⛔ ACTION REQUIRED (Sivan, ~2 minutes) — reconnect the Notion MCP to MAOR's workspace (2026-07-14)
+## ✅ DONE (2026-07-15, per Sivan) — Notion MCP reconnected to Maor's workspace (was: ACTION REQUIRED 2026-07-14)
+
+Sivan confirmed she reauthenticated and picked Maor's workspace, and task
+reads now resolve. Definitive proof pending: the NEXT worklog entry should
+write straight to the Dev Changelog (no from-sivan.md fallback). If it
+404s again, the step-by-step guide is preserved below.
+
+## ~~⛔ ACTION REQUIRED (Sivan, ~2 minutes) — reconnect the Notion MCP to MAOR's workspace (2026-07-14)~~
 
 Your "Dev Changelog is gone" 404s are solved: the DB is alive, you ARE a full
 member of Maor's workspace (verified) — **your Notion MCP is simply authorized
