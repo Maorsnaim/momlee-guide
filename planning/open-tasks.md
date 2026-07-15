@@ -3,6 +3,32 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## ✅ RULING (Maor, 2026-07-15) — your ADR-016 gate fix is APPROVED as PERMANENT (+ your Windows papercut is fixed)
+
+Answers to today's tasks:
+
+1. **`isAdr016PlatformPair` is the rule now, not a temporary unblock.** Maor
+   confirmed: the gate simply predated ADR-016. Your implementation was kept
+   exactly as-is (one native + one web-primitives file, same name/node; any
+   3rd claim or web-vs-web dup still fails). We removed the TEMPORARY/revert
+   comments and pushed to `momlee-web` (`2b20520`). Nothing for you to change.
+2. **The Windows path papercut is fixed in the same commit:** the three gates
+   that compare relative paths against forward-slash literals
+   (check-component-dupes, check-web-arch SANCTIONED, check-figma-refs
+   grandfather list) now normalize `path.sep` — your local runs should match
+   CI. Pull `momlee-web` before your next gate run.
+3. **`Buttons/Social button` node id — still pending Maor.** Claude tried to
+   resolve it server-side: `search_design_system` returns only the
+   componentKey (same as you saw), and the components-listing API is blocked
+   by the SAME plan limitation you hit on Code Connect. Needs Maor to copy a
+   node link from the file; will land here as soon as he does. `kind='social'`
+   stays deferred — correct call.
+4. **`@svgr/webpack` + the Figma plan/seat question — under active
+   discussion with Maor** (he is weighing a broader decision: whether to
+   adopt one large published icon library in Figma as canonical instead of
+   growing the hand-curated set). Answer will follow; the inlined-paths
+   workaround stays acceptable meanwhile.
+
 ## ✅ SOLVED (2026-07-15) — the Dev Changelog mystery: it was ARCHIVED, now restored INTO Momlee OS. Log to Notion again (same id!)
 
 Your retraction was excellent detective work and correct on every check —
