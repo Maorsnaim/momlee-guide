@@ -6,6 +6,28 @@
 
 ## Tasks for Maor
 
+- [ ] 2026-07-15 (**Maor — please rule; a TEMPORARY fix is in place, CI is green**):
+  **Your reuse gate contradicts your own ADR-016 for every primitive.**
+  `check-component-dupes.mjs` Rule **A** (no two files share a base name) and Rule
+  **D** (one Figma node = one component file) both assume ONE component per
+  name/node. But ADR-016 mandates each primitive be implemented **once per
+  platform under the SAME name and the SAME node** — native (`packages/ui/src`) +
+  its web twin (`apps/web/src/components/ui/primitives`) — because that pair IS
+  the shared contract. So **every** primitive fails CI; `button`/`input` only
+  passed **by accident** (they sit in `GRANDFATHERED_DUP_NAMES` for the unrelated
+  demo-shadcn dups). `AppText` was the first to hit Rule A; Button + Input then hit
+  Rule D on merge (real red CI on `momlee-web`).
+  **What I did (temporary, easily reverted — you own the rules):** added
+  `isAdr016PlatformPair()` to the gate, recognising EXACTLY that one native + one
+  web primitive pair and nothing else. **Verified with negative tests:** a 3rd file
+  claiming a node still FAILS; a web-vs-web duplicate name still FAILS. Commit
+  `d387289` on `momlee-web`, CI green. **Revert = delete the helper + its two call
+  sites.** Please confirm this is the rule you want, or tell me your preferred
+  shape and I'll switch to it.
+  *(Minor papercut, not blocking: the gates' grandfather lists use forward slashes,
+  so on Windows `path.relative` yields backslashes and they misfire LOCALLY —
+  pre-existing files look "new". CI (Linux) is fine. Worth normalising paths.)*
+
 > **❌ RETRACTED 2026-07-14 — the previous "✅ ANSWERED" note here was WRONG.**
 > An earlier session claimed the Dev Changelog "is NOT deleted, it's alive and
 > written to daily", that rows were synced into it, and that Sivan's 404s are an
@@ -118,6 +140,23 @@
   above, needs your sign-off before anyone ships it.
 
 ## Worklog (pending Notion sync)
+
+- 2026-07-15 (`apps/web`, `momlee-web` merge `8abf0f6` + gate fix `d387289`, CI
+  GREEN — Sivan + Claude): **Phase 1 web primitives SHIPPED — AppText · Input ·
+  Button** (OS task `platform.web_design_foundation`). Built figma-first on the
+  shared `@momlee/tokens` preset in `apps/web/src/components/ui/primitives/`,
+  mirroring the native `@momlee/ui` contract (same name/props/node/tokens, ADR-016);
+  RN → DOM+Tailwind. **Thank you for the fast rulings** — the reverted retint
+  (`bg-brand-solid` back to `#b05f64` + white label) and radius **B** (`51ed790`)
+  both verified flowing through: built CSS shows `bg-bg-brand-solid` =
+  `rgb(176 95 100)` and `rounded-md` = `8px`. Verified tsc + next build + token CSS
+  + a visual pass on a throwaway preview route (since deleted). Sanctioned
+  web/native divergences: AppText weight → CSS font-weight (browsers pick Noto
+  weights natively; the per-family rule is an iOS quirk) and Input uses the true
+  Figma line-height (the iOS display-xs→md hack doesn't apply). **Next:** Phase 2 =
+  Icon + Button `kind:'icon'|'social'`. **Needs you:** the gate ruling above, and
+  the components.md contract-row format (I did NOT invent one — the rows still need
+  their web implementation noted, pending your format task).
 
 _(entries logged here only when the Notion MCP wasn't available; synced to the
 Dev Changelog later)_
