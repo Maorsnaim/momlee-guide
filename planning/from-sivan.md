@@ -189,6 +189,46 @@
 
 ## Updates / questions
 
+- [ ] 2026-07-15 (**FYI + one small UI question at the end**): **Identity Verification
+  is moving — Sivan answered your "Open Questions (Owner: Sivan)" and we've broken it
+  into tasks.** *Why now:* all web UI work is blocked on your Figma decisions (see the
+  red block above), so Sivan moved us onto the **backend of the mom onboarding's
+  verification step**, which is decidable without you. Nothing was invented — your
+  model already covered it (we checked first and did **not** create duplicate
+  Features/Stories).
+
+  **Sivan's decisions** (recorded on the Feature
+  [Identity Verification](https://app.notion.com/p/38e450ad0ae681e9894beab124a12942),
+  new section 11):
+  1. **Vendor = Didit** (supersedes **Persona** everywhere in the spec) — a
+     backend/integration call, hers.
+  2. **Selfie only, NO ID document.** Rationale: moms on maternity leave holding a
+     baby won't go find a wallet mid-flow — they'd abandon onboarding.
+  3. **Retry = max 2 attempts** (answers your "כמה ניסיונות?").
+
+  **New implementation tasks — IDV-1 … IDV-10** in the Tasks DB, ordered, all linked
+  to your story *"Mom completes identity verification after the children step"*:
+  [IDV-1 Didit spike](https://app.notion.com/p/39e450ad0ae6811fa57be0563816da56) ·
+  [IDV-2 migration](https://app.notion.com/p/39e450ad0ae681e59f70d720aa823f24) ·
+  [IDV-3 session+webhook](https://app.notion.com/p/39e450ad0ae6813fb6e4ea672f86a107) ·
+  [IDV-4 policy engine](https://app.notion.com/p/39e450ad0ae681d288dbdc6a0b339f89) ·
+  [IDV-5 admin queue](https://app.notion.com/p/39e450ad0ae6812f8430fa15d2be1688) ·
+  [IDV-6 approval email](https://app.notion.com/p/39e450ad0ae68102b0a9eac3081791ea) ·
+  [IDV-7 eligibility/permissions](https://app.notion.com/p/39e450ad0ae6816481ebcae6f7054b64) ·
+  [IDV-8 analytics](https://app.notion.com/p/39e450ad0ae6818c9264d50022caafe4) ·
+  [IDV-9 privacy/biometric](https://app.notion.com/p/39e450ad0ae681df9b2bfe33918fdef2) ·
+  [IDV-10 screens (Blocked)](https://app.notion.com/p/39e450ad0ae681c5997ecd5f5cfac1f7)
+
+  **IDV-1..IDV-9 need no Figma** — that's the work that can proceed. We kept your
+  entity's core principle intact: *the vendor result is evidence only; the decision is
+  Momlee policy.*
+
+  **❓ The one UI question for you (IDV-5):** the **admin review queue** — where an
+  admin manually decides the cases Didit is unsure about. The admin panel is demo-era
+  and **not designed in Figma**. **Does it need a design from you, or may it reuse the
+  existing admin patterns?** (It's admin-only, not mom-facing — reusing the demo
+  patterns seems reasonable, but per our split it's your call.)
+
 - [x] 2026-07-14: **Web token-preset wiring is now DONE** (supersedes the
   2026-07-12 "on HOLD" note). `apps/web` declares `@momlee/tokens` + registers
   `presets:[momleePreset]`; token classes (`bg-bg-primary`, `text-text-primary`,
