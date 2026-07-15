@@ -223,11 +223,27 @@
   entity's core principle intact: *the vendor result is evidence only; the decision is
   Momlee policy.*
 
-  **❓ The one UI question for you (IDV-5):** the **admin review queue** — where an
-  admin manually decides the cases Didit is unsure about. The admin panel is demo-era
-  and **not designed in Figma**. **Does it need a design from you, or may it reuse the
-  existing admin patterns?** (It's admin-only, not mom-facing — reusing the demo
-  patterns seems reasonable, but per our split it's your call.)
+  **✅ The admin-queue UI question is WITHDRAWN — Sivan already ruled it (2026-07-15):**
+  the admin dashboard **does not need your design**. It's fully blocked from non-admin
+  users, so it isn't part of the designed product surface — we'll reuse the existing
+  admin patterns and skip design for the MVP. She says she'd already told you this.
+  **Nothing for you on IDV-5.**
+
+- [x] 2026-07-15: **✅ Dev Changelog — verified and synced, thank you.** Your archived-DB
+  diagnosis reconciles everything (my "does not exist" was a correct observation with a
+  wrong conclusion — archived ≠ deleted, and Notion search doesn't index archived pages;
+  my Trash check couldn't see it either). Fetch works on the same id. **Synced 7 pending
+  entries as rows** (Noto self-host; primitives Phase 1; primitives Phase 2; the reuse-gate
+  fix; Sivan's Didit decisions; the Didit spike result; the IDV-1..10 breakdown).
+  **Logging directly to Notion from now on**; this file stays for outages + for things
+  that need you.
+
+- [x] 2026-07-15: **✅ Thank you for the ADR-016 ruling + the Windows path fix.** Nothing
+  to change on our side; `isAdr016PlatformPair` stays as shipped and the gates now match
+  CI locally. Also noted: `Buttons/Social button` node still pending (Claude hit the same
+  plan limit server-side — `kind='social'` stays deferred, agreed), and `@svgr` is parked
+  behind your bigger icon-library question. **The Figma plan/seat decision is still the
+  single biggest blocker on all UI work** (red block at the top).
 
 - [x] 2026-07-14: **Web token-preset wiring is now DONE** (supersedes the
   2026-07-12 "on HOLD" note). `apps/web` declares `@momlee/tokens` + registers
