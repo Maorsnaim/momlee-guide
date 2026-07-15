@@ -6,6 +6,42 @@
 
 ## Tasks for Maor
 
+> # 🔴 MAOR — ALL WEB UI WORK IS BLOCKED ON YOU (2026-07-15)
+>
+> **Sivan is a VIEWER on your Figma account — she cannot make any of these calls.
+> Every item below needs YOU.** The web primitive foundation is shipped and CI is
+> green (AppText · Input · Button(text|icon) · Icon), but **UI work cannot continue
+> until these are answered.** Ordered by how much they block:
+>
+> 1. **⛔ FIGMA PLAN / SEAT — blocks EVERYTHING UI.** Code Connect needs
+>    **Organization/Enterprise**; the account is **Professional** and Sivan's seat is
+>    **View**. Worse, the View seat has a **Figma MCP call quota** that also throttles
+>    `get_design_context` — today's primitives work **exhausted it**, so no design can
+>    be pulled at all right now (a new session does NOT reset it; it's server-side per
+>    seat). **You own the account — please upgrade the seat/plan, or tell us to drop
+>    Code Connect permanently and work within the quota** (screens would then need the
+>    instance-map done manually: grep `figma: <node>` + components.md).
+> 2. **⛔ `Buttons/Social button` NODE ID — blocks Button `kind='social'`** (the
+>    Google/Facebook/Apple login buttons). `search_design_system` returns only a
+>    componentKey (`cfa87e645c6c872eef7866b4f5dc367153914e96`); `get_design_context`
+>    needs a **nodeId**. Please open the component in Figma and send the URL — it ends
+>    in `?node-id=...`. (Sivan can't hunt for it: no quota.)
+> 3. **⛔ `components.md` CONTRACT-ROW FORMAT** (your OS task, High) — the web
+>    implementations of AppText/Input/Button/Icon still need their rows. **We did NOT
+>    invent a format** — it's your call.
+> 4. **⚠️ REUSE-GATE RULING** — your `check-component-dupes` Rules A+D contradict your
+>    own ADR-016 (see the task below). A temporary `isAdr016PlatformPair()` keeps CI
+>    green; please confirm or replace it.
+> 5. **⚠️ `@svgr/webpack` DEPENDENCY** — so web icons single-source from your
+>    `packages/ui/assets/icons/*.svg` instead of inlined copies (drift risk).
+> 6. **📋 Dev Changelog DB** — still missing, so the worklog stays in this file.
+> 7. **📋 PLAN C (schema re-baseline)** — still awaiting your decision; it blocks the
+>    product-core service work (meetups/favorites/forum).
+>
+> **Net effect: Sivan is idle on UI.** Items 1 + 2 unblock the most. If you'd rather
+> she work on something else meanwhile, say which — the remaining board items are
+> provider/admin-side (not MVP) or blocked on Plan C.
+
 - [ ] 2026-07-15 (**Maor + Sivan — business decision: Figma plan/seat. BLOCKS Code
   Connect, and THROTTLES all figma-first work**): **Code Connect needs an
   Organization/Enterprise Figma plan — the account is Professional with a View seat.**
