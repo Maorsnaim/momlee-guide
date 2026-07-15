@@ -6,6 +6,27 @@
 
 ## Tasks for Maor
 
+- [ ] 2026-07-15 (**Maor — need the Figma node id; blocks Button `kind='social'`**):
+  **What is the node id of `Buttons/Social button`?** Building the web Button's
+  social kind figma-first, `search_design_system` returns only a `componentKey`
+  (`cfa87e645c6c872eef7866b4f5dc367153914e96`) — `get_design_context` needs a
+  **nodeId**, and `components.md` records the set by name but no node. Rather than
+  mirror the native impl blind, I **deferred the social kind** and am asking. Send
+  a node-specific URL (`…?node-id=1-2`) and I'll build it. Same for `Buttons/Social
+  button group` if it's in scope. *(For reference the nodes I do have and used:
+  Button set `3287:427074`, icon-only `3287:428811`, Input `17297:8153`, Icons
+  library `3463:407484`.)*
+- [ ] 2026-07-15 (**Maor — dependency approval, low priority; a workaround is in
+  place**): **`@svgr/webpack` for web, so icons are single-sourced.** Native
+  imports the Figma glyphs from `packages/ui/assets/icons/*.svg`; web cannot import
+  `.svg` as a component without svgr, so I **inlined the identical Figma paths**
+  into the web `Icon` (explicitly NOT lucide — your rule "never substitute
+  look-alike glyphs" is respected). The cost is **drift risk**: if you update an
+  icon in Figma, native's `.svg` updates and web's inlined copy silently doesn't.
+  Proper fix = add `@svgr/webpack` (devDep, web only) so both platforms consume the
+  SAME files → DEPENDENCY GATE, your call. Not urgent — 5 glyphs, marked
+  "keep in sync" in the file.
+
 - [ ] 2026-07-15 (**Maor — please rule; a TEMPORARY fix is in place, CI is green**):
   **Your reuse gate contradicts your own ADR-016 for every primitive.**
   `check-component-dupes.mjs` Rule **A** (no two files share a base name) and Rule
@@ -140,6 +161,22 @@
   above, needs your sign-off before anyone ships it.
 
 ## Worklog (pending Notion sync)
+
+- 2026-07-15 (`apps/web`, `momlee-web` merge `86246d1`, CI GREEN — Sivan + Claude):
+  **Phase 2 — Icon primitive + Button `kind='icon'` SHIPPED.** `Icon` (figma
+  `3463:407484`): semantic `forward`/`backward` mirrored per layout direction,
+  sizes, `currentColor` tint — built on the **same Figma Icons library glyph paths
+  as native**; **no lucide** (your "never substitute look-alike glyphs" rule caught
+  a planned lucide wrapper before it shipped — thank you, that rule earned its
+  keep). `Button` now a discriminated union with `kind:'icon'` (figma
+  `3287:428811`): forward = 48 brand-solid CTA, back = outlined, and the **disabled
+  back arrow uses the `fg-quaternary` token** (explicit token, not an opacity wash,
+  per your 12-15 note). Verified: tsc + next build + gates + visual pass on a
+  throwaway preview (deleted). The `isAdr016PlatformPair` gate fix generalised —
+  Icon's native/web pair passed with no further change.
+  **Open for you:** the `Buttons/Social button` **node id** (blocks `kind:'social'`)
+  and the optional `@svgr` dependency — both above. Web primitives now: **AppText ·
+  Input · Button(text|icon) · Icon**.
 
 - 2026-07-15 (`apps/web`, `momlee-web` merge `8abf0f6` + gate fix `d387289`, CI
   GREEN — Sivan + Claude): **Phase 1 web primitives SHIPPED — AppText · Input ·
