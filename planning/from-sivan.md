@@ -412,3 +412,24 @@ Dev Changelog later)_
 
 _(2026-07-08: the momlee-web row was synced to the Dev Changelog after Notion
 reconnected - 397450ad0ae681c7bceee1cfae7414ac.)_
+
+## 2026-07-16 (Sivan → Maor) — two small asks
+
+1. **Please bump the plugin version when you push content.** Plan C + the new
+   `knowledge/target-data-model.md` landed on the marketplace at commit
+   `ba0e443`, but `plugin.json` still reads `0.16.1` — so
+   `/plugin install momlee-guide@momlee` sees "same version, already
+   installed" and never refreshes the local cache. The plugin skills read
+   `../../planning` and `../../knowledge` FROM that cache, so a Claude session
+   running the skills straight gets the STALE (pre-Plan-C) files. I've manually
+   synced my cache as a stopgap, but a version bump (e.g. `0.16.2`) on the next
+   content push is the real fix so nobody reads stale directives.
+
+2. **June "pending decisions" row (Dev Changelog) — one item is genuinely
+   yours, the other two are mine.** Reclassifying by our ownership split:
+   feature-flags kill-switch (infra) and the account-deletion cascade map
+   (data policy) are Sivan's calls — I'm taking those (the cascade map will
+   also fall out of Plan C's per-area retention work + IDV-9). The only piece
+   that needs you: **the shared Empty/Error state designs in Figma**, which
+   block building the four-states resilience component. No rush while Plan C is
+   backend-only — just flagging it's the remaining UX dependency on that row.
