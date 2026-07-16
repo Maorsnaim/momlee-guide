@@ -3,6 +3,61 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🚀 TOP PRIORITY (Maor, 2026-07-16) — Plan C APPROVED: re-baseline the product-core schema. This is the next block of work.
+
+Maor has formally approved **Plan C**. Everything Plan-C-related is now the
+priority track — it outranks the remaining component/icon items (those stay
+parked below and resume later).
+
+**WHY (the audit conclusion, in short).** The live DB is **pre-launch** (seed
+data only) and **provider-heavy**: the provider / verification / admin /
+audit / RLS subsystem is mature and is **KEPT as-is**. The product core —
+meetups, organizations, subscriptions/entitlements, messaging, role/status
+enums — is barely modeled or missing entirely. Patching it incrementally
+would drag the old shapes forever; a full rewrite would throw away a good
+backend. Plan C is the middle path: **keep the backend spine, cleanly
+re-baseline the product core on top of it, with the Momlee OS as the spec —
+now, while migration cost is near zero.** It also unblocks the tasks marked
+"blocked on Plan C" (meetups queries/data layer) and gives every future
+screen real tables to stand on.
+
+**WHAT it requires (scope).**
+1. **Preflight:** re-verify baseline == live (last verified 2026-07-02),
+   regenerate `packages/supabase/src/database.types.ts` from live, confirm
+   migration bookkeeping is clean before the first new migration.
+2. **Reconcile the Mismatch rows** in the OS **Database Tables registry**
+   (the 41-row honest mirror — it is the living map of this work): e.g.
+   `baby_meetups` gains `meetup_type` / `capacity` / `price` / `status`;
+   `meetup_attendees` gains `attendance_status`; enum hardening
+   (`user_roles.role` TEXT → `app_role` enum — flagged top risk).
+3. **Create the Planned tables** per the target model: organizations +
+   `organization_members` (D1: IN MVP, M:N), subscriptions/entitlements
+   (**D6 is still open — MODEL ONLY, implement no entitlement values**),
+   messaging/conversations, `onboarding_progress`, notifications family,
+   reports/safety. Deprecations (forum, provider CRM, dead mocks) per the
+   same doc.
+4. **After every landed migration:** regenerate types + flip the affected
+   Database Tables registry rows to `Aligned`. The registry must stay honest.
+
+**HOW (rules of engagement — all existing gates apply).**
+- Spec sources in precedence order: **OS registries (Database Tables /
+  Entities / Schema Registry) → `knowledge/target-data-model.md` (attached
+  to the plugin today) → ask Maor.** Never invent a column, enum value, or
+  behavior. Where the target model marks an open question, that is a task
+  for Maor, not a guess.
+- Work **area by area** (suggested order: meetups core first — it unblocks
+  the queries task — then organizations, then subscriptions modeling, then
+  messaging). For each area: draft the migration(s) + a short schema note in
+  from-sivan/worklog BEFORE merging, so Maor can veto shapes cheaply.
+- Every change ships as a **migration through the pipeline** (merge to
+  `momlee-web` → green checks → `db-deploy`); Migration Gate applies in
+  full (rollback + RLS impact + affected tables/APIs); destructive changes
+  need the in-file `-- destructive-approved:` marker as usual.
+- **RLS by default** (owner-or-admin, explicit public-read carve-outs only),
+  soft-delete by default, `user_display_info` pattern for any user-facing
+  projection, **do NOT rename live tables** (`baby_meetups` stays; product
+  naming lives in code/UI). Privacy: DATA_INVENTORY updated per area.
+
 ## ✅ RULING (Maor, 2026-07-15) — your ADR-016 gate fix is APPROVED as PERMANENT (+ your Windows papercut is fixed)
 
 Answers to today's tasks:
@@ -17,17 +72,15 @@ Answers to today's tasks:
    (check-component-dupes, check-web-arch SANCTIONED, check-figma-refs
    grandfather list) now normalize `path.sep` — your local runs should match
    CI. Pull `momlee-web` before your next gate run.
-3. **`Buttons/Social button` node id — still pending Maor.** Claude tried to
-   resolve it server-side: `search_design_system` returns only the
-   componentKey (same as you saw), and the components-listing API is blocked
-   by the SAME plan limitation you hit on Code Connect. Needs Maor to copy a
-   node link from the file; will land here as soon as he does. `kind='social'`
-   stays deferred — correct call.
-4. **`@svgr/webpack` + the Figma plan/seat question — under active
-   discussion with Maor** (he is weighing a broader decision: whether to
-   adopt one large published icon library in Figma as canonical instead of
-   growing the hand-curated set). Answer will follow; the inlined-paths
-   workaround stays acceptable meanwhile.
+3. **`Buttons/Social button` node ids — received from Maor (2026-07-16) and
+   PARKED.** `kind='social'` is not needed by any web screen yet, and Plan C
+   (above) is now the priority track — the node ids will be posted here when
+   component work resumes, so nothing will block you then.
+4. **`@svgr/webpack` + the icon-library strategy + the Figma plan/seat
+   question — PARKED behind Plan C** (Maor is weighing a broader decision:
+   adopting one large published icon library in Figma as canonical vs
+   growing the hand-curated set). The inlined-paths workaround stays
+   acceptable meanwhile; no web screen work depends on it right now.
 
 ## ✅ SOLVED (2026-07-15) — the Dev Changelog mystery: it was ARCHIVED, now restored INTO Momlee OS. Log to Notion again (same id!)
 
