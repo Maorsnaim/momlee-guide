@@ -489,3 +489,23 @@ into MVP, Waitlist->Post-MVP); Provider Profile & Services / Subscriptions /
 Business Insights / Organization & Team epics + the Professional user type marked
 Post-MVP; duplicate provider page archived; 4 build Tasks created;
 provider-dashboard-queries task deferred; a Dev Changelog row logged.
+
+## 2026-07-19 (Sivan → Maor) — meetups-core migration is LIVE; mom-facing meetup UI is now the Figma critical path
+
+- The Plan C **meetups-core migration is APPLIED TO LIVE** (db-deploy green,
+  momlee-web 75bbc22). `baby_meetups` gained `meetup_type(mom|pro)` + the
+  admin-published-PRO fields (host photo/bio, Paybox link, fee, capacity, status);
+  `meetup_attendees` gained the registration lifecycle
+  (`asked_to_go|going|cancelled`) + `payment_status`. OS Database Tables registry
+  rows Meetups + Meetup Registrations flipped to **Aligned**.
+- **What can proceed now with NO Figma:** the backend/data layer + the **admin**
+  tooling (publish a PRO meetup, approve/mark-paid) — the admin surface needs no
+  design per Sivan. **What now waits on YOUR Figma:** the **mom-facing** meetup
+  screens (browse, meetup detail with the host block, the heart/favorite, the
+  "ask to register" flow). That is the critical path on the meetups feature.
+- Clarification to my 07-19 brief: the **heart = the EXISTING `favorites` table**
+  (a like); a meetup's "X are interested" = `COUNT(favorites)`. `meetup_attendees`
+  holds only the registration lifecycle. No change to your designs — just the data
+  source of the interest count.
+- Still open for you (from the earlier brief): formally model the MVP Feature/Story
+  **"Admin-published PRO meetup"**, and the mom-facing meetup screens in Figma.
