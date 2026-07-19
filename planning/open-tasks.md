@@ -3,6 +3,26 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 📌 DECISION OF RECORD (Maor, 2026-07-19) — the app font is now Google Sans (reverses Noto Sans Hebrew). No action for you yet.
+
+Google released **Google Sans on Google Fonts under SIL OFL 1.1** (2026 —
+after older docs/skills were written; verified: official download's OFL.txt +
+the live specimen page). The released variable font (GRAD/opsz/wght)
+**includes full Hebrew** (all alef-tav, verified in the TTF cmap) — there is
+no separate "Google Sans Hebrew" family. The Momlee 2.0 Design System file
+is built in it, and it is now the official app font.
+
+- **No code change now.** Web stays on self-hosted Noto until the DS-closure
+  token sync — the font flips then (next/font local files for web, static
+  TTFs for native), through the `fontFamily.sans` role token as always.
+  Plugin docs/skills that still say "Noto Sans Hebrew is official" are
+  superseded by this note and will be updated in that same sync.
+- **Figma caveat:** Figma's cloud font service has not synced the family yet,
+  so it renders only where the font files are installed locally. When you
+  return to UI work, install the OFL download (fonts.google.com → Google
+  Sans, install the `static/` TTFs incl. the 17pt set) or the file will show
+  missing-font warnings.
+
 ## 🚀 TOP PRIORITY (Maor, 2026-07-16) — Plan C APPROVED: re-baseline the product-core schema. This is the next block of work.
 
 Maor has formally approved **Plan C**. Everything Plan-C-related is now the
