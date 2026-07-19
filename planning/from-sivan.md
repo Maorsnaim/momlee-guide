@@ -433,3 +433,59 @@ reconnected - 397450ad0ae681c7bceee1cfae7414ac.)_
    that needs you: **the shared Empty/Error state designs in Figma**, which
    block building the four-states resilience component. No rush while Plan C is
    backend-only — just flagging it's the remaining UX dependency on that row.
+
+## 2026-07-19 (Sivan → Maor) — MUST-READ: updated MVP strategy + a Feature/Story to model + a plugin update
+
+**1. The MVP is re-scoped — please align your OS page designs to this.**
+MVP ships with **admin + mom users ONLY. There is NO provider user in the MVP**
+(no provider profile, no provider dashboard, no in-app subscriptions/billing, no
+provider-created content).
+- **Mom meetups** — created by moms (as today).
+- **PRO meetups** — **IN the MVP, but published by the ADMIN** on a provider's
+  behalf. When the admin creates a PRO meetup they enter, from info the provider
+  supplied out-of-band: provider **photo**, a short **"who am I"**, **what the
+  meetup covers**, a **Paybox** payment link, and the **attendee fee**.
+- **Phased provider rollout:** grow mom traffic -> providers ask to self-publish
+  -> introduce a **99 ILS/mo** provider fee (billed on a **separate platform**,
+  not in-app) -> once enough pay, build the **full provider epic** (profile,
+  dashboard, subscription tiers, self-serve pro meetups).
+- **Organizations** = out of MVP (Phase-2). **Waitlist** = Post-MVP.
+  **`qa` meetup type dropped** — Q&A/AMA is just a PRO meetup. Only **`mom | pro`**
+  types. **Pro price band = 20-180 ILS.**
+
+**2. Please formally model a new MVP Feature + Story in the OS (your lane).**
+Feature: **Admin-published PRO meetup** (under the **Meetups** epic, Scope = MVP).
+Story: *"Admin publishes a PRO meetup for a provider."* Actor = Admin. Flow: admin
+fills provider photo / who-am-I / what-it-covers / Paybox link / fee +
+location/date/time/capacity -> publishes -> it appears in discovery like any
+meetup, tagged PRO with the host block + price + a register-and-pay affordance.
+Wire its registries (Permissions: admin_create_pro_meetup; Events; Product Rules
+for pricing). The 4 build Tasks already exist in the Tasks DB (migration + admin
+publish UI + mom registration + admin approve/mark-paid), ready to link.
+
+**3. Mom registration + interest model (so the designs match):**
+- **Heart icon = "interested"** — adds the meetup to her "interested" list in her
+  dashboard; NOT a registration request. The meetup shows **"X are interested in
+  this meetup"** = count of moms who hearted it.
+- **"Ask to register"** = a request the admin sees. She pays the provider via the
+  **public Paybox group**; the **admin** sees the payment and manually confirms
+  her (going + paid). No provider-confirm step.
+
+**4. Meetups schema (the migration I am landing now):**
+- `baby_meetups` += `meetup_type(mom|pro)`, `status(open|full|completed|cancelled)`,
+  `capacity(2-100)`, `price(pro:20-180)`, `payment_link(pro:Paybox)`,
+  `host_name/host_bio/host_photo_url(pro)`.
+- `meetup_attendees`: `status(interested|asked_to_go|going|cancelled)` +
+  `payment_status(pro: pending|paid|cancelled)`.
+
+**5. Please update the plugin `knowledge/target-data-model.md` to this MVP plan**
+(it still says `qa` type + 25-120 + provider-self-serve pro meetups). Drop `qa`
+(only `mom|pro`), price 20-180, note PRO meetups are admin-published in MVP (no
+provider user), organizations Phase-2, waitlist Post-MVP. Plus the **plugin
+version bump** so the cache refreshes (still open from 07-16).
+
+**Already reflected in Notion by me:** Meetups epic annotated (admin-published PRO
+into MVP, Waitlist->Post-MVP); Provider Profile & Services / Subscriptions /
+Business Insights / Organization & Team epics + the Professional user type marked
+Post-MVP; duplicate provider page archived; 4 build Tasks created;
+provider-dashboard-queries task deferred; a Dev Changelog row logged.
