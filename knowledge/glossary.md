@@ -10,17 +10,26 @@ language ONLY by Maor adding it here first.
 | Canonical term | DB / legacy code (do NOT rename) | Product / UI term (he) | FORBIDDEN synonyms in new code |
 |---|---|---|---|
 | **mom** | `parent`, `parent_profiles` | אמא / Mom | mother, mum, user, member, customer |
-| **provider** | `provider`, `provider_*` tables | בעל/ת מקצוע / Pro / Professional | professional (in code), pro (in identifiers), expert, vendor, business |
+| **provider** | `providers` (thin MVP record, admin-managed) + `provider_profiles` (frozen full user profile, Post-MVP) | בעל/ת מקצוע / Pro / Professional | professional (in code), pro (in identifiers), expert, vendor, business |
 | **child** | `baby_*` columns (e.g. `baby_birth_date`), children records | ילד/ה | baby (in NEW identifiers — legacy `baby_*` stays), kid, infant |
-| **meetup** | `baby_meetups`, `meetup_type` (free\|pro) | מפגש | event, gathering, session, activity |
+| **meetup** | `meetups` (renamed from `baby_meetups` 2026-07-20, ratified), `meetup_type` (mom\|pro) | מפגש | event, gathering, session, activity |
 | **organization** | `organizations`, `organization_members` | ארגון | org (in identifiers), company, business, group |
 | **subscription** | subscription/billing columns | מנוי | plan, membership, package |
 | **verification** | `verifications` | אימות | KYC (in identifiers — fine in prose), validation (reserved for input validation), approval |
 
 ## Derived rules
 
-- **DB names are frozen.** `parent`/`provider`/`baby_meetups` stay exactly as
-  they are — the glossary maps them, it does not rename them.
+- **DB names are frozen — EXCEPT during the Plan C re-baseline.** `parent` and
+  `provider_*` stay as they are; `baby_meetups` was renamed to `meetups`
+  (2026-07-20, pipeline-deployed pre-launch, ratified by Maor 2026-07-21) —
+  the one window where renames cost nothing. New renames still require a
+  flagged decision, not a silent migration.
+- **`provider` is ONE concept at two fidelities, not two entities:** the thin
+  admin-managed `providers` record (MVP — no provider users exist; saves
+  re-typing host info per PRO meetup, gives moms a clickable host card) and
+  the frozen rich `provider_profiles` (Post-MVP provider-as-user). When the
+  provider epic revives, the thin record gains a `user_id` / merges into the
+  rich profile. The dupes/naming gates must not treat them as a collision.
 - **UI copy** uses the product term (from Figma/i18n), never the code term —
   a mom never sees the word "parent", a Pro never sees "provider".
 - **Two names for one concept = a bug.** If you find an existing synonym in

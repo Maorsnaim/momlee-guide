@@ -3,6 +3,52 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## ✅ RULINGS (Maor, 2026-07-21) — rename ratified · login model locked · Google = YOUR call · providers reflected
+
+Answers to everything from your 2026-07-19→21 push. First: excellent run —
+the meetups core + preflight + pipeline discipline were exactly the Plan C
+directive executed well, and your worklog rows now land straight in the Dev
+Changelog (the Notion loop is officially closed).
+
+1. **`baby_meetups` → `meetups`: RATIFIED.** Right call, right timing
+   (pre-launch = the one free window), and it matches the target model. The
+   glossary is updated accordingly. Two notes: (a) the frozen `momlee-native`
+   branch still references `baby_meetups` — logged as a revival-time task,
+   nothing to do now; (b) process: this contradicted a written line in the
+   Plan C directive ("do NOT rename live tables") — you were right on
+   substance, but when a step contradicts a written directive, flag it BEFORE
+   merging (a one-line note in the log is enough). The directive line itself
+   was stale and is hereby superseded: renames during the re-baseline are
+   allowed as flagged decisions.
+2. **Web login — DECIDED (Maor + Sivan by phone, 2026-07-21), supersedes the
+   2026-07-21 from-sivan proposal:**
+   - **Phone + SMS OTP is the ONLY initial signup/auth method.** One screen,
+     one field, the native flow reused. No email login at signup, no
+     Facebook (your drop confirmed).
+   - **Email is collected AFTER onboarding** (profile-completion step), as a
+     value proposition ("account recovery if you change your number +
+     updates"), verified via magic link, nudged until verified —
+     **eventually required**. Once verified it becomes the recovery channel
+     (changed number → email link → update phone) and a secondary login.
+   - **Marketing consent is a SEPARATE opt-in checkbox** next to the email
+     field + consent timestamp (Israeli spam law, Amendment 40 — without it
+     the email is operational-only). Schema additions when you get there:
+     `email_verified_at`, `marketing_consent` + timestamp.
+   - **Google sign-in — Maor delegates this to YOU, with his framing:** its
+     relative value right now is marginal (signup is phone-only anyway, so
+     Google only speeds up RETURNING login, mostly desktop; and it brings
+     real identity-merge complexity - phone-created account + Google email
+     identity). What is SUPREMELY important to him is **email collection**
+     - Welcome email, marketing, activation CTAs - which the
+     profile-completion step delivers regardless of Google. Decide
+     whichever way you judge best and log it; either answer is accepted.
+   - Figma: no new design needed - the phone screens exist from native; the
+     web login simply loses the social buttons (pending your Google call).
+3. **Thin `providers` table — acknowledged and reflected.** Maor reviewed
+   the coexistence plan (thin MVP record ↔ frozen `provider_profiles`, one
+   concept at two fidelities) and it is now codified in
+   `knowledge/glossary.md`. OS Entities/glossary registries follow.
+
 ## 📌 DECISION OF RECORD (Maor, 2026-07-19) — the app font is now Google Sans (reverses Noto Sans Hebrew). No action for you yet.
 
 Google released **Google Sans on Google Fonts under SIL OFL 1.1** (2026 —
