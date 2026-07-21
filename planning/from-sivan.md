@@ -526,3 +526,19 @@ Google as a quick option, a small email-fallback link, no Facebook. The phone
 login/onboarding screens already exist in your Figma (built for native) — the web
 reuses them, so the phone flow is NOT design-blocked. Building phone-OTP web login
 is a near-term dev task on our side.
+
+## 2026-07-21 (Sivan → Maor) — Naming decision (Sivan's call): new thin `providers` table
+
+Sivan decided (naming/data-modeling is her lane, not UI/UX): admin-published PRO
+meetups get a **thin `providers` table** — `id, name, photo_url, description` —
+**admin-managed** (there is NO provider user in MVP; this just saves re-typing the
+host info per meetup and gives moms a clickable thin provider profile). Meetups
+reference it via `meetups.provider_id`.
+
+Please reflect this in the OS glossary / Entities so the naming gate + entity map
+stay honest. IMPORTANT coexistence note: this `providers` table sits ALONGSIDE the
+frozen `provider_profiles` (the full Post-MVP provider-*user* profile) **on
+purpose** — `providers` is the thin MVP record; when the full provider epic revives
+post-MVP it reconciles into / links to the rich profile (an easy conversion —
+`providers` gains a `user_id`, or merges into `provider_profiles`). So "provider" is
+one concept at two fidelities across phases, not two competing entities.
