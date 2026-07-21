@@ -509,3 +509,20 @@ provider-dashboard-queries task deferred; a Dev Changelog row logged.
   source of the interest count.
 - Still open for you (from the earlier brief): formally model the MVP Feature/Story
   **"Admin-published PRO meetup"**, and the mom-facing meetup screens in Figma.
+
+## 2026-07-21 (Sivan → Maor) — Web login decision: please update the login Figma
+
+The web MVP is a PWA meant to look/feel like the native app, so Sivan decided the
+login should be:
+- **Phone-number + SMS OTP = the PRIMARY login** (native feel; best for moms —
+  mobile-first, one-handed while holding a baby; the WhatsApp/Telegram/Wolt/Bit norm).
+- **Google = a secondary one-tap option.**
+- **Email/password = a secondary FALLBACK** behind a small "התחברות עם אימייל" link
+  (better on desktop; account recovery if a mom changes her number).
+- **DROP Facebook** (declining, heavy SDK, privacy/review friction).
+
+Please **update the login Figma page** accordingly: phone-first and prominent,
+Google as a quick option, a small email-fallback link, no Facebook. The phone
+login/onboarding screens already exist in your Figma (built for native) — the web
+reuses them, so the phone flow is NOT design-blocked. Building phone-OTP web login
+is a near-term dev task on our side.
