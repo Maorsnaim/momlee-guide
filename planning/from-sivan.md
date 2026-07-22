@@ -542,3 +542,28 @@ purpose** — `providers` is the thin MVP record; when the full provider epic re
 post-MVP it reconciles into / links to the rich profile (an easy conversion —
 `providers` gains a `user_id`, or merges into `provider_profiles`). So "provider" is
 one concept at two fidelities across phases, not two competing entities.
+
+## 2026-07-22 (Sivan → Maor) — MUST-KNOW: map provider will switch Mapbox → Google Maps at the search-page rebuild
+
+Heads-up for when you design the **search pages** (meetups/providers map). Sivan
+decided (backend/vendor/infra = her lane): **keep Mapbox for now, and migrate the
+WHOLE map layer to Google Maps when the search pages are rebuilt from your Figma.**
+
+**Why:** only Google can do **Hebrew-typed place search** — a mom typing `קפה מימי`
+finds it. We tested Mapbox, HERE and OpenStreetMap directly: all three return **0
+results** for Hebrew POI names (they only match English). Google is the one that
+works — and going *full* Google (map + search) is also the licence-clean way to do
+it. So this is a real product need, not a preference.
+
+**What this means for YOUR map design (one real constraint):** Google's map styling
+is a **recolor + show/hide** tool over a fixed set of feature types (roads, water,
+parks, POIs, labels). You CAN fully rebrand it to the MomLee palette, declutter it,
+and set label density. You CANNOT (unlike Mapbox Studio) use **custom fonts on the
+map, custom illustrated icon/pin sprites baked into the basemap, or fully art-directed
+per-zoom styling.** Custom **meetup/provider pins** are fine (those are overlay
+markers — any image/HTML). So please design the map look as **"branded + decluttered
++ standard base iconography,"** not a fully custom illustrated basemap. If your design
+needs something beyond that, flag it and we'll discuss before the migration.
+
+No action needed now — just design the search-map with the above in mind. (Cost +
+exact timing are Sivan's to handle at migration.)
