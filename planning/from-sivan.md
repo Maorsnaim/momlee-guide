@@ -567,3 +567,19 @@ needs something beyond that, flag it and we'll discuss before the migration.
 
 No action needed now — just design the search-map with the above in mind. (Cost +
 exact timing are Sivan's to handle at migration.)
+
+## 2026-07-23 (Sivan → Maor) — ✅ CORRECTION / GOOD NEWS: the map STAYS Mapbox. Ignore the 2026-07-22 Google-styling constraint above.
+
+The 2026-07-22 note above (👆 "migrate the WHOLE map to Google") is **superseded** — do
+NOT design around Google's map-styling limits. **The map stays Mapbox permanently
+(discovery map, custom markers, everything).** So **you keep full Mapbox Studio
+freedom** — custom fonts, custom illustrated basemap, art-directed per-zoom styling,
+custom pin sprites: all fine again.
+
+**What changed:** deep sourced research found Google's Places policy has an
+"end-user-selected address" exception that makes a HYBRID licence-clean — so Google
+now powers **only the meetup create/edit SEARCH BOX** (where a mom types `קפה מימי`
+in Hebrew), while the map stays Mapbox. The search box is our own RTL component
+(built), invisible to your map design. Cost is tiny (~$15–275/mo, no Google map-load
+fees). Net for you: design the meetups/providers **map** freely in Mapbox Studio as
+you always would — no Google constraint.
