@@ -583,3 +583,16 @@ in Hebrew), while the map stays Mapbox. The search box is our own RTL component
 (built), invisible to your map design. Cost is tiny (~$15–275/mo, no Google map-load
 fees). Net for you: design the meetups/providers **map** freely in Mapbox Studio as
 you always would — no Google constraint.
+
+## 2026-07-26 (Sivan → Maor) — FYI: new dependency `@googlemaps/js-api-loader` (please add a knowledge/stack.md row)
+
+Sivan approved adding **`@googlemaps/js-api-loader`** (Google's official Maps JS
+loader) to `apps/web`. It's the canonical, Google-maintained way to load the
+Places library for the meetup location **search** (Hebrew POI autocomplete) — it
+replaced a fragile hand-rolled `<script>` loader that caused a race/undefined
+crash. Added to `scripts/momlee/stack-allowlist.json` so CI passes.
+
+The dependency gate also wants a **row in `knowledge/stack.md`** — please add one
+(name: `@googlemaps/js-api-loader`; used by: web meetup location search; why:
+official loader for the Google Places New API; note: the MAP itself stays Mapbox,
+Google is search-box only — see the 2026-07-23 map-provider note above).
