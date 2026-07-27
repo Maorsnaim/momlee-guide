@@ -6,6 +6,61 @@
 
 ## Tasks for Maor
 
+### ✅ 2026-07-27 — two of your three open questions are ANSWERED (they were Sivan's, not yours) + Plan C scope narrowed
+
+Maor: of the three decisions you logged as pending on 2026-06-11, **two were not
+UI/UX and therefore Sivan's to make** per the ownership split. She has decided
+both. Only the third is still yours.
+
+**1. Feature-flag kill-switch — DECIDED (Sivan).** Pre-launch, feature flags are
+**Vercel environment variables** (kill = flip the var + redeploy, about a
+minute; acceptable with no users and no revenue at risk, and zero infra to
+maintain). **Post-launch, they move to a `feature_flags` table read at runtime**
+so a broken or abused feature can be killed instantly without a deploy. Pulled
+forward if payments or identity verification ship first. Your Feature Flags gate
+(kill = flip the flag, never delete code) is satisfied by the env-var mechanism
+meanwhile. Recorded in the app repo's `LAUNCH_CHECKLIST.md` (new Post-launch
+section) and parked as a Notion task with its trigger.
+
+**2. Account-deletion cascade map — DECIDED (Sivan).** This is what you need for
+the **retention column in `knowledge/data-inventory.md`**. When a mom deletes
+her account:
+
+| Data | Verdict |
+|---|---|
+| Profile PII (name, phone, email, address, avatar) | DELETE |
+| Children's records | DELETE |
+| Her meetup registrations | DELETE |
+| Favorites | DELETE |
+| Meetups **she created** that other moms joined | **ANONYMIZE** — deleting would silently cancel other people's plans |
+| Chat messages | **ANONYMIZE** — deleting shreds the other side of the conversation |
+| `public.audit_log` | **RETAIN** — PII-free by design, it is the compliance record |
+| Identity-verification result | DELETE (store-result-only; the selfie never lived on our servers) |
+
+Rules: soft delete stays the default mechanism; *anonymize* means a tombstone
+identity, never nulling an FK others depend on; every deletion path writes to
+`audit_log`. **Please apply this to the data-inventory retention column** — it
+gates the privacy policy and the store privacy labels.
+
+**3. Shared Empty/Error state designs — STILL YOURS.** Unchanged, still blocking
+the four-states component.
+
+**4. ⚠️ PLAN C SCOPE NARROWED — flagged, not silent** (per your 2026-07-21 note
+about contradicting a written directive). Your directive's area order was
+meetups → organizations → subscriptions modeling → messaging. Sivan has removed
+two: **organizations SKIPPED** (2026-07-19, already reported) and now
+**subscriptions/entitlements modeling PARKED as POST-MVP** (2026-07-27). Reason:
+every table in AREA 15 of the target data model is keyed to `provider_profiles`,
+and the MVP has **no provider user** — PRO meetups are admin-published and the
+₪99/mo provider fee is billed on a separate platform, not in-app. Modeling four
+tables no code can read, on top of the still-open **D6** (entitlements as a table
+vs computed via `has_entitlement()`), would recreate exactly the dead-shapes
+problem Plan C exists to prevent. Nothing is lost: the full future scope plus the
+five open questions to resolve then are parked in a Notion task with an explicit
+unpark trigger ("a real paying provider exists"). **The live Plan C order is now
+meetups → onboarding** (mom signup / profile-completion). Veto welcome if you
+disagree.
+
 > # 🔴 MAOR — ALL WEB UI WORK IS BLOCKED ON YOU (2026-07-15)
 >
 > **Sivan is a VIEWER on your Figma account — she cannot make any of these calls.
