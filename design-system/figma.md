@@ -43,3 +43,37 @@ Example: `node-id=16819-38317` → nodeId `16819:38317`.
 - `get_variable_defs` does **NOT** work remotely — it errors with **"nothing
   selected"** unless the Figma Desktop app is open with a layer selected.
 - **So: prefer `get_design_context` to read tokens.**
+
+## Momlee 2.0 — the NEW Design System file (fileKey `bPV6lWPTjZPN6pPC4S7J3j`)
+
+Maor is building the next-generation DS file. It is **NOT canonical yet** —
+code twins and `// figma:` refs still point at the old file above; a mapped
+switchover will be announced. When working IN the 2.0 file, these placement
+laws are binding (Maor, 2026-07-27):
+
+1. **`❖` pages are section headers only** — zero children, ever. A component
+   sitting on a `❖` page is a filing bug.
+2. **Components live only in `↳` sub-pages**, assigned by the knowledge test:
+   knows nothing about Momlee (button, field, divider) → a sub-page under
+   `❖ Base Components` (Buttons / Inputs / Navigation / Dividers /
+   Controls) · knows a domain concept (meetup, notification) → a sub-page
+   under `❖ App Components` (Meetups / List Items / Callouts) · exists to
+   serve a page template → `↳ Page Templates` · presentation prop (e.g. iOS
+   Keyboard) → `↳ Design annotations`.
+3. **`❖ Screens` pages hold INSTANCES only** — never a master.
+4. **Behavioral annotations live on the FIRST frame of a flow** (the
+   `/Placeholder` frame); sibling state frames carry only state-specific
+   deltas. A dev session entering from any state frame must open the flow's
+   first frame for the spec.
+5. **User-facing microcopy is a component with cases** (e.g.
+   `Onboarding Step / Note`), instanced by screens — never raw text
+   copy-pasted between frames (that is how the stale-SMS-text drift
+   happened).
+
+Known naming in 2.0: form fields live on `↳ Inputs` as `Forms / Input`,
+`Forms / Phone Field`, `Forms / Date`, `Forms / OTP Field`; flags are ONE
+set `Flag` (Country x Style, 783 variants, ISO codes in variant
+descriptions); RSVP is `Meetup RSVP` (Status=Idle/Interested/Going).
+The 2.0 file's fonts (Google Sans / Google Sans 17pt) are NOT in Figma's
+cloud font service yet — install the OFL download locally or text-bearing
+nodes show missing-font warnings and MCP automation cannot move/edit them.
