@@ -364,6 +364,30 @@ disagree.
 
 ## Worklog (pending Notion sync)
 
+- 2026-07-28 (`apps/web` + `supabase`, `momlee-web` merge `4839b03`, PR #11, CI
+  GREEN, **migration LIVE on prod** — Sivan + Claude):
+  **Meetups area — admin registration handling SHIPPED.** Migration
+  `20260727000000` applied to production (verified `Local == Remote`): three
+  `audit_action` values + a `sync_meetup_full_status` trigger that keeps
+  `meetups.status` honest against `capacity` (`full` existed as a status but
+  nothing ever set it). Admin can now approve / reject registrations; on a PRO
+  meetup approving also records the Paybox payment in one action ("שולם"),
+  since the admin only ever approves because the payment is already visible.
+  **Rejection now REQUIRES a reason** — reused your shared
+  `RejectionReasonDialog`, recorded in the audit metadata, and emailed to the
+  mom via a new template. Pending-registration badges on the admin tab and per
+  meetup so nothing waits unnoticed; approve is disabled when full rather than
+  clickable-then-failing (server-side capacity check unchanged and still
+  authoritative). pgTAP 8/8, Vitest 81/81, all gates green.
+  **Plan C status:** meetups admin work is complete; the only remaining meetups
+  item is the mom-facing registration UI, which is **Figma-blocked on you**.
+  Next area is **onboarding** (subscriptions parked Post-MVP, see above).
+  ⚠️ **Ops note worth knowing:** the first post-merge run failed on a transient
+  *Gateway Timeout* fetching the Supabase CLI in `rls-tests`; `db-deploy` was
+  skipped as a dependent, so merged code briefly sat on `momlee-web` with the
+  migration NOT on prod. `gh run rerun --failed` fixed it. A green PR is not a
+  green deploy — worth knowing if you ever merge while Sivan is away.
+
 - 2026-07-15 (`apps/web`, `momlee-web` merge `86246d1`, CI GREEN — Sivan + Claude):
   **Phase 2 — Icon primitive + Button `kind='icon'` SHIPPED.** `Icon` (figma
   `3463:407484`): semantic `forward`/`backward` mirrored per layout direction,
