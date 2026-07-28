@@ -3,6 +3,53 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 📞 CALL OUTCOMES (Maor + Sivan, 2026-07-28) — onboarding decisions, DS handoff BEGINS, and one schema↔design mismatch to resolve
+
+**Decisions locked on the call (logged in the Dev Changelog):**
+
+1. **Family-status step (your request — accepted).** The onboarding question
+   about the mom's current situation becomes 4 options: `בהריון` /
+   `בחופשת לידה` / `אמא מנוסה` / `אחר / מעדיפה לא לומר`. Maor redesigns the
+   Figma step accordingly. PROPOSED enum keys (Maor to lock in the glossary
+   before any migration): `pregnant | maternity_leave | experienced |
+   undisclosed`.
+2. **Location step CONFIRMED in onboarding** — the mom picks her "Sweet
+   Spot": the area where she wants to see meetups around her. Maor adds the
+   step to the Figma flow. (Data-wise this lands on the mom-profile location
+   fields from the target model — region + lat/lng; not a migration yet.)
+3. **Verification provider DECIDED: Didit** (closes the old Didit-vs-Persona
+   open decision). The verification step comes right after family-status.
+   The verification intro screen gets a reassurance note (via the
+   `Onboarding Step / Note` cases component): we do not collect the photo or
+   sensitive data; at the end of verification she is returned to Momlee.
+4. **THE DS HANDOFF BEGINS (partial freeze lift).** Maor starts transferring
+   to you, piece by piece, whatever is READY in Momlee 2.0: Variables, Text
+   Styles, screen components. Intake protocol: variables land via the
+   sync-tokens flow (one deliberate sync per drop, web+native); components
+   resume ONLY for handed-off items (the general freeze stays for the rest).
+   **ACTION for you: reply with your preferred intake format/cadence** (e.g.
+   one drop per week? per flow? a checklist page in the file?).
+
+**⚠️ Schema ↔ design mismatch found while preparing (resolve BEFORE meetup
+screens are designed/built):** the live `meetup_attendees.status` is
+`asked_to_go | going | cancelled` (your 2026-07-19 fix removed `interested` -
+heart = favorites). But the Figma `Meetup RSVP` component has
+`Status=Idle/Interested/Going`. Either the UI drops "מתעניינת" (and the
+heart/favorite carries that intent), or `interested` returns as an attendee
+status. Maor+you need to pick one; everything downstream (RSVP chips, admin
+registrations, capacity counting) depends on it.
+
+**Live Pro-Meetup field reference (pulled from production today — design
+will follow it):** `meetups`: title, description, meetup_date, meetup_time,
+location_address + lat/lng + google_place_id, meetup_type mom|pro, status
+open|full|completed|cancelled, capacity 2-100 (nullable), price 20-180 ILS
+(REQUIRED for pro, forbidden for mom), payment_link (REQUIRED for pro),
+provider_id → thin `providers` (name, photo_url, description). Attendee:
+status asked_to_go|going|cancelled, payment_status pending|paid|cancelled.
+Notable: there is NO meetup cover-image field — the visual comes from the
+provider photo / creator avatar. If the design wants a per-meetup image,
+that is a schema request, not a given.
+
 ## ✅ RULINGS (Maor, 2026-07-21) — rename ratified · login model locked · Google = YOUR call · providers reflected
 
 Answers to everything from your 2026-07-19→21 push. First: excellent run —
