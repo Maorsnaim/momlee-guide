@@ -6,6 +6,38 @@
 
 ## Tasks for Maor
 
+### ⚠️ 2026-07-28 — `check-rtl-web.mjs` has a BLIND SPOT: responsive-prefixed physical classes
+
+Maor: your RTL web gate does not see **prefixed** physical direction classes.
+Its pattern matches bare `text-left`, `ml-`, `pl-` etc., but **not**
+`sm:text-left`, `md:pl-4`, `lg:text-right` — so any physical class behind a
+breakpoint prefix passes silently, in a gate whose entire purpose is to catch
+exactly those.
+
+**How it surfaced (a real RTL bug, not a hypothetical).** Stock shadcn ships
+`text-center sm:text-left` on the header of **AlertDialog, Dialog, Sheet and
+Drawer**. In an RTL app that pins every dialog **title and description** to the
+LEFT at ≥sm while the dialog body stays right-aligned, so the header and the
+content visibly disagree. Sivan hit it on the meetup rejection dialog. Fixed in
+the app repo (commit `ead8fd1`) by switching all four to `sm:text-start`.
+
+**The count did not move** — still 543 — because those four instances were never
+being counted. RTL is release-blocking per the plugin, so a gate that cannot see
+half the surface is worth a look.
+
+**Suggested fix:** allow an optional variant prefix in the pattern, roughly
+`(?:^|\s|")(?:[a-z0-9-]+:)*(ml-|mr-|pl-|pr-|left-|right-|text-left|text-right)`.
+Expect the baseline to jump when you do — that jump is pre-existing debt the
+gate was blind to, not new violations. **Not changed from our side**: widening
+the gate would move the ratchet baseline inside an unrelated feature branch, and
+the gate is yours.
+
+**Also still present, deliberately untouched:** `text-left` on shadcn's
+`TableHead` (`components/ui/table.tsx`). Same class of bug, but fixing it
+re-aligns table headers across many existing screens — Sivan's call, not a
+drive-by.
+
+
 ### ✅ 2026-07-27 — two of your three open questions are ANSWERED (they were Sivan's, not yours) + Plan C scope narrowed
 
 Maor: of the three decisions you logged as pending on 2026-06-11, **two were not
