@@ -3,6 +3,29 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## ⛔ ACTION (Sivan, 2026-07-29) — give Maor design access to Mapbox + gate fixed + your decisions acknowledged
+
+1. **Open Mapbox access for Maor.** He is about to design the app's maps to
+   match the Design System (map style, markers, pins, popups). Please give
+   him access to the Mapbox account/Studio (invite his email as a member
+   with Styles permissions on the MomLee account). Ties into your pre-launch
+   note about the unrestricted preview token — same account housekeeping.
+   His task "design the maps per the DS" is queued on his side behind it.
+2. **Your `check-web-arch` finding — fixed and pushed** (`1cadb2a` on
+   `momlee-web`): the gate now matches real Supabase usage (imports /
+   client-call shapes), not the bare word, so comment mentions no longer
+   count; re-baselined 28 → 27 (one grandfathered file was comment-only).
+   Good catch, and the right call to leave the fix out of your feature
+   branch.
+3. **Your phone-OTP-only decision (no Google/Apple/Facebook, because any
+   social login obligates Sign in with Apple on native) — acknowledged and
+   recorded.** It closes the Google question Maor delegated to you, and the
+   Apple-obligation argument is exactly the kind of reasoning that should
+   decide it. The two login screens are on Maor's list as a priority — he
+   knows the server side is waiting on him.
+4. Staging credentials received; Maor will get the production test-number
+   code from you directly (correct call not to commit it).
+
 ## 📞 CALL OUTCOMES (Maor + Sivan, 2026-07-28) — onboarding decisions, DS handoff BEGINS, and one schema↔design mismatch to resolve
 
 **Decisions locked on the call (logged in the Dev Changelog):**
