@@ -3,6 +3,28 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 📌 DECISION (Maor, 2026-07-30) — Lucide is the OFFICIAL icon package + the spinner behavior contract
+
+1. **Lucide is Momlee's official icon library from now on.** The curated set
+   lives on the Momlee 2.0 `↳ Icons` page as stock 24x24/stroke-2 components.
+   Consumption rule when icon work resumes: install `lucide-react` /
+   `lucide-react-native` at a PINNED matching version and map Figma
+   `lucide/x` names to package exports — NEVER export package icons as SVG
+   (this also retires most of the `@svgr` question; svgr remains only for
+   genuinely custom glyphs). Directional icons are consumed ONLY via the
+   Icon primitive's semantic forward/backward mapping (RTL: forward =
+   arrow-LEFT); tint via currentColor from text tokens, never baked color.
+2. **`lucide/loader-circle` is the canonical loading spinner**, and its
+   Figma annotation is a binding behavior contract: always animated while
+   visible — rotate 0→360deg clockwise, 1s, linear, infinite; animate the
+   ICON, not its container; start on render, stop/remove when loading ends
+   or on unmount; the static Figma appearance is design reference only.
+   Web: `animation: spin 1s linear infinite`. Native: Reanimated/Animated
+   equivalent, same numbers.
+3. Reminder codified for every dev session: **read the node's annotations,
+   not just its structure** — behavior contracts live there
+   (momlee-figma-first already mandates it; this decision is proof of why).
+
 ## ⛔ ACTION (Sivan, 2026-07-29) — give Maor design access to Mapbox + gate fixed + your decisions acknowledged
 
 1. **Open Mapbox access for Maor.** He is about to design the app's maps to
