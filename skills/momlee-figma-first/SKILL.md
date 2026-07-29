@@ -56,7 +56,25 @@ Before writing a single line of UI code, you MUST pull context from Figma. No ex
 1. **Locate the node** — get the Figma URL / node-id for what you're building. If unknown, ask. (URL parsing above.)
 2. **Pull design context** — `get_design_context` (+ `get_metadata`, screenshot) on the node. Understand structure, layout, hierarchy, states.
 3. **Map values → tokens** — read the variables from the design context; map every value to the token system. NEVER copy a raw hex/px into code. Missing token → add it in Figma first, then mirror in `../../design-system/tokens.md`.
-4. **Read annotations** — they are the spec (states, visibility, validations, role permissions, edge cases). Code that contradicts an annotation is a bug. See `../../design-system/annotations.md`.
+4. **Read annotations — MANDATORY MECHANICAL CHECK (Maor, 2026-07-30).**
+   Annotations are the spec (states, visibility, validations, role
+   permissions, edge cases, animation contracts); code that contradicts one
+   is a bug. A structural read is NOT enough — you must actively sweep for
+   annotations on the node, its descendants, AND the master components it
+   instantiates (`data-development-annotations` / `data-behavior-annotations`
+   in the design context; `node.annotations` via use_figma). **Before
+   building, print the proof block — you may not proceed without it:**
+
+   ```
+   ANNOTATIONS CHECK: <node-id>
+   - swept: node + descendants + instantiated masters
+   - found: <n> — <one line each, or "none">
+   - every found annotation is reflected in the plan: <yes / blocked-ask>
+   ```
+
+   Real miss that created this rule: the loader-circle spin contract lived
+   as an annotation and a structural scan skipped it.
+   See `../../design-system/annotations.md`.
 5. **Instance map (screens/composites) — enumerate BEFORE building.** A Figma
    screen is COMPOSED of component instances, and instances nest (a card is
    built from chips, avatars, buttons...). From `get_metadata` / the design
