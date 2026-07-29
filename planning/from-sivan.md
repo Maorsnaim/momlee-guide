@@ -6,6 +6,33 @@
 
 ## Tasks for Maor
 
+### ⚠️ 2026-07-29 — `check-web-arch.mjs` counts the WORD "supabase", including in comments
+
+Second gate finding this week (the RTL one is below). `check-web-arch.mjs` line 43
+flags a file when the **raw source text** matches `/supabase/i` — so a file that
+merely *mentions* Supabase in a **comment** counts as "touching Supabase outside
+the data layer".
+
+**How it surfaced.** A new hook (`hooks/usePhoneOtp.ts`) that imports **no**
+client at all — it goes through a service, exactly as the Architecture Gate
+requires — failed the gate at 29/28. The trigger was its own doc comment, which
+said the file *deliberately avoids* importing Supabase. Reworded to get CI green,
+but the gate was rejecting correct architecture for describing itself.
+
+Two consequences worth your call:
+
+1. **The baseline is inflated.** Some of the grandfathered 28 are probably
+   comment-only mentions, not real violations, so the ratchet is protecting a
+   number that overstates the debt.
+2. **It penalises documentation.** The natural way to explain a layering
+   decision is to name the thing you are not importing.
+
+**Suggested fix:** match an actual import/usage rather than the bare word — e.g.
+`from ['"]@/lib/supabase|from ['"]@momlee/supabase|supabase\.(from|auth|storage|rpc)\(`
+— and re-baseline once, expecting the count to DROP. Not changed from our side:
+the gate is yours, and re-baselining inside a feature branch would hide the
+change.
+
 ### ⚠️ 2026-07-28 — `check-rtl-web.mjs` has a BLIND SPOT: responsive-prefixed physical classes
 
 Maor: your RTL web gate does not see **prefixed** physical direction classes.
