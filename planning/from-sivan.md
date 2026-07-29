@@ -6,6 +6,40 @@
 
 ## Tasks for Maor
 
+### 📋 2026-07-29 — how to log into STAGING + phone-OTP is waiting on your Figma
+
+**1. Logging into STAGING** (`MomLee Staging` Supabase project; the Vercel
+Preview deployments point at it). Two ways in:
+
+- **Email + password:** `admin@momlee.test` / `TestAdmin123!`
+- **Phone code:** number `972528547424`, code `123456` — no SMS is sent, it is a
+  registered test number, so it costs nothing and works every time.
+
+Both land on the same seeded admin account (`אדמין בדיקה`), which has the admin
+and parent roles. Staging holds only seed data, so nothing there is precious.
+
+**2. Production has its own test number for you** — Sivan will send you the code
+separately. It is deliberately NOT written here: a phone number plus a fixed
+code is a working login to production, and anything committed to this repo is in
+its history permanently.
+
+**3. ⛔ PHONE-OTP LOGIN IS BLOCKED ON YOU.** The whole server side is built,
+tested and live (PR #12): requesting a code, verifying it, creating the account,
+Israeli number handling, error messages, abuse limits — all proven end to end on
+local and staging. **The only thing missing is the two screens** — phone entry
+and code verification.
+
+Sivan understands you are reworking the onboarding screens. When they are ready,
+please deliver those two: the screens are thin, they just call the logic that
+already exists, so this should turn around quickly.
+
+Context you may not have: the web MVP is **phone-OTP only** — no Google, no
+Apple, no Facebook (Sivan, 2026-07-28). The deciding factor was that offering
+any third-party social login obligates us to also build Sign in with Apple for
+the native app. So the login screen is one phone field and one code field,
+nothing else.
+
+
 ### ⚠️ 2026-07-29 — `check-web-arch.mjs` counts the WORD "supabase", including in comments
 
 Second gate finding this week (the RTL one is below). `check-web-arch.mjs` line 43
