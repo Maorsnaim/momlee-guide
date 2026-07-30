@@ -6,6 +6,37 @@
 
 ## Tasks for Maor
 
+### 🎨 2026-07-30 — TWO DESIGN TASKS ARE ASSIGNED TO YOU IN NOTION (both blocking)
+
+Maor: two sets of screens are the only thing standing between MomLee and a
+working mom onboarding. Everything behind them is built, tested and — for
+login — already live. Full briefs are on the Notion tasks; both are assigned to
+you and marked High.
+
+**1. Phone-OTP login screens** (top blocker) —
+https://app.notion.com/p/3ad450ad0ae6817bbddfce07e6e536fa
+Two screens: enter phone number, then enter the 6-digit code. The web login is
+now **phone + SMS code ONLY** — no Google, no Apple, no Facebook (Sivan,
+2026-07-28; offering any social login would oblige us to build Sign in with
+Apple for native). The native phone screens are the reference; the web version
+is the same flow minus the social buttons. The whole server side shipped in
+PR #12 and works on staging.
+
+**2. Identity-verification screens** —
+https://app.notion.com/p/3ad450ad0ae681d1b618ca2df1c59b5e
+Two screens: an intro explaining why we ask for a selfie, and the screen she
+returns to afterwards. **The return screen needs FIVE states**, because the
+result usually is not known the moment she comes back — it arrives a moment
+later, server to server. The two that get skipped and matter most here are the
+**waiting** state (without it the page reads as broken) and the
+**not-confirmed** state (which must never read as an accusation — an automated
+check misreading a real mom must feel like *"let's try another way"*, not
+*"you failed"*).
+
+Sivan is handling the verification-flow branding on Didit's side separately —
+you two have already spoken about it.
+
+
 ### 📋 2026-07-29 — how to log into STAGING + phone-OTP is waiting on your Figma
 
 **1. Logging into STAGING** (`MomLee Staging` Supabase project; the Vercel
