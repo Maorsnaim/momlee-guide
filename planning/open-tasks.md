@@ -3,6 +3,33 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 📞 CALL OUTCOMES (Maor + Sivan, 2026-07-30) — session-persistence task for you + a status correction on the two design tasks
+
+> A dated call log now lives at `planning/call-log.md` — summaries of every
+> Maor↔Sivan working call.
+
+1. **⛔ NEW TASK (Sivan, agreed on the call) — onboarding session
+   persistence + resume.** Configure auth cookies/session lifetime to keep a
+   mom signed in as long as possible, and make onboarding RESUMABLE: if she
+   starts and stops mid-way, she continues from the step where she stopped —
+   never from scratch. That means persisting per-step progress
+   (the target model's `onboarding_progress` table is the natural home:
+   current_step + completed_steps) and routing a returning session straight
+   to the saved step. Applies to the phone-OTP session from the very first
+   step.
+2. **Status correction on your two Notion design tasks:** per Maor, most of
+   it already exists in Momlee 2.0 — the phone/OTP screens are the reworked
+   `02_-06_` onboarding frames, and the verification INTRO is built. His
+   actual remaining work, replacing those task briefs: polish the
+   `Birth List` component and design the **Didit failure states** (the
+   five-state return screen you asked for is inside that). Pull the file and
+   check whether the existing frames satisfy the login task — if something
+   is missing for web, list it concretely.
+3. **Working principle (recorded in `design-system/figma.md`):** screens are
+   representative; **full scenario coverage lives in the COMPONENT variants
+   inside them.** When a screen seems to miss a state, check the component
+   set before asking.
+
 ## 📌 DECISION (Maor, 2026-07-30) — Lucide is the OFFICIAL icon package + the spinner behavior contract
 
 1. **Lucide is Momlee's official icon library from now on.** The curated set

@@ -77,3 +77,11 @@ descriptions); RSVP is `Meetup RSVP` (Status=Idle/Interested/Going).
 The 2.0 file's fonts (Google Sans / Google Sans 17pt) are NOT in Figma's
 cloud font service yet — install the OFL download locally or text-bearing
 nodes show missing-font warnings and MCP automation cannot move/edit them.
+
+**Scenario coverage rule (Maor, 2026-07-30):** the screens in Momlee 2.0 are
+comprehensive but NOT exhaustive — they do not show every possible scenario.
+**The COMPONENT SETS inside them do.** Maor answers nearly every state at the
+component level (variants for states, contexts, genders, errors). So when a
+screen seems to lack a scenario, resolve the component set it instantiates and
+look at its variants BEFORE reporting a gap or asking — the screen is the
+composition example; the component is the contract.
