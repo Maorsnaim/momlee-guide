@@ -493,6 +493,27 @@ disagree.
 
 ## Worklog (pending Notion sync)
 
+- 2026-07-31 (`apps/web` + `supabase`, `momlee-web` merge `0f80df7`, PR #13, CI
+  GREEN, **2 migrations LIVE on prod** — Sivan + Claude):
+  **Mom identity verification — entire server side SHIPPED.** Migrations
+  `20260729000000` (verification_application + `parent_profiles.
+  is_identity_verified`) and `20260730000000` (webhook idempotency ledger)
+  applied to production. Also shipped: the webhook receiver (HMAC signature over
+  canonical JSON, constant-time compare, 300s replay window, duplicate rejection
+  via an event-id primary key, **fails closed** without the secret), session
+  creation on Didit's hosted flow with `language:'he'`, the policy decision
+  engine, and the start-verification action. pgTAP 17/17, Vitest 133/133.
+  **⛔ The ONLY remaining piece is your two screens** — the intro that tells her
+  to have her ID ready, and the return screen with its five states.
+  **The flow changed and your task page already reflects it:** verification is
+  now **ID scan + liveness + face match**, not selfie-only. Reason: a real Didit
+  payload proved a liveness-only workflow returns **no gender at all**. Reading
+  sex from a document also removed the need for a second vendor and removed the
+  failure mode where face classifiers misread women with short or covered hair —
+  postpartum and religious mothers, a large part of our audience.
+  **Also live since PR #12:** the whole phone-OTP login server side, which is
+  likewise waiting only on your two screens.
+
 - 2026-07-28 (`apps/web` + `supabase`, `momlee-web` merge `4839b03`, PR #11, CI
   GREEN, **migration LIVE on prod** — Sivan + Claude):
   **Meetups area — admin registration handling SHIPPED.** Migration
