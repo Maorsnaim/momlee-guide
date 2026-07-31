@@ -6,6 +6,43 @@
 
 ## Tasks for Maor
 
+### 🧭 2026-07-31 — NEW Feature + Story in the OS: MomLee is women-only, and it is now written down
+
+Maor: a decision of Sivan's needed a home in the model and did not have one, so
+there is a new Feature and Story. Flagging it because it touches the OS
+structure you built — the shape follows your conventions, but you should know it
+exists.
+
+**New Feature — Platform Policies & Terms** (`trust_safety.platform_policies`,
+Epic: Trust & Safety, Scope MVP) —
+https://app.notion.com/p/3ae450ad0ae681969842de2c9778f0ec
+The written rules governing who may use MomLee: terms of use, privacy policy,
+and the positions behind them. It did not exist, and the women-only rule was
+consequently living only inside a verification flow.
+
+**New Story — MomLee is open to women only, declared in the terms of use**
+(`…women_only_declaration`, Access Behavior, Critical) —
+https://app.notion.com/p/3ae450ad0ae6810a9a4bd1ac084584d8
+
+**The decision (Sivan, 2026-07-31):** MomLee launches women-only and says so
+openly in the terms of use, reserving the right to admit men later. It is
+enforced by identity verification that reads sex from an identity **document**,
+not from a face — a deliberate choice, because face-based gender guessing fails
+most often on women with short or covered hair, which is a large part of our
+audience.
+
+**Why it was written down at all:** until now the rule existed only as a
+verification setting, which meant "who is MomLee for" would have been answered
+implicitly by a threshold and by whoever staffed a review queue. It now needs an
+Israeli lawyer's review before launch.
+
+**What changes for you:** nothing immediately. Your two design tasks are
+unaffected. But the verification flow is now **ID scan + selfie**, not selfie
+only — that change is already reflected on your verification-screens task, and
+its biggest consequence is that the intro screen must make "have your ID ready"
+impossible to miss.
+
+
 ### 🎨 2026-07-30 — TWO DESIGN TASKS ARE ASSIGNED TO YOU IN NOTION (both blocking)
 
 Maor: two sets of screens are the only thing standing between MomLee and a
