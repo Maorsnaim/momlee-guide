@@ -6,6 +6,39 @@
 
 ## Tasks for Maor
 
+### ✅ 2026-08-02 — family-status: YOUR Figma wins. And the Figma move is done, thank you
+
+**Family status — decided in your favour.** The onboarding family-status frames
+carry four options (has children / first pregnancy / no children / prefers not
+to say) which are **not** the four agreed on the 2026-07-28 call (בהריון /
+בחופשת לידה / אמא מנוסה / אחר). Sivan's call: **go with the four in your
+Figma.** The proposed enum keys from that call (`pregnant | maternity_leave |
+experienced | undisclosed`) are dead and will not be used; the database values
+will be named from your options, and the Hebrew wording will be taken
+word-for-word from the frames.
+
+One request: **please confirm the four labels are final** before the step is
+built, since they become a fixed list every mom's answer is stored against and
+changing it after real moms have answered is expensive.
+
+**Figma — thank you, and one thing changed.** Momlee 2.0 now lives on **MomLee's
+own Figma Professional plan** (Sivan's team, with a full seat for you). The
+reason was practical: her View seat capped automated design reads and blocked a
+build session mid-task. The other reason is simply that MomLee's design system
+should sit on MomLee's account rather than a personal one — nothing to do with
+trust, everything to do with it being a company asset. Verified after the move:
+the Momlee 2.0 library still resolves and nothing broke. **If you spot anything
+odd with library publishing or linked files, flag it** — you would notice before
+we would.
+
+**Also aligned (Sivan, 2026-08-02):** the MVP web app is a **mobile PWA**, and
+the `Mobile` pages ARE the product — not a phone variant of a desktop app. The
+`Web` page currently holds two desktop meetup-list explorations and no
+onboarding, which is consistent with that. A mom who opens MomLee on a laptop
+will get a **message telling her to open it on her phone**, so onboarding needs
+no desktop layouts. That screen's copy is a real brand surface, not an error
+page — it will need your words when we get to it.
+
 ### 🚨 2026-08-02 — READ BEFORE YOU CONTINUE THE PRO-MEETUP SCREENS: the RSVP states are settled, and "Interested" is not one of them
 
 Maor: Sivan settled the meetup registration state model today, and it changes
