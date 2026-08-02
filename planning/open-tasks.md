@@ -3,6 +3,32 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 📌 RULINGS (Maor, 2026-08-02) — design leads and schema follows + women-only scope refinement
+
+1. **Standing principle: the schema, actions and data model for user-facing
+   behavior track what Maor designs in Figma — not the other way around.**
+   Your settled registration model STANDS as the server-side mechanics (it
+   encodes mechanics Maor approved: admin approval, Paybox, refunds,
+   emailed rejection reasons). But the screens' states and controls follow
+   his Figma as he finishes the meetup components — and where his FINAL
+   design differs from the model, the schema aligns to the design; if that
+   creates a real mechanical conflict, raise it as a specific question
+   rather than keeping the DB shape silently. His meetup RSVP component is
+   still in progress; treat the Figma as the binding spec even before it is
+   complete. (Mediation note, agreed context: a UI may collapse or rename
+   backend states — DB richer than UI is fine; the one semantic point still
+   open is what "מתעניינת" maps to in his final component — the
+   heart/favorites split remains the default unless his design says
+   otherwise.)
+2. **Women-only — scope refinement for the new Platform Policies story:**
+   the women-only rule applies AT THIS STAGE and to the MOM side of the
+   platform. **Professionals (providers) may be men.** There is no provider
+   self-registration in MVP — you register providers manually and manage
+   their pages — so provider records are admin-curated and
+   gender-unrestricted. Please reflect this in the story/ToS wording and in
+   the lawyer brief: user signup = women only for now (right reserved to
+   change later); provider directory = curated, not gender-limited.
+
 ## 📞 CALL OUTCOMES (Maor + Sivan, 2026-07-30) — session-persistence task for you + a status correction on the two design tasks
 
 > A dated call log now lives at `planning/call-log.md` — summaries of every
