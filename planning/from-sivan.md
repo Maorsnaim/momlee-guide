@@ -6,6 +6,87 @@
 
 ## Tasks for Maor
 
+### 🚨 2026-08-02 — READ BEFORE YOU CONTINUE THE PRO-MEETUP SCREENS: the RSVP states are settled, and "Interested" is not one of them
+
+Maor: Sivan settled the meetup registration state model today, and it changes
+the component you are drawing right now. Sending it immediately for that reason.
+**Full model, authoritative:** the *Meetup Registration* feature page, section
+**STATE MODEL SETTLED** —
+https://app.notion.com/p/38d450ad0ae681fd8688e21976de3910
+
+**1. The heart is NOT a registration state — it never holds a spot.**
+This is the answer to the mismatch you flagged on 2026-07-28. "Interested" is
+the **heart**, stored in `favorites`, on both meetup types. It is an
+**independent control that sits alongside the RSVP control, not a value of
+it**. It never registers her, never reserves a place, never counts toward
+capacity. She can heart a meetup she is registered to, and heart one she never
+joins. "X are interested" is a count of hearts, separate from the attendee
+count. So `Status = Idle / Interested / Going` on the RSVP component is wrong on
+both counts: Interested does not belong there, and Idle/Going is far too few.
+
+**2. One word: Meetup.** `baby_meetup` is dead as a term (the table was renamed
+on 2026-07-20). Two **types**: **pro** (admin-published, paid via Paybox) and
+**mom** (mom-created, free). They behave differently and need different controls.
+
+**3. PRO meetup — she asks, an admin approves.** She sends a registration
+request; she pays through Paybox outside the app; an admin checks the payment
+manually and approves her. **Only an admin can confirm a spot.** States the
+control needs:
+
+- Idle — "בקשי להצטרף"
+- **Request sent, awaiting approval** (new — she has asked, no spot held yet)
+- Registered / going
+- **Cancellation requested, refund in progress** (new — see below)
+- Cancelled
+- **Rejected** (new — an admin declined; she is told why by email)
+- Meetup full
+- Meetup cancelled / ended
+
+**4. The refund case, because it drives a state you do not have.** If she
+cancels **before** approval it is immediate and final, no money moved. If she
+cancels **after** being approved, **her spot frees immediately** — she is not
+coming, so someone else can take it — while the money is chased separately: the
+admin asks the provider to refund her, confirms in Paybox that it happened, and
+closes it. So there is a period where she is already out of the meetup but her
+refund is still open. Registration and payment are two independent tracks, and
+the UI should not imply the seat is held while the refund runs.
+
+**5. MOM meetup — no approval, no money.** She taps "הצטרפי" and is **in
+immediately**, auto-approved, no request step and no admin. She can leave freely
+at any time. Plus the heart, same as pro. Also decided today: **the mom who
+creates a mom-meetup sets her own participant limit**, so the creation form
+needs a capacity field and the join control needs a full state.
+
+**6. Rejection is explained, and never looks like a ban.** When an admin
+rejects, she types a reason in a reject popup and that reason is **emailed to
+the mom**. A rejected mom **may ask again**, and Sivan's rule is that she is
+**never shown that she is blocked** — no blocked state, no locked-out screen,
+nothing punitive. After a rejection the UI returns to a normal, requestable
+state. If the reason still stands, the admin simply rejects again.
+
+Three of these states need database work that does not exist yet
+(`rejected`, `refund_pending`, `refunded` + the stored rejection reason) — a
+migration task is open on Sivan's side. Nothing blocks your design.
+
+**Still open on Sivan's side, not yours:** what happens when the creator of a
+mom-meetup wants out of her own meetup. She had decided this previously but it
+was never written down and could not be found, so she is re-deciding it. It may
+add a state to the mom-meetup screens later.
+
+### 🗺️ 2026-08-02 — Mapbox: Sivan sent you her own credentials by WhatsApp
+
+Mapbox turns out to have **no member invites at all** — an account is a single
+shared login, with no user list, no per-user permissions and no sub-accounts.
+The only native multi-user mechanism is SAML SSO, which needs a corporate
+identity provider (Okta / Azure AD / OneLogin); MomLee runs none, so it was
+never an option. There was nothing to "invite you to".
+
+**So Sivan has sent you her own Mapbox credentials over WhatsApp.** You are in —
+go ahead with the map design (style, markers, pins, popups) against the design
+system. Please keep the credentials in a password manager rather than in the
+chat thread, and note that this login also reaches billing and the production
+tokens, so treat the account as production.
+
 ### 🧭 2026-07-31 — NEW Feature + Story in the OS: MomLee is women-only, and it is now written down
 
 Maor: a decision of Sivan's needed a home in the model and did not have one, so
