@@ -3,6 +3,23 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 📌 BUILD CONTRACT (Maor, 2026-08-10) — `Input` stays untouched; the label lives in a `Field` wrapper
+
+Maor hit this in Figma and it applies verbatim to the code: the base
+`Forms / Input` is a horizontal row with **227 instances** in the file, and
+every attempt to add an "input title" inside it restructured all of them.
+The resolution is a composition, and it is now the contract:
+
+- **`Input` keeps its current shape — no `label` prop, no structural change.**
+  A change that would restructure `Input` is a red flag, not a task.
+- **`Field` is a separate component with its own Figma node** (`Forms / Field`
+  in Momlee 2.0), composing an `Input` instance and adding the optional
+  label above it — later also helper / error text. Figma properties today:
+  `Show Field Title` (boolean) + `Text` (label copy).
+- Same rule for the other field types: if `Phone Field` / `Date` /
+  `OTP Field` ever need a label, they get it from the wrapper, not from
+  their own internals.
+
 ## 📌 RULINGS (Maor, 2026-08-02) — design leads and schema follows + women-only scope refinement
 
 1. **Standing principle: the schema, actions and data model for user-facing
