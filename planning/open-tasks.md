@@ -3,6 +3,74 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🚀 ONBOARDING IS READY FOR HANDOFF (Maor, 2026-08-10) — and the OS was brought in line with the Figma
+
+The full mom onboarding flow is designed, annotated and now mirrored in the
+Momlee OS. **Story by Story, as you asked** — start with the auth chain
+(01-07) and the verification screens (09); the family step (08) is complete
+too, including edit/delete.
+
+**New Product Rules (7, all Approved, linked to their Epics)**
+- `onboarding.mother_min_age_16_at_child_birth` — **the cross-validation your
+  edit annotations referenced 4 times but which was never defined**:
+  `childDateOfBirth >= motherDateOfBirth + 16 years`, calendar-aware, error on
+  the CHILD's field, re-evaluated against every child if she later edits her
+  own date of birth.
+- `onboarding.family_entry_soft_delete` — **delete = SOFT delete.** Flagged and
+  excluded from every list/count/grouping; hard removal only via the
+  account-deletion cascade; ownership verified server-side; auditable
+  (children's data).
+- `onboarding.family_entry_limits` — up to **8 children**, exactly **one active
+  pregnancy**; the add action disables at the cap and a soft delete frees a slot.
+- `onboarding.multiple_birth_derived` — **twins/triplets are DERIVED** from an
+  identical date of birth (presentation only, each child stays its own record),
+  **max 3 on the same date**, recalculated on every date edit. There is no
+  add-twins flow.
+- `onboarding.family_entry_gender_required` — a selection is required;
+  `unknown` exists only for a pregnancy and is a real stored answer, not a skip.
+- `onboarding.child_name_hebrew_only` — Hebrew letters only for now, **but the
+  implementation must be locale-aware, not a hardcoded Hebrew regex**.
+- `app_shell.mobile_only_guard` — see the desktop section below.
+
+**New Stories (7) + 3 rewritten**
+New: `edit_child` · `delete_child` · `edit_pregnancy` · `delete_pregnancy` ·
+`location_area_waitlist` (the area-not-covered waiting list, frames
+06.5.1-06.5.3) · `app_shell.mobile_only_gate.desktop_visitor_message` ·
+`trust_safety.identity_verification.duplicate_account_detected`.
+Rewritten: `add_primary_child` → **`add_child`** (the primary-child concept is
+gone), `add_additional_children` → **`family_list`**, and
+`pregnant_due_date_children` → **`add_pregnancy`**.
+
+**Deprecated / superseded — please do not build these**
+- `onboarding.primary_child_max_age_2` → **Deprecated.** There is no primary
+  child; age groups are derived and `newborn` means up to ONE MONTH, not two
+  years.
+- `onboarding.mom_onboarding.enter_email` → **Deprecated.** Email is collected
+  in profile completion after onboarding, per the 2026-07-21 decision.
+- Technology Stack: **Persona → Deprecated, `Didit` created** (Approved /
+  Implemented). The Trust & Safety Epic description was corrected too.
+
+**Six stale verification questions CLOSED with what you actually built**
+Sex is read from the **document, not the face** (a deliberate choice — face-based
+gender detection fails most on women with short or covered hair) · **2 attempts**,
+enforced on one row per mom so a second application cannot buy a fresh allowance ·
+**not in-page** — she leaves to Didit and returns, and returning does not mean she
+finished · the result arrives by **server-to-server webhook**, which is exactly why
+the return screen opens in a waiting state · a failure is **never a ban**: second
+attempt with a fixable reason, then support only, with human review in parallel ·
+and **an identity already in the system means she HAS an account** → route to sign
+in + account recovery, never anything punitive.
+
+**Desktop: there is no desktop product, with one exception**
+Every non-phone visitor gets the `Mobile Only Message` screen (designed) with a
+**dynamic QR that encodes the URL she tried to open** — a mom opening a meetup
+invite on a laptop must land on THAT meetup after scanning. ⚠️ Do not implement
+the gate as `innerWidth >= 768`: a phone in landscape is ~844px wide and would
+wrongly get the desktop screen — decide by the device's smaller dimension +
+pointer type. **Exception: the legal pages** (privacy, terms, accessibility
+statement, contact, support) stay reachable on desktop — two new Tasks are open
+for that and for the QR dependency request.
+
 ## 📌 BUILD CONTRACT (Maor, 2026-08-10) — `Input` stays untouched; the label lives in a `Field` wrapper
 
 Maor hit this in Figma and it applies verbatim to the code: the base
