@@ -729,6 +729,21 @@ disagree.
 
 ## Worklog (pending Notion sync)
 
+- 2026-08-11 (`apps/web` + `supabase`, branch `sivan/idv7-eligibility-wiring`,
+  commit `6d81f59`, pushed, Notion row logged — Sivan + Claude):
+  **IDV-7 — verification finally GRANTS something: the `parent` role now
+  follows approval** (Sivan's decision, option "role = access"). Signup grants
+  no role; a DB trigger on `verification_application.status` grants `parent`
+  on approved and revokes it on any other decision, in the same transaction —
+  so every policy already checking `has_role(uid,'parent')` now means
+  "verified mom" with no text change. `parent_profiles.is_identity_verified`
+  was DROPPED (it was read by nothing and its RLS would have let a mom set it
+  herself); where she stands is read from her own application row. Own-profile
+  policies became owner-only so a mid-onboarding mom can still edit her data.
+  FYI for your screens: nothing changes visually — the return screen's states
+  still come from `verification_application.status`. Merges to staging via PR
+  next.
+
 - 2026-07-31 (`apps/web` + `supabase`, `momlee-web` merge `0f80df7`, PR #13, CI
   GREEN, **2 migrations LIVE on prod** — Sivan + Claude):
   **Mom identity verification — entire server side SHIPPED.** Migrations
