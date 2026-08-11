@@ -6,6 +6,14 @@
 
 ## Tasks for Maor
 
+### 📏 2026-08-11 — Product Rule change (Sivan): family limit is 12 children, not 8
+
+`onboarding.family_entry_limits` currently says up to **8** children. Sivan's
+decision: raise the cap to **12**. Everything else in the rule stands (exactly
+one active pregnancy, the add action disables at the cap, a soft delete frees a
+slot). Please update the Product Rule in the OS so the build reads the right
+number.
+
 ### 🎨 2026-08-11 — verification is fully tested, and it changed THREE things in your screens
 
 Identity verification is now built and tested end to end against staging — every
