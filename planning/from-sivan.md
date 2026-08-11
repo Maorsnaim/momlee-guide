@@ -6,6 +6,94 @@
 
 ## Tasks for Maor
 
+### 🎨 2026-08-11 — verification is fully tested, and it changed THREE things in your screens
+
+Identity verification is now built and tested end to end against staging — every
+decision path, plus the admin approve / reject / reset flows. Thank you for the
+before-and-after screens; the brief was exactly right and the build task is
+unblocked because of it.
+
+Testing it surfaced three things that touch your designs. **One is a correction
+to a screen you already delivered**, so please read that one first.
+
+---
+
+**1. ⚠️ The "Under review" state promises an email we CANNOT send.**
+
+Your return-screen brief says, for *Under review*: *"A person will look at it and
+we will email her."*
+
+**We have no email address for her.** Signup is phone-OTP only, onboarding never
+asks for an email, and there is no SMS channel either. So that sentence promises
+something that will never arrive, and a mom who waits for it simply never comes
+back.
+
+**How she actually finds out (Sivan's decision, 2026-08-11):** she is told the
+next time she logs in. So the copy needs to point her back to the app rather than
+to her inbox — something closer to *"we are looking at it; open MomLee again
+shortly and you will see the answer here."* Your wording, not ours.
+
+---
+
+**2. The "Not confirmed" state now has to show a REASON written by an admin.**
+
+When a person rejects a verification, they must give a reason of at least 20
+characters, and that text is shown to the mom. So the not-confirmed state needs
+to display a **variable-length Hebrew sentence** written by a human — for example
+*"בסריקה לא רואים היטב את מין המשתמשת"*.
+
+Please design that state with room for real text, not a fixed one-liner. The
+principle you already set still holds and matters more here: it must read as
+*"let's try another way"*, never as an accusation.
+
+---
+
+**3. 🆕 A NEW SCREEN is needed — she already has an account.**
+
+Notion task (yours, with the full brief):
+**[DESIGN (Maor): the DUPLICATE-ACCOUNT verification screen](https://app.notion.com/p/3b7450ad0ae68159a562c71957f55775)**
+
+Verification compares her face against faces that verified before. If it matches
+an account that is **still live**, we do not create a second account for the same
+person. Almost always this is simply a mom who forgot she already signed up, or
+signed up with a different phone number.
+
+**Why it cannot be the ordinary not-approved screen:** the way back in is *"log
+in to the account you already have"*, not *"try verifying again"*. Sent to the
+generic error screen she retries against a wall until both attempts are gone.
+
+**What the screen has to work with:** Sivan decided we show a **masked hint** at
+the existing account — the backend already produces it, e.g. `••••0902`, or
+`n•••@momlee.app` where there is no phone. Never the full number: what the vendor
+tells us is that a *face* matched, not that it is provably the same person, so a
+full identifier would hand one woman another woman's contact details.
+
+⛔ **The one hard constraint:** this screen must render **only when a hint
+exists**. A face matching a *blocked* account produces no hint at all, on purpose
+— nothing in the product ever tells a mom she is barred, and a screen that
+appeared only for blocked matches would make its own appearance the giveaway.
+That case falls back to the ordinary not-approved screen.
+
+---
+
+**4. Related, in case it affects your onboarding frames — no action expected yet.**
+
+New task: **[Login routing: send a returning mom to the right screen for her
+status](https://app.notion.com/p/3b9450ad0ae68172b902dc7605fa96be)**.
+
+When a mom logs in again we route her to the screen matching where she actually
+is: rejected → the not-approved screen with her reason · mid-onboarding → back to
+the step she stopped at, with her data · finished but unverified → the
+start-verification screen · under review → "we are looking at it" · approved →
+straight in.
+
+Everything there maps to screens you have already designed, **except** possibly a
+"welcome back, continue where you left off" moment for the resume case. If you
+think that needs its own frame rather than just dropping her onto the step, say
+so — otherwise we will reuse the existing steps as-is.
+
+---
+
 ### ✅ 2026-08-02 — family-status: YOUR Figma wins. And the Figma move is done, thank you
 
 **Family status — decided in your favour.** The onboarding family-status frames
