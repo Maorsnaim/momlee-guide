@@ -76,21 +76,47 @@ That case falls back to the ordinary not-approved screen.
 
 ---
 
-**4. Related, in case it affects your onboarding frames — no action expected yet.**
+**4. ⚠️ PLEASE AUDIT YOUR EXISTING SCREENS AGAINST THE NEW LOGIN ROUTING.**
 
 New task: **[Login routing: send a returning mom to the right screen for her
 status](https://app.notion.com/p/3b9450ad0ae68172b902dc7605fa96be)**.
 
-When a mom logs in again we route her to the screen matching where she actually
-is: rejected → the not-approved screen with her reason · mid-onboarding → back to
-the step she stopped at, with her data · finished but unverified → the
-start-verification screen · under review → "we are looking at it" · approved →
-straight in.
+**What changed conceptually:** until now the verification screens were designed
+for a mom moving forwards through signup in one sitting. From now on, **every one
+of them is also a screen a RETURNING mom can land on directly at login**, possibly
+days later, with no memory of where she stopped. That is a different state of mind
+and it affects copy more than layout.
 
-Everything there maps to screens you have already designed, **except** possibly a
-"welcome back, continue where you left off" moment for the resume case. If you
-think that needs its own frame rather than just dropping her onto the step, say
-so — otherwise we will reuse the existing steps as-is.
+Here is every state, the screen it needs, and what we think has to change. Please
+confirm or push back on each — you own these calls, we are only flagging what the
+build exposed.
+
+| At login she is… | Screen | Status | What likely needs to change |
+| --- | --- | --- | --- |
+| **Rejected**, attempts left | Not confirmed | ✅ exists | Must show the admin's **reason** (see item 2) |
+| **Rejected**, 2/2 attempts used | Not confirmed | ⚠️ **variant missing** | See below — this one is important |
+| **Mid-onboarding** | Her onboarding steps | ✅ exist | Needs a "welcome back, carry on" moment + steps that render **pre-filled** |
+| **Finished onboarding, not verified** | Intro / "have your ID ready" | ✅ exists | Written as a first-time screen mid-signup; it is now also a **returning** screen |
+| **Under review** | Under review | ✅ exists | Copy correction — no email (item 1) |
+| **Duplicate account** | — | 🆕 **new** | Separate task, item 3 |
+| **Approved** | — | n/a | Straight into the app, no screen |
+
+**⚠️ The one we think is genuinely missing: rejected with NO attempts left.**
+
+Your brief says the not-confirmed state is *"never a dead end — she can try
+again"*, and that she has 2 attempts in total. But once both are used **there is
+no try-again**, and only an admin can give her attempts back. If that screen still
+offers "try again" it becomes exactly the dead end you designed against — a button
+that cannot work.
+
+So the not-confirmed state probably needs **two variants**: one that offers
+another attempt, and one for a mom who has none left, which should give her a real
+way to reach a human rather than a disabled button. Your call on how, but she must
+not be stranded.
+
+**On the resume case:** if you think "continue where you left off" deserves its own
+frame rather than dropping her straight onto the step she stopped at, say so —
+otherwise we will reuse the existing steps as they are.
 
 ---
 
