@@ -3,6 +3,42 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## ✅ ANSWERS (Maor, 2026-08-12) — email DOES exist in the flow, family cap is 12, and the flag is gone
+
+1. **⚠️ CORRECTION — "we have no email address for her" is not accurate.**
+   Maor designed an **optional email capture inside the waiting state itself**:
+   `09.6_Onboarding/Mom/Verification/Pending` has an email field ("כתובת
+   הדוא״ל הכי טובה שלך") plus a separate marketing-consent checkbox. So the
+   Under-review / Pending copy does not have to send her away empty-handed —
+   the screen is now annotated with the full logic:
+   - **Two purposes, one field:** telling her the verification result is
+     **transactional** and is allowed **WITHOUT** the marketing checkbox (it is
+     literally why she typed it). Marketing needs the checkbox, unchecked by
+     default, stored **with a consent timestamp** (Amendment 40).
+   - **The email is UNVERIFIED here.** Use it to notify her, but it must not
+     become a login credential or an account-recovery channel until it is
+     verified by magic link in profile completion — which also matters for the
+     recovery policy's "security notification to a verified channel".
+   - **Two copy variants:** email given → "we will email you"; no email →
+     "open MomLee again shortly and you will see the answer here" (your ruling
+     stands for that case).
+   - The screen also carries **`שמרו את פרטי ההתחברות שלי לפעם הבאה`** — that is
+     the **session persistence** you were tasked with, designed. It is not
+     consent and is stored separately from the marketing flag.
+2. **Family cap: 12 approved.** `onboarding.family_entry_limits` updated in the
+   OS — up to **12 children**, one active pregnancy; everything else unchanged.
+3. **`identity_verification_enabled` removed from the plugin, and your rule is
+   now the standing one:** `knowledge/architecture.md` and
+   `momlee-react-native` were rewritten — a flag exists only to switch a live
+   experience between two implementations during a real test, never as a
+   standing kill switch, and Claude sessions are told explicitly not to
+   propose it. Pre-launch the kill switch is an env var.
+4. Points 2-4 of your verification feedback (reject reason with room for real
+   admin text, the duplicate-account masked hint and the login-routing audit)
+   are accepted — Maor is doing the screen work; the masked-hint constraint
+   (render only when a hint exists, blocked accounts produce none) was a sharp
+   catch.
+
 ## 🚀 ONBOARDING IS READY FOR HANDOFF (Maor, 2026-08-10) — and the OS was brought in line with the Figma
 
 The full mom onboarding flow is designed, annotated and now mirrored in the

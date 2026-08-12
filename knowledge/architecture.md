@@ -187,14 +187,21 @@ any module  →  another module's PUBLIC service — the only door
   so `features/<a>/**` may import from `features/<b>/index` (the public
   surface) but never `features/<b>/internal paths`.
 
-## Feature Flags — release slow, kill fast, delete nothing (Maor, 2026-06-11)
+## Feature Flags — only for a real experiment (Sivan, 2026-08-12; supersedes the 2026-06-11 kill-switch framing)
 
-Every **large or sensitive** feature ships behind a flag:
+**A MomLee feature flag exists to switch a live user-facing experience between
+two implementations during an actual test — not as a standing kill switch.**
+A flag with no experiment behind it is unneeded code, so it is not built.
+(Sivan's ruling, approved by Maor 2026-08-12. `identity_verification_enabled`
+was removed under this rule — do not propose it. Pre-launch the kill switch is
+an env var; a flags table only arrives post-launch, and only if an experiment
+needs it.)
+
+Naming, if and when a flag IS justified:
 
 ```
 provider_subscriptions_enabled
 mom_discovery_enabled
-identity_verification_enabled
 ```
 
 - Naming: `<feature>_enabled`, `snake_case` (glossary terms).

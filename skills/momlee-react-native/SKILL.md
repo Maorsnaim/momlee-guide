@@ -63,11 +63,14 @@ it. Shared truths live in `@momlee/core`, which is the legitimate shared
 layer — not a tunnel between modules. Full matrix + eslint boundary
 enforcement: `../../knowledge/architecture.md` → "Module Boundaries".
 
-## Feature Flags — release slow, kill fast, delete nothing
+## Feature Flags — only for a real experiment (Sivan, 2026-08-12)
 
-Every **large or sensitive** feature ships behind a flag
-(`provider_subscriptions_enabled`, `mom_discovery_enabled`,
-`identity_verification_enabled` — `<feature>_enabled`, snake_case), defined
+**A flag exists to switch a live experience between two implementations during
+an actual test — never as a standing kill switch; a flag with no experiment
+behind it is unneeded code and is not built.** Do NOT propose
+`identity_verification_enabled` (removed under this rule). When a flag IS
+justified: `<feature>_enabled`, snake_case
+(`provider_subscriptions_enabled`, `mom_discovery_enabled`), defined
 **centrally**, sensitive defaults OFF. Disabling a feature = flipping its
 flag; **code is never deleted to turn something off**. Flags belong to the
 approved Zustand list; the kill-switch source should be server-controllable
