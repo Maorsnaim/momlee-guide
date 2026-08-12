@@ -6,6 +6,18 @@
 
 ## Tasks for Maor
 
+### 🚩 2026-08-12 — Sivan's ruling: no standing kill-switch flags; please remove `identity_verification_enabled` from the plugin
+
+- [ ] The Feature-Flags gate (2026-06-11) lists `identity_verification_enabled`
+  as a flag every session should expect to exist. **Sivan decided (2026-08-12)
+  it will NOT be built, and removed it.** Her rule: MomLee feature flags exist
+  to switch a live user-facing experience between two implementations during a
+  real test — not as standing kill switches; a flag with no experiment behind
+  it is unneeded code. Please remove `identity_verification_enabled` (and the
+  kill-switch framing around it) from the plugin's gate lists and skills so
+  Claude sessions stop proposing it. The decision is recorded on the IDV-9
+  task in the OS.
+
 ### 📏 2026-08-11 — Product Rule change (Sivan): family limit is 12 children, not 8
 
 `onboarding.family_entry_limits` currently says up to **8** children. Sivan's
