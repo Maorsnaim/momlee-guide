@@ -6,6 +6,26 @@
 
 ## Tasks for Maor
 
+### 🧩 2026-08-12 — Please announce every NEW UI component through the plugin (and publish the library)
+
+The Web Design System Foundation work started today: all Momlee 2.0 tokens go
+into the web CSS and every component you created gets a code implementation,
+before any onboarding/verification screen is built. The inventory pass surfaced
+a channel gap Sivan asked me to raise with you:
+
+- [ ] **When you create a new UI component, update us through the plugin** — a
+  line in `design-system/components.md` (or this file's counterpart,
+  open-tasks) with the component's name and Figma node-id. Code sessions can
+  only build what an official channel names; a component that exists only
+  inside the Figma file is invisible to the build until someone stumbles on it.
+- [ ] **Please also PUBLISH the Momlee 2.0 library after component work.** The
+  published-library index we can search still shows 2026-08-02 — everything
+  you added since (notably **`Forms / Field`**, the label-wrapper contract you
+  announced on 2026-08-10) is not in it, so its node-id cannot be resolved
+  from the code side. Concretely needed now: the `Forms / Field` node-id, and
+  a publish so the 06.5 waitlist pieces, Mobile Only Message and the
+  verification failure states become searchable.
+
 ### 🚩 2026-08-12 — Sivan's ruling: no standing kill-switch flags; please remove `identity_verification_enabled` from the plugin
 
 - [ ] The Feature-Flags gate (2026-06-11) lists `identity_verification_enabled`
