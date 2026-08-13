@@ -3,6 +3,81 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## ⭐ MAOR'S DIRECTION (2026-08-14) — the identity key is a hash of the NATIONAL ID NUMBER, not a face template. Please read the problem before the solution.
+
+### The problem, stated plainly
+
+We want **one verified person, one account** — including a mom who comes back in
+2028 with a new phone. That requires *something* permanent that identifies the
+person. Today we have **only the face**, and Didit's face memory dies with the
+retention purge, currently at **6 months**. So from month seven the same woman
+reads as a brand-new person, and neither duplicate detection nor recovery works.
+
+There is no way around needing *some* persistent identifier. The only question is
+which one.
+
+### Maor's choice, and why it beats the face
+
+**A one-way hash of the person's national identity number.** Compared with keeping
+a face template it is:
+
+- **not biometric data** — a far lighter legal burden than a stored face;
+- **exact** — no false matches, no identical-twins problem, no ageing;
+- **permanent** — it does not evaporate when a vendor purges sessions.
+
+### ⚠️ The distinction that makes it work — and it is easy to get wrong
+
+Maor's concern was whether this survives a **passport** or a **driving licence**.
+It does, but only if we hash the right number:
+
+| | Changes on renewal? | Same across document types? |
+|---|---|---|
+| **Document number** (the card/booklet serial) | **Yes** | **No** |
+| **National ID number** (מספר זהות — the person) | **No** | **Yes** |
+
+Israeli ID cards, passports and driving licences **all carry the national ID
+number**. So hashing *that* is invariant across document type and across renewals.
+Hashing the **document number** would break on both. **Please make sure whatever
+is built keys on the person's number, not the document's.**
+
+### How to hold it, so this does not reverse the Amendment 13 position
+
+**A one-way hash of an ID number is not the ID number.** The minimisation you put
+in place was about receiving and storing the raw value; that stays. The raw number
+is used to compute the hash and discarded — never persisted, never logged.
+
+Two properties this needs, and they are not optional:
+
+1. **The key lives in a secret manager, never in the database, never beside the
+   data it protects.** An Israeli ID is 9 digits with a check digit — on the order
+   of a hundred million valid values, fully enumerable. Unlike a password hash,
+   **the attacker knows every possible input**, so the key is the entire
+   protection and a leak exposes every user's ID number.
+2. **It is not practically rotatable** — recomputing needs the raw numbers, which
+   we deliberately do not keep. Rotating means losing the whole duplicate history.
+   Treat the key as permanent critical secret material, not a config value.
+
+Also scope the hash by **issuing country**, so numbers from different countries
+cannot collide.
+
+### The three things still to settle — the first is yours to check
+
+1. **Does Didit actually return the national ID number for a passport and a
+   driving licence, or only for the ID card?** The ID card is near-certain; the
+   other two need checking against a **real payload**, not the docs. This is the
+   sharpened version of lookup 4 below, and everything depends on it.
+2. **What happens when the field is missing, or the document is foreign?** A
+   foreign passport carries no Israeli number. Options: fall back to the face
+   check, fall back to hashing document number + country + type (weaker, breaks on
+   renewal), or treat it as undedupable. Needs a decision.
+3. Key management per the two properties above.
+
+**Recorded in the OS:** Product Rule `trust_safety.identity_uniqueness_check` now
+carries this mechanism instead of the face-template one, and the Blocking open
+question holds Maor's direction plus the caveats.
+
+---
+
 ## 🔴 DECISION + ❓ BLOCKING (Maor, 2026-08-14) — no recovery method means MANUAL REVIEW. The routing is settled; the policy is yours, and it is blocking.
 
 **Decided:** when a mom reaches recovery and has access to **neither** the old
