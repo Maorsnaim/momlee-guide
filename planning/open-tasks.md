@@ -3,6 +3,59 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🔴 DECISION + ❓ BLOCKING (Maor, 2026-08-14) — no recovery method means MANUAL REVIEW. The routing is settled; the policy is yours, and it is blocking.
+
+**Decided:** when a mom reaches recovery and has access to **neither** the old
+phone **nor** a previously verified email, she is **not** asked to verify with
+Didit again — the verification that triggered recovery is enough at this stage.
+The case goes to **manual review by the Momlee team**, which is the only fallback.
+⛔ **Do not build an alternative automatic fallback for this scenario.**
+
+**Please treat the policy as urgent, not as an edge case.** Email verification
+does not exist yet and face memory is 6 months, so **right now this path is where
+most moms who lose a phone will land.** It is currently the main road, not the
+shoulder.
+
+### Two findings that should shape your answers
+
+1. **Everything the security constraint rules out is visible to other moms.**
+   Children's names and dates of birth, pregnancy, city, photo, interests — that
+   is exactly what a community member sees. So the rule is right, and for the
+   strongest possible reason: **the plausible attacker here is an existing member,
+   not a stranger.** Recorded as `auth_access.ownership_evidence_strength`.
+2. **⚠️ This one blocks one of the questions outright.** "May support compare the
+   Didit result against historical account information?" — **Momlee holds no
+   verified name and no document number**, because you switched those fields off
+   under Amendment 13. There is almost nothing to compare inside our own system,
+   and any comparison means opening the session in the Didit console. Worth
+   deciding deliberately rather than discovering it at the first real case.
+
+### A direction for "what counts as strong evidence", not a ruling
+
+**Her identity is already proven by Didit. What is unproven is that this identity
+belongs to that account.** So strong evidence is something tying the person to the
+account's *history* that other members cannot see: knowing the old phone number
+itself even without access to it, the join date, non-public activity. Everything
+on the excluded list fails precisely because it is member-visible.
+
+### The full question set is on a Blocking open question in the OS
+
+*What is Momlee's manual account-recovery policy*, grouped into **evidence**,
+**permissions**, **audit**, and **limits + communication** — all of Maor's
+questions, verbatim, plus a Task under the admin Story. **The admin Story sits at
+Draft and stays there until the policy exists.**
+
+### One recommendation worth building in regardless of the policy
+
+**An approved recovery should send a security notice to the account's EXISTING
+contacts.** It is the only way the real owner ever discovers a wrongful recovery.
+Worth sending even when it looks redundant.
+
+**Maor owes the Figma screen** for the neutral pending state (`נדרשת בדיקה נוספת`)
+— it must promise nothing, and must never read as an accusation.
+
+---
+
 ## 🔴 DECISION (Maor, 2026-08-14) — a previously verified email can recover an account. ⚠️ It does not exist yet, so today this method is dead on arrival.
 
 **The rule (`auth_access.pre_existing_contact_recovery`):** a recovery method is
