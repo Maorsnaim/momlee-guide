@@ -6,6 +6,39 @@
 
 ## Tasks for Maor
 
+### 🎨 2026-08-13 — Token sync DONE from Momlee 2.0 + three findings from the scan (Sivan approved raising all of them)
+
+The full token re-sync you green-lit yesterday is built: `@momlee/tokens` now
+mirrors the 2.0 system (brand `#9d636b`, the new surface/border/text
+semantics, letter-space + width groups) and web flipped to **Google Sans**
+(self-hosted variable woff2, Hebrew+Latin subsets). The updated snapshot is in
+this same push — `design-system/tokens.md` + CHANGELOG 2026-08-13. The scan
+surfaced three things for you:
+
+- [ ] **`colors/text/text-on-unread` is the on-brand label color** — it's the
+  white label on every brand-solid CTA, but the name reads like a
+  notifications token. Please confirm it's intentional or rename it before
+  the component build bakes it into code and components.md.
+- [ ] **Raw (untokenized) values inside 2.0 components:** button vertical
+  padding `10px` (off-scale, on every button), `gap: 10px/12px` literals, the
+  welcome signup link `#2f67a6`, the welcome headline spans hardcoding
+  `#9d636b`/`#b37a81`/black, inline links in running text hardcoding
+  `#835258` (= badge/brand/foreground — is that the intended link token?),
+  and the keyboard overlay `#e6e9ed`. Tokenize when convenient; code follows
+  whatever you name.
+- [ ] **A few groups were not visible on any screen and are carried over from
+  the old file, flagged in tokens.md:** input Focused/Disabled borders
+  (`#404040`/`#d4d4d4`), the disabled back-arrow `fg-quaternary #a3a3a3`,
+  link-color button `#6a393c`, `utility.success #16a34a`, shadow/focus-ring
+  variables, display-xs/md/lg/2xl px pairs, and the outer spacing/radius
+  steps (5xl/6xl/9xl-11xl, radius none-sm/3xl/4xl). **Sharing the ❖ Variables
+  sub-page node-ids would close all of these in one pull** — or just confirm
+  the carried values.
+
+✅ **Recorded, no action:** the "Continue with Google" button on the welcome
+screen — you already removed it (confirmed via Sivan today). Phone-OTP-only
+stands.
+
 ### 🧩 2026-08-12 — Please announce every NEW UI component through the plugin (and publish the library)
 
 The Web Design System Foundation work started today: all Momlee 2.0 tokens go
