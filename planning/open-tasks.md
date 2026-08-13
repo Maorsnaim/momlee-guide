@@ -3,6 +3,46 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🔴 DECISION (Maor, 2026-08-13) — identity history is NOT deletable: every verification must cross-check face + document. This conflicts with the 6-month retention you set.
+
+**The decision.** On every Didit verification we must cross-check that **this
+face and this identity document have never been used to verify on Momlee
+before**. If they have, she is routed to **account recovery** — never given a
+second account. One verified identity, one account. That check IS the
+mechanism, so the identity history cannot be wiped.
+
+**The distinction that makes this workable (and keeps privacy intact):**
+keeping the **matching ability** does not require keeping the **images**.
+
+| What | Retention |
+|---|---|
+| Selfie + ID photos | **Keep purging** per the retention policy — unchanged |
+| Identity **reference** (face template + a hash of the document identifier) | **Retained for the life of the account** — this is what the cross-check runs against |
+
+**Three things for you to resolve:**
+1. **⚠️ It conflicts with IDV-9.** You set Didit retention to 6 months, and the
+   earlier finding was that a purge deletes face embeddings too (hence the
+   "12-month ban memory"). Under this decision that framing is void. Please
+   check with Didit whether a **face template can persist while the images are
+   purged**. If it cannot, we must store our own reference — which makes the
+   next point mandatory.
+2. **Legal.** A retained face template is **sensitive biometric data**: it needs
+   a lawful basis and explicit wording in the **privacy policy** and **terms of
+   use**. This changes what your two open legal tasks must say — if either
+   currently promises "we keep nothing", that text is now wrong. It also needs a
+   Privacy Note + a Schema Registry row for whatever we store.
+3. **What exactly is the key.** Still open (recorded in the OS): Didit's own
+   person identifier, or a one-way hash of document number + country with a
+   server-side pepper. **Never a raw national ID number.**
+
+**Recorded in the OS:** the blocking open question is now **Decided**, and a new
+Product Rule `trust_safety.identity_uniqueness_check` carries the full rule.
+
+**Note on scope:** this also means a **banned** identity is remembered
+indefinitely, not for 12 months. The no-hint rule still holds — a blocked match
+produces no hint and falls back to the ordinary not-approved screen, so nothing
+in the product ever tells a mom she is barred.
+
 ## ✅ ANSWERS (Maor, 2026-08-12) — email DOES exist in the flow, family cap is 12, and the flag is gone
 
 1. **⚠️ CORRECTION — "we have no email address for her" is not accurate.**
