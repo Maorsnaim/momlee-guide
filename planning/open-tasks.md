@@ -3,6 +3,55 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🔴 DECISION (Maor, 2026-08-14) — child matching is 2-of-3 on name, DOB and sex. Plus five gaps the rule does not cover.
+
+**The rule (`auth_access.child_record_matching`)** — compare only **first name,
+date of birth, sex**:
+
+| Attributes matching | Outcome |
+|---|---|
+| **3 of 3** | Same child. Keep existing. No duplicate. **Ask nothing.** |
+| **2 of 3** | Probable same child. **No new record.** Surface the conflicting value for her to decide. |
+| **fewer than 2** | New child, added under normal family validation. |
+| **more than one existing record qualifies** | **Ambiguous — explicit confirmation required.** |
+
+⛔ Forbidden: matching on name alone; on DOB alone; treating DOB + sex as enough
+when several siblings qualify; **first-matching-child logic**; merging one twin
+into another; creating duplicates when a confident match exists; silently
+overwriting the third attribute. **A match establishes identity, never permission
+to overwrite.** Recovery does not bypass family validation.
+
+### ⚠️ Five things the rule does not cover — please do not build before these are answered
+
+1. **🔴 A PREGNANCY BECOMING A CHILD is not handled at all** — and in a maternity
+   app it is probably the *most common* recovery case. The old account holds a
+   pregnancy; the draft holds a newborn. The rule sees no child to match, adds the
+   baby as new, and leaves **a stale pregnancy plus a child**. This one needs a
+   product answer, not an implementation guess.
+2. **A 3/3 match must be resolved BEFORE ambiguity is evaluated** — otherwise
+   *identical twin data triggers a needless prompt*. Each twin matches her own
+   record at 3/3 **and her sibling at 2/3**, so the ambiguity rule as written fires
+   on a perfect match. Fix: resolve all 3/3 pairs first, remove them from the pool,
+   then evaluate 2/3 on the remainder.
+3. **Matching is an assignment between two sets, not a per-record lookup.** Each
+   existing child may be claimed by at most one incoming record and vice versa.
+   Without strict tiers **the result depends on processing order**: a 2/3 record
+   handled first can consume the child a later 3/3 record should have matched, and
+   you get a duplicate. Tiering makes it order-independent. (This is the deeper
+   form of the "first matching child" ban.)
+4. **Unknown and null must not count as a match.** Our model allows sex `Unknown`
+   / `None`, and a pregnancy with no date. Two `Unknown`s comparing equal would
+   hand out a **free point** toward 2/3. An absent or unknown attribute must
+   contribute **neither a match nor a mismatch**.
+5. **Name normalisation must be defined** — trim, collapse internal whitespace,
+   and a decision on nicknames (יוני / יונתן). Without it the rule quietly
+   degrades to 2/3 and starts asking questions constantly.
+
+**Recorded in the OS:** Decision + Product Rule + a Task carrying all five, under
+the reconciliation Story.
+
+---
+
 ## 🔴 DECISION (Maor, 2026-08-14) — onboarding data is MERGED into the recovered account. Both simplistic behaviours are banned.
 
 She may enter a whole family before we discover she already has an account. That
