@@ -3,6 +3,54 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🔴 DECISION (Maor, 2026-08-14) — onboarding data is MERGED into the recovered account. Both simplistic behaviours are banned.
+
+She may enter a whole family before we discover she already has an account. That
+data is **neither discarded nor allowed to overwrite** what exists.
+
+**Three cases (`auth_access.recovery_data_reconciliation`):**
+
+| Situation | Behaviour |
+|---|---|
+| **Identical** | Keep the existing record. No duplicate. **Ask her nothing.** |
+| **Clearly new** | **Add it automatically.** Do not make her confirm or re-enter it. |
+| **Material conflict** | **Show both versions** and let her say what is correct today. |
+
+⛔ **Both of these are explicitly forbidden:** "the existing account always wins
+and the onboarding data is discarded", and "the newest data overwrites the
+existing". Applies to personal details, location, profile and pregnancy too, each
+per its own field rule.
+
+**Also required:** the merge is **idempotent** (never runs twice on a draft); the
+**draft survives until reconciliation succeeds** and only then is cleared;
+historical data unrelated to this onboarding is never touched; a merge event goes
+to analytics. **A reconciliation screen appears only for a genuine conflict** —
+never a generic "merge your account" page.
+
+**Children matching is defined separately — do NOT invent a substitute for it.**
+
+### Two things I would flag before this is built
+
+1. **The default failure mode of exact matching is creating DUPLICATES**, not
+   merging wrongly — any small difference in spelling or date yields a second
+   record, and duplicates are exactly what this rule forbids. So please
+   **instrument how many merges close automatically versus needing a decision**.
+   That ratio is the signal for whether the matching rules are good enough, and
+   without it we will not know they are failing.
+2. **The conflict screen lands at the worst possible moment** — she has just been
+   told she already has an account and has just proven ownership, and now she is
+   asked to adjudicate her own family data. Worth considering: **let her into the
+   account and defer non-blocking conflicts** to a task inside the app. Only block
+   on conflicts that would actually corrupt data. That is Maor's call, and I have
+   put it to him.
+
+**Recorded in the OS:** Decision + Product Rule + a System Story + a Task, and the
+old open question *What happens to the children data in the discarded provisional
+account* is now **Decided** by this — the answer is that it is merged, not
+discarded.
+
+---
+
 ## ⭐ MAOR'S DIRECTION (2026-08-14) — the identity key is a hash of the NATIONAL ID NUMBER, not a face template. Please read the problem before the solution.
 
 ### The problem, stated plainly
