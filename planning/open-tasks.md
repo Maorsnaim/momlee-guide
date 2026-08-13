@@ -17,6 +17,39 @@ methods are shown. **One approved method is enough** — never both. After succe
 the flow continues to the phone-number choice from the decision below. With **no**
 method available, the case goes to manual review.
 
+### 📋 NEW TASK FOR YOU — email capture + verification in profile completion
+
+**Maor's clarification (2026-08-14), and it changes the picture:** an email step
+**is** planned, it just has not been built. Every mom is asked for an email at the
+**end of onboarding, as part of profile completion**, right after phone + OTP —
+and it is **verified immediately**.
+
+The phone stays the **primary** identifier. The email is a strong **secondary**
+one. In practice anyone with a verified email also has a verified phone, never the
+reverse. **The reasons are marketing and transactional email** — both central to
+the product, not an afterthought. Recovery is a third benefit that falls out of it
+for free.
+
+**Task created in the OS** (High, under *Mom completes profile after
+verification*) so it reaches you through the normal flow. What it needs:
+
+- an **application-level `email_verified_at`** on `users` — `auth.users.
+  email_confirmed_at` alone cannot answer *"was it verified BEFORE this recovery
+  attempt"*, which is precisely what the recovery rule tests;
+- the verification step inside profile completion;
+- the delivery path (this meets the existing transactional-email task).
+
+Two things to build in from the start, rather than retrofit:
+
+1. **A 6-digit code, not a magic link** — see the PWA reasoning below.
+2. **Marketing consent recorded separately from the address.** The Message
+   Categories model already splits transactional from marketing consent; an email
+   collected *for marketing* needs its own recorded consent, not an implied one.
+
+**Open for Maor, and it decides how much load manual review carries:** is the
+email step **required** to finish onboarding, or strongly encouraged and
+skippable?
+
 ### ⚠️ This cannot work today — I checked
 
 - `public.users` has an `email` column but **no verified flag**. Verification
