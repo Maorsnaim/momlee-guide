@@ -9,6 +9,26 @@ Maor is writing the rule that decides **verified identity → new user** vs
 **→ existing account → recovery** vs **→ human review**. It is deliberately
 **not decided yet** and nobody should implement matching logic until it is.
 
+### ⚠️ Maor's position on the three problems below — read this first
+
+He has now seen the three findings and wants his view on record. These are his
+leanings, not rulings — the technical answers are yours to give, and on the third
+one the decision is explicitly yours.
+
+1. **The 12-month face memory is a real problem, not an acceptable trade.** After
+   twelve months the same woman reads as a brand-new person and can simply open a
+   second account. Please treat this as something to solve, not to live with.
+2. **He is fairly convinced we need an identifying number — a face alone will not
+   be enough.** He knows this pulls against the Amendment 13 minimisation you put
+   in place, and he is not overruling that. If you think a number can be avoided,
+   or that there is a way to hold one that stays compliant (a one-way hash rather
+   than the number itself is the obvious candidate), make that case.
+3. **Sending a match to human review makes the mom wait far too long, for no good
+   reason in his view — but the decision is yours, not his.** His concern is the
+   experience: a woman who is simply returning to her own account should not be
+   parked in a queue waiting for a person. If there are cases where you believe a
+   human is genuinely required, say which ones and why.
+
 **Before it can be decided, three things about the current build matter — you
 know them better than anyone, so please correct me if I have any of them wrong:**
 
