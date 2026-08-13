@@ -3,6 +3,71 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## ❓ OPEN + 🔴 CONFLICT (Maor, 2026-08-14) — what is the identity key for duplicate detection. Four Didit facts needed from you, and the live code disagrees with two decisions.
+
+Maor is writing the rule that decides **verified identity → new user** vs
+**→ existing account → recovery** vs **→ human review**. It is deliberately
+**not decided yet** and nobody should implement matching logic until it is.
+
+**Before it can be decided, three things about the current build matter — you
+know them better than anyone, so please correct me if I have any of them wrong:**
+
+1. **The mechanism already exists and is face-only.** IDV-4 resolves
+   `duplicated_session_id` to a MomLee account and decides: banned → decline,
+   deleted → approve, **still active → needs review**.
+2. **The national ID route is currently switched OFF on purpose.**
+   `personal_number` and `document_number` come back `null` because you unticked
+   them under Amendment 13 minimisation, after the Extra-fields PII leak.
+   So "use the Israeli ID as the key" is not a free choice — it is **reversing a
+   live privacy position**, and it needs to be argued as such.
+3. **Face memory is 12 months** (a retention purge deletes the embeddings).
+   Maor's 2026-08-13 decision requires a reference for the **life of the
+   account**. Face-only cannot satisfy that.
+
+### 🔴 The conflict, for you to weigh in on
+
+Your live engine sends **face match against a still-active account → human
+review**. Two decisions in the OS (2026-08-10 and 2026-08-14) both say that case
+**routes to Account Recovery**. One of the three has to give.
+
+My read: `needs review` was the right call when it was written, because **account
+recovery did not exist yet** — a human was the only route forward. Now that
+recovery exists, auto-routing is defensible, because **routing is not
+authentication**: recovery re-authenticates her, so a false positive costs
+friction and not access. But that is Maor's call, not mine, and I have not
+touched your decision table.
+
+### Four factual lookups I need from Didit (facts, not decisions)
+
+1. Is there a **one-to-many Face Search** as a separate product — on which plan,
+   at what cost?
+2. Does the duplicate warning carry a **confidence score**, or is it binary? If
+   it is binary, the whole "what threshold" question disappears.
+3. Can **Lists hold all verified members**, not only blocked ones? You already
+   proved Lists survive retention purges. If yes, that is permanent duplicate
+   memory **without MomLee storing anything itself** — it would satisfy the
+   2026-08-13 decision inside the existing privacy position.
+4. Is `personal_number` populated for an **Israeli passport and driving licence**,
+   or only for the ID card? (Israeli passports and licences do print the national
+   ID number, so this may be a smaller problem than it looks — but it needs
+   checking against a real payload, not the docs.)
+
+Item 3 is the one I would check first. It may make the whole national-ID debate
+unnecessary.
+
+### One thing worth designing for either way
+
+Whatever the rule ends up being, an auto-route to recovery should carry a
+**"this is not my account" exit into human review**. It costs one link and it
+handles identical twins, lookalikes and any false match — without needing a
+second matching signal at all.
+
+**Recorded in the OS:** the Blocking open question *What exactly is stored as the
+verified-identity key* now holds the full state of play, the four lookups, and
+the conflict. **Nothing was decided and no decision was flipped.**
+
+---
+
 ## 🔴 DECISION (Maor, 2026-08-14) — a verified phone creates a PROVISIONAL account, not a real one. This changes the signup path you already built.
 
 **The binding rule (Product Rule `auth_access.provisional_until_verified`):**
