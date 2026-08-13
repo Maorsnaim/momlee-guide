@@ -3,6 +3,64 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🔴 HIGH (Maor, 2026-08-14) — the 6-month retention breaks account recovery. Most of the investigation is already done; here is only what is left.
+
+**Maor's scenario, and it is the right one:** she verifies in 2026, changes her
+phone number in 2028, and starts registration again. We must still know she
+already has an account. **Today we would not.** At 6-month retention she reads
+as a brand-new person from month seven onward.
+
+### Please do NOT re-run the investigation — you already answered most of it
+
+Going back through IDV-9 and the admin-review task, these are settled **in
+writing** and should not be put to Didit again:
+
+- **Can we purge the images and keep a face reference? NO.** Didit's own words:
+  *"both the stored images and the associated face embeddings are removed... the
+  system no longer has the reference material required to perform face matching."*
+- **Does duplicate detection survive the purge? No** — dedup matches against
+  previous *sessions*, so the horizon equals the retention window. Currently
+  **6 months** (your ruling of 2026-08-12, set in the console).
+- **The ID-card-then-passport scenario is moot after a purge.** With no reference
+  left at all, the document type never gets a chance to matter.
+- **Lists are the one thing that persists** — *"they persist until you manually
+  remove them"*, independent of session retention.
+- Retention is configurable **30 days to 10 years**, plus a per-session delete API.
+
+### The reframe that matters
+
+**You made the 6-month call knowingly and it was reasonable — the context has
+since changed.** You wrote it yourself in IDV-9: *"The 6-month duplicate-face-
+detection horizon is accepted for MVP."* That was accepted when the trade was
+*privacy vs catching a second account*. **Account recovery did not exist as a
+requirement yet.** Now the same 6 months also decides whether a returning mom
+with a new number can get back into her own account. That is a different trade,
+and it deserves a fresh look rather than being carried forward by default.
+
+### What is actually still open
+
+1. **Can Lists hold ALL verified members, not only blocked ones?** (Also asked
+   below — this is now clearly the highest-value question. If yes, we get
+   permanent recognition without extending retention and without MomLee storing
+   anything itself.)
+2. **Does a Didit User / person ID persist after the session is purged?** Not
+   documented either way.
+3. **Can retention be set per category** (purge the media, keep the decision
+   record)? It reads as one app-level setting, but worth one question.
+4. **What does `face_privacy_mode_enabled` actually do?** You flagged it as
+   unknown in IDV-9 and it was never chased. It may be directly relevant here.
+5. **If none of the above works: does MomLee keep its own identity reference?**
+   That one is Maor's decision, and it is the fallback if Didit cannot hold the
+   memory for us.
+
+### One cost to keep in view before changing the number
+
+**The 6 months is already promised to users.** It is written into both the terms
+of use and the privacy policy Stories. Extending retention is not just a console
+setting — it changes a published commitment, and both texts have to move with it.
+
+---
+
 ## ❓ OPEN + 🔴 CONFLICT (Maor, 2026-08-14) — what is the identity key for duplicate detection. Four Didit facts needed from you, and the live code disagrees with two decisions.
 
 Maor is writing the rule that decides **verified identity → new user** vs
@@ -15,9 +73,11 @@ He has now seen the three findings and wants his view on record. These are his
 leanings, not rulings — the technical answers are yours to give, and on the third
 one the decision is explicitly yours.
 
-1. **The 12-month face memory is a real problem, not an acceptable trade.** After
-   twelve months the same woman reads as a brand-new person and can simply open a
-   second account. Please treat this as something to solve, not to live with.
+1. **The face-memory window is a real problem, not an acceptable trade.** Once it
+   lapses the same woman reads as a brand-new person and can simply open a second
+   account. Please treat this as something to solve, not to live with.
+   (Correction: an earlier version of this note said 12 months — it is **6**,
+   per your 2026-08-12 ruling. The problem is twice as sharp as first written.)
 2. **He is fairly convinced we need an identifying number — a face alone will not
    be enough.** He knows this pulls against the Amendment 13 minimisation you put
    in place, and he is not overruling that. If you think a number can be avoided,
@@ -40,9 +100,9 @@ know them better than anyone, so please correct me if I have any of them wrong:*
    them under Amendment 13 minimisation, after the Extra-fields PII leak.
    So "use the Israeli ID as the key" is not a free choice — it is **reversing a
    live privacy position**, and it needs to be argued as such.
-3. **Face memory is 12 months** (a retention purge deletes the embeddings).
-   Maor's 2026-08-13 decision requires a reference for the **life of the
-   account**. Face-only cannot satisfy that.
+3. **Face memory is 6 months** (a retention purge deletes the embeddings, and
+   retention is set to 6 months). Recognising a returning mom needs a reference
+   that lasts the **life of the account**. Face-only cannot satisfy that.
 
 ### 🔴 The conflict, for you to weigh in on
 
