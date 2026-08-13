@@ -3,6 +3,99 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🔴 DECISION (Maor, 2026-08-14) — a verified phone creates a PROVISIONAL account, not a real one. This changes the signup path you already built.
+
+**The binding rule (Product Rule `auth_access.provisional_until_verified`):**
+
+> A new verified phone does not create a canonical Momlee account until identity
+> verification confirms the person does not already belong to an existing one.
+
+Phone OTP proves she controls the number. That is all it proves. She becomes a
+real Momlee user only when Didit comes back clean. If Didit matches an identity
+we already have, **no second account is created** — she is routed to account
+recovery and the original account stays canonical. An **existing** phone still
+logs straight in as it does today and is never sent through onboarding.
+
+### The one distinction everything hangs on
+
+**A Supabase Auth identity is not a Momlee account.** OTP verification
+unavoidably creates an `auth.users` row — that is the auth event itself, and
+there is no point fighting it. So the provisional-vs-canonical line lives in
+**our** tables, never in the presence of an auth row.
+
+### How to build it safely
+
+1. **ONE marker, not three.** Add a single explicit column — `users.account_status`
+   (`provisional` / `active` / `suspended`) — set by the promotion step. Do **not**
+   derive "is she real" from a combination of *has the parent role* + *verification
+   approved* + *profile complete*. Three derivations means three places to get it
+   wrong, and they will disagree the first time a webhook retries. Everything in
+   the app asks that one column.
+2. **The database is what actually enforces uniqueness, not the code.** Put a
+   `UNIQUE` constraint on the identity reference (per the 2026-08-13 identity
+   cross-check decision). An application-level "have we seen this face" check is
+   UX; two verifications landing at the same moment is a race, and only the
+   constraint stops it. The check runs **before** promotion, in the same
+   transaction.
+3. **Promotion is one server-side function, and only the webhook may call it.**
+   Never from the client. It must be **idempotent** — Didit will retry. Granting
+   the `parent` role happens **inside** that same transaction, not on a separate
+   path.
+4. **Store onboarding data in the real tables, gated by the status** — not in a
+   parallel `onboarding_drafts` blob. A shadow schema means writing every field
+   twice and drifting the moment one side changes. The cost of doing it this way
+   is that **every read path must exclude provisional users**: feeds, member
+   lists, search, meetup attendee lists. Please put that predicate in one place
+   (a view or a single helper) rather than repeating it per query. If you think
+   the leak risk outweighs the duplication cost, say so and we will decide -
+   this one is a genuine trade-off, not a ruling.
+5. **RLS: re-audit every policy that assumes "authenticated = a real mom".**
+   Policies keyed on the `parent` role are already safe because the role now
+   follows verification. The exposed ones are any policy keyed on `auth.uid()`
+   alone. A provisional user may reach **her own onboarding data and nothing
+   else**. Also force a session refresh after promotion so any claim-based gating
+   updates.
+6. **Never delete the provisional record before recovery succeeds.** On an
+   identity match, freeze it — do not discard it on the way into recovery. If the
+   recovery then fails, deleting early leaves her with nothing at all.
+7. **Abandoned provisional accounts need a purge rule.** They hold children's
+   dates of birth, which is personal data about minors sitting in a record that
+   will never become an account. Propose a retention window and a purge job;
+   it needs a Privacy Note either way.
+8. **Analytics must survive promotion.** Capture a stable id at OTP and emit an
+   alias/identify mapping provisional id → canonical id at promotion, so the
+   funnel stitches instead of showing every mom dropping off at verification.
+   The `Support anonymous users` story in the OS already covers this pattern.
+
+### Already aligned — no change needed
+
+Your IDV-7 ruling (**the parent role follows verification approval**) is exactly
+this decision, one layer down. It stays. What changes is that the `users` row
+created by the signup trigger must now be born `provisional` rather than being
+treated as a finished account.
+
+### One honest limitation, so you do not over-promise it
+
+The two-attempt verification limit is **phone-scoped**. Someone who burns both
+attempts can start over with a different number and get two fresh ones — the
+identity cross-check cannot catch her, because a *failed* verification produces
+no identity to match against. Rate limiting and device signals mitigate it;
+nothing here makes it airtight. Fine for MVP, just do not describe it as such.
+
+Related: decide what happens to a provisional account that has **exhausted both
+attempts** — it is a dead end today (authenticated, no account, children's data
+stored, no path forward).
+
+### Still open, owned by Maor
+
+- The exact identity key format (Didit person id vs hashed document number).
+- Whether the provisional account's children data is merged or discarded on a
+  successful recovery.
+
+**Recorded in the OS:** Decision `A verified phone creates a provisional
+onboarding account, not a canonical Momlee account` (Decided) + Product Rule
+`auth_access.provisional_until_verified` (Approved, MVP, Backend + Frontend).
+
 ## 🔴 DECISION (Maor, 2026-08-13) — identity history is NOT deletable: every verification must cross-check face + document. This conflicts with the 6-month retention you set.
 
 **The decision.** On every Didit verification we must cross-check that **this
