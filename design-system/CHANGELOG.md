@@ -2,6 +2,26 @@
 
 > Maor-maintained. Flows to Sivan via git. Clear English (dev docs).
 
+## 2026-08-13
+
+- **Full token re-sync from the canonical Momlee 2.0 file** (Maor's 2026-08-12
+  confirmation: "the entire Tokens system has been completely changed — scan it
+  and change accordingly"; canonical URL fixed to node 191-3). The color system
+  is restructured and re-valued: brand `#b05f64 → #9d636b`, text
+  `#232323/#5d5d5d`, error `#b05550`, new surface/border semantics
+  (bg-surface/bg-canvas/bg-neutral-subtle/bg-brand-subtle,
+  border-subtle/primary/secondary/interactive/brand/error), badge +
+  featured-icon component colors. NEW groups: `letter-space/*` and `width/*`.
+- **Font flipped to Google Sans** (body = "Google Sans 17pt", display =
+  "Google Sans") per the 2026-07-19 decision of record — on web via
+  self-hosted variable woff2 subsets + `font-optical-sizing: auto`; native
+  static TTFs land at native revival.
+- Spacing/radius/type numeric scales observed unchanged; unobserved outer
+  steps carried over and flagged. Gap list (incl. the `text-on-unread` naming
+  question and raw 10px paddings) in tokens.md.
+- Mirrored into `@momlee/tokens` (tokens.ts + preset.ts) with per-line Figma
+  citations; web primitives Button/Input updated to the new classes.
+
 ## 2026-06-09
 
 - Initial snapshot seeded from the Mom onboarding flow. Font set to Noto Sans
