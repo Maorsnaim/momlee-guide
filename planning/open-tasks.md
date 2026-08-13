@@ -3,6 +3,74 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🔴 DECISION (Maor, 2026-08-14) — after recovery she CHOOSES her login phone. Never replace it silently. Plus one trap and one hole.
+
+**The rule (`auth_access.explicit_phone_replacement`):** an existing account's
+login phone is **never** replaced just because a different number was typed
+during onboarding. Replacement requires all three:
+
+1. the new number passed OTP,
+2. ownership of the existing account was proven through recovery,
+3. **she explicitly confirmed** on a dedicated screen.
+
+The confirmation screen shows the old number masked (`••••0902`) and the new one,
+explains that ownership is proven, and asks which one she wants to sign in with.
+**Primary CTA = use the new number** (it is the one she chose to start with).
+Secondary = keep the old one. Either way she lands in the **existing** account,
+history and relationships intact, and no second account is created.
+
+The reasoning worth keeping: a successful code on the old number proves
+**ownership**, not **preference**. And typing a new number at the start says
+nothing about wanting to give up the old one. Both directions need her say-so.
+
+### ⚠️ The engineering trap — ordering against Supabase Auth
+
+If she picks the new number, the phone has to move onto the **canonical**
+account's auth identity — but the **provisional** auth identity created at the
+start of this flow is currently holding that exact number, and **Supabase Auth
+enforces phone uniqueness**. So the provisional identity's phone must be released
+**before** the canonical account can take it. Get the order wrong and you can end
+up with both identities broken and her locked out of both. Please make this one
+transaction with a defined order, not two independent updates.
+
+### 🕳 The hole in the "keep the old number" branch
+
+If she keeps the old number, she has just proven control of a new number that the
+system then **forgets**. Next time she signs in with it, she is a stranger again:
+new onboarding, Didit, identity match, recovery — **the same loop, forever.**
+
+Three ways out, and this needs a decision:
+1. Store the new number as a **known non-login number** on the account, so login
+   routing recognises it and sends her to sign in rather than onboarding.
+2. Tell her plainly on the confirmation screen: *"you will not be able to sign in
+   with 052-...-1234"*. Cheapest, and honest.
+3. Accept the loop. I would not.
+
+Option 1 conflicts slightly with "one primary login phone only" — it is not a
+second login phone, it is a recognised alias. Your call.
+
+### Your remaining questions, with my read
+
+- **Is the old number removed after replacement?** Recommend: removed as a login
+  credential, retained in the security audit log. It is the single most useful
+  record if the change is ever disputed.
+- **Security notification: yes, and send it to the OLD number.** A phone change is
+  a classic account-takeover step. Send it **as part of the change, while the old
+  number still receives** — afterwards is too late to warn anyone. Also to a
+  verified email if we have one.
+- **More than one login phone?** Current direction is one. Nothing here needs to
+  change that (see the alias option above).
+- **Admin visibility + audit log:** yes to both. Phone changes belong in the
+  account security audit log alongside the verification decisions already there.
+
+**Maor owes the Figma screen** for the confirmation step — it is a new one, on top
+of the recovery screens already on his list.
+
+**Recorded in the OS:** Decision *After recovery the mom chooses her login phone*
+(Decided) + Product Rule `auth_access.explicit_phone_replacement`.
+
+---
+
 ## 🔴 HIGH (Maor, 2026-08-14) — the 6-month retention breaks account recovery. Most of the investigation is already done; here is only what is left.
 
 **Maor's scenario, and it is the right one:** she verifies in 2026, changes her
