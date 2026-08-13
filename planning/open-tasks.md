@@ -53,11 +53,16 @@ and it deserves a fresh look rather than being carried forward by default.
    That one is Maor's decision, and it is the fallback if Didit cannot hold the
    memory for us.
 
-### One cost to keep in view before changing the number
+### The legal texts are NOT a constraint here
 
-**The 6 months is already promised to users.** It is written into both the terms
-of use and the privacy policy Stories. Extending retention is not just a console
-setting — it changes a published commitment, and both texts have to move with it.
+An earlier version of this note said that changing the retention window means
+changing a published commitment. **Maor's correction, and he is right: the app has
+not launched.** There are no users and nothing has been promised to anyone. The
+terms of use and privacy policy are **drafts**, so the number in them simply
+follows whatever we decide — it does not constrain the decision.
+
+**Pick the retention window on the merits first, then write it into the drafts.**
+Not the other way round.
 
 ---
 
