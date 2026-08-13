@@ -13,6 +13,26 @@ This registry is the **first stop of the mandatory Component Reuse Audit**
 search BOTH tables below, then the Figma inventory, then the code — and show
 the audit. Every CREATE verdict must add its row here in the same change.
 
+## The shared component contract (ADR-016) — format + registry
+
+> Added 2026-08-13 (Sivan's build, per the Story
+> `platform.web_design_foundation.wire_tokens_and_contract`). **One Figma
+> component = ONE row = up to two implementations** (native RN+NativeWind in
+> `packages/ui`, web DOM+Radix+Tailwind in `apps/web/src/components/ui/primitives`)
+> sharing the same name, the same props API, the same Figma node and the same
+> tokens. A row with one implementation is a component the other platform has
+> not needed yet — never a license to fork the API.
+
+**Row format:** `| Component | Figma node | Shared props API | Native | Web | Notes |`
+
+| Component | Figma node | Shared props API | Native | Web | Notes |
+|---|---|---|---|---|---|
+| AppText | none — text primitive | `align: 'right'\|'center'\|'ltr'` · `weight: regular\|medium\|semibold\|bold` | ✅ `packages/ui` | ✅ `apps/web` | sanctioned divergence: native = per-weight family (fontByWeight), web = font-weight utilities |
+| Button | `3287:427074` (old file — 2.0 twin remap pending) | `kind: text\|icon(\|social native-only)` · `hierarchy: primary\|secondary\|tertiary\|link-color\|link-gray` · `size: xs\|sm\|md\|lg\|xl` · `loading` · `label` | ✅ | ✅ (no social yet) | colors via token classes only; 2.0 values since the 2026-08-13 sync |
+| Icon | `3463:407484` (old file — 2.0 twin = the lucide set) | `name` (semantic `forward`/`backward` mirror per direction) · `size` · `color` | ✅ SVG assets | ✅ inlined paths | lucide is the official library (Maor 2026-07-30); pinned `lucide-react`/`-native` adoption is a build task |
+| Input | `17297:8153` (old file — 2.0 twin `Forms / Input`) | `value` · `onValueChange` · `state: Empty\|Focused\|Filled\|Error\|Disabled` · `error` · `startExtras`/`endExtras` · `align` | ✅ | ✅ | **the composition contract (Maor 2026-08-10): Input NEVER grows a label** — labels/helper/error text live in the `Field` wrapper |
+| Field | `Forms / Field` (2.0; node-id pending — not instanced on the Mobile page, master on `↳ Inputs`) | `showTitle` (Figma `Show Field Title`) · `title` (Figma `Text`) · composes ONE `Input` | — | ⏳ blocked on the node link | first component of the 2.0 build-out; visual spec (label typography/gap) must come from the node, never invented |
+
 ## Observed components (seed)
 
 From the Mom onboarding Figma. **All are "planned" — not built yet.**
