@@ -3,6 +3,85 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🔴 DECISION (Maor, 2026-08-14) — a previously verified email can recover an account. ⚠️ It does not exist yet, so today this method is dead on arrival.
+
+**The rule (`auth_access.pre_existing_contact_recovery`):** a recovery method is
+valid only if the contact was attached to the account and **verified before this
+recovery attempt began**, the account still holds it as valid, and it was not
+replaced by an unverified contact during the current flow. **An email added or
+verified during the current onboarding never recovers an older account.**
+
+When both an accessible old phone and a verified email exist, she **chooses**
+where the code goes (`••••0902` or `n•••@momlee.app`). Only genuinely available
+methods are shown. **One approved method is enough** — never both. After success
+the flow continues to the phone-number choice from the decision below. With **no**
+method available, the case goes to manual review.
+
+### ⚠️ This cannot work today — I checked
+
+- `public.users` has an `email` column but **no verified flag**. Verification
+  state exists only as `auth.users.email_confirmed_at`.
+- **There is no email verification anywhere in the web app.** Zero references to
+  `email_confirmed_at`, `email_verified` or any confirm-email flow in
+  `apps/web/src`. (The 17 confirmed emails in the DB are legacy email/password
+  test accounts from before the phone-OTP pivot, not moms from the new flow.)
+
+So unless email verification is built, **every mom who loses her old number falls
+straight to manual review**. Two things are needed: an application-level
+`email_verified_at` (the auth timestamp alone will not carry the "was it verified
+*before* this attempt" test), and an actual verification step somewhere in the
+product. Worth deciding whether that lands in MVP — the answer decides whether
+Section 7 handles a trickle or everybody.
+
+### Use a CODE, not a magic link
+
+MomLee is a **mobile-only PWA**. A magic link opens in whatever browser handles
+the mail app, which is not the PWA context holding the session — she taps it and
+lands somewhere that knows nothing about her flow. A 6-digit code typed back into
+the screen she is already on has none of that failure mode.
+
+### An attack this rule does not yet close
+
+Someone with brief access to an account could add an email today; **weeks later it
+is "previously verified"** and satisfies the rule perfectly. The wording defends
+against same-session abuse, not patient abuse. The usual mitigation is a
+**minimum age before a newly added contact becomes recovery-eligible** (say 7-30
+days), plus notifying the *existing* contacts when a new one is added. Not
+inventing a number — flagging that it needs one.
+
+### One interaction to respect
+
+The method chooser reveals that an account exists and roughly what contacts it
+has. For a **blocked** account the no-hint rule says reveal nothing — so the
+chooser must **not render at all** there. The two rules only coexist if the
+blocked check happens before the chooser.
+
+### Audit
+
+Log the attempt time, the method (`phone` / `email`), success or failure, the
+account id, the provisional session reference, and the resulting phone decision.
+**Never the OTP, and never the full address or number** — the method name is the
+useful part; the value is what makes an audit log a liability.
+
+**Recorded in the OS:** Decision *A previously verified email recovers an account*
+(Decided) + Product Rule `auth_access.pre_existing_contact_recovery`.
+
+---
+
+## ✅ MAOR DECIDED (2026-08-14) — the forgotten new number: keep it as a recognised alias
+
+On the "keep the old number" branch below, Maor chose **option 1**: store the new
+verified number as a **known non-login number** on the account, so login routing
+recognises it and sends her to **sign in** rather than into onboarding.
+
+It is **not** a second login phone — the "one primary login phone" direction
+stands. It is an alias that exists purely so the identity-match-and-recover loop
+does not repeat every time she uses that number. Both numbers are proven at this
+point, so recording the one she is not signing in with costs nothing and closes
+the loop.
+
+---
+
 ## 🔴 DECISION (Maor, 2026-08-14) — after recovery she CHOOSES her login phone. Never replace it silently. Plus one trap and one hole.
 
 **The rule (`auth_access.explicit_phone_replacement`):** an existing account's
