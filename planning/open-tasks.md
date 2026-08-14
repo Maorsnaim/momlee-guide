@@ -3,6 +3,70 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🔴 DECISION (Maor, 2026-08-14) — a pregnancy EXPIRES, and its outcome is never inferred. ⚠️ None of this model exists yet.
+
+This answers the gap I raised on child matching, and it goes further: **it is a
+global product rule, not a recovery workaround.**
+
+**A pregnancy is never matched by the children 2-of-3 rule.** It has its own logic
+based on the due date, the pregnancy status, a possible resulting child, and
+**her confirmation**.
+
+### ⚠️ Verified against the live DB today — there is no pregnancy model at all
+
+`public.children` holds only `id, parent_id, gender, birth_date, name,
+is_focus_baby, created_at`. **No pregnancy table. No due date. No status. And no
+soft-delete column**, despite the family rules requiring soft delete.
+
+So this is not a change to an existing model — **it is the model being defined for
+the first time.** That is good news: no migration pain, no legacy states. But it
+also means the four states below have to be designed properly now, not retrofitted.
+
+### The state model
+
+`ACTIVE` · `RESOLVED` (outcome known) · `HISTORICAL UNRESOLVED` (expired, outcome
+unknown) · `SOFT-DELETED`.
+
+⛔ **Never delete a pregnancy just because `due_date < today`.** Keep enough state
+for history and for future reconciliation.
+
+### Expiry — global, not recovery-only
+
+Once **due date + grace period** passes, the pregnancy becomes eligible for the
+expired state and **stops rendering as a current pregnancy** in Family and Profile.
+A mom returning months or years later is never still shown as pregnant. The grace
+period exists because the due date is an estimate, birth can be late, and she may
+not update immediately. **Maor still owes the exact length.**
+
+### 🔴 Never infer the outcome — this is the sensitive one
+
+Closeness between a child's DOB and the due date, **and even a matching sex**, may
+**suggest** a link. They never establish it. **She confirms, or nothing happens.**
+
+- **"ילדתי"** → the existing add-child flow, prefilled with what is known; she
+  still supplies the name and the actual date of birth. Then resolve the pregnancy.
+- **"ההריון הסתיים"** → resolve without creating a child.
+- **"מעדיפה לא לעדכן"** → stays historical-unresolved, **never reactivated, and
+  never asked again and again.**
+
+⛔ **No copy may assume a birth before she has confirmed it.** A pregnancy can have
+a painful outcome the system does not know about. This is the one place in the
+product where a wrong default sentence does real harm.
+
+### One case that is not a conflict
+
+An old expired pregnancy and a **new current** one are **separate events**. Never
+show a "which due date is correct?" screen between them.
+
+**Recorded in the OS:** Decision + two Product Rules (`pregnancy_expiry`,
+`pregnancy_outcome_never_inferred`) + a Story + a Task carrying the schema finding.
+
+**Maor owes 5 Figma states:** old pregnancy with a likely matching child · old
+pregnancy with no known outcome · confirm birth into Add Child · pregnancy ended ·
+prefers not to update. Reuse the existing Family / Already Gave Birth components.
+
+---
+
 ## 🔴 DECISION (Maor, 2026-08-14) — child matching is 2-of-3 on name, DOB and sex. Plus five gaps the rule does not cover.
 
 **The rule (`auth_access.child_record_matching`)** — compare only **first name,
