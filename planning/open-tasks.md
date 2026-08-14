@@ -3,6 +3,54 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🔴 DECISION (Maor, 2026-08-14) — recovery UPDATES the existing account. Never migrate it into a new one. ⚠️ One ordering contradiction to resolve.
+
+**The existing `user_id` stays.** ⛔ The pattern *copy everything into a new
+account → delete the old one* is **banned**, because chats, meetup participation,
+connections, reports, blocks, family, verification history and analytics all hang
+off that identifier. Recover and update — never replace.
+
+**No partial state may survive** (`auth_access.canonical_account_preserved`): not
+a new number attached without recovery finalised, not a provisional account left
+active, not two canonical accounts sharing one verified identity, not duplicate
+children, not a wrongly restored pregnancy, and **not a user signed in to the
+provisional account instead of the recovered one**.
+
+### Three engineering points, and the second is a real contradiction
+
+1. **"One controlled operation" cannot be one database transaction.**
+   Reconciliation may wait on her for minutes or days; you cannot hold a
+   transaction open across that. The correct shape is a **persisted recovery state
+   machine**: *phase A atomic* (ownership established, recovery marked in
+   progress) → *phase B resumable* (reconciliation, possibly with her) → *phase C
+   atomic* (the cutover). **A crash mid-way must leave a resumable state, never a
+   broken one.**
+2. **⚠️ The 17-step sequence contradicts itself.** Step 9 performs the phone
+   change, but step 16 only retires the provisional identity at the end — while
+   **that identity is still holding the exact number** and the platform enforces
+   phone uniqueness. **The phone cutover and the provisional teardown are the same
+   operation.** Either the phone move goes to the end with step 16, or the
+   provisional identity releases the number at step 9. **Maor should pick one
+   explicitly**, because either reading is defensible and the wrong guess locks her
+   out of both accounts.
+3. **The session switch does not happen by itself.** After recovery she is still
+   authenticated as the *provisional* identity. An explicit move of the session to
+   the canonical user is required — **it is the mechanism that prevents forbidden
+   state number six**, and it is easy to leave out because everything else looks
+   correct in the database.
+
+### Analytics — one line that decides whether the numbers are right
+
+**Alias the provisional id to the canonical one; never re-key history.** And
+**count a verified user off the canonical promotion, not off a successful Didit
+session** — otherwise every recovered mom is counted twice, because her Didit
+verification *did* succeed, that is exactly what routed her here.
+
+**Recorded in the OS:** Decision + Product Rule + a Critical System Story
+(`finalise_recovery`, Ready for Dev) + a Task carrying all three points.
+
+---
+
 ## 🔴 DECISION (Maor, 2026-08-14) — a pregnancy EXPIRES, and its outcome is never inferred. ⚠️ None of this model exists yet.
 
 This answers the gap I raised on child matching, and it goes further: **it is a
