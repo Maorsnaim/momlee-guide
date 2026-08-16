@@ -3,6 +3,63 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## ✅ FIXED BY MAOR (2026-08-16) — the "stale typography sheet" was a DUPLICATE COLLECTION. Rebound, and your code was right.
+
+**You asked for the ↳ Typography sheet to be rebound. Done — and the root cause
+was not stale values.**
+
+### What was actually wrong
+
+**There were two variable collections both named `6. Typography`.**
+
+| Collection | display lh (lg / xl / 2xl) | Bindings pointing at it |
+|---|---|---|
+| legacy (`1:8`, a library collection) | **60 / 72 / 90** | **228** |
+| Momlee 2.0 local (`88:936`, 35 vars) | **56 / 68 / 80** | 8 |
+
+So **228 of 237 bindings on the text styles pointed at the legacy collection.**
+Same names, so nothing looked wrong in the UI — the styles were bound correctly
+*by name* and to the wrong *collection*.
+
+### What Maor did
+
+All **229** off-collection bindings were rebound to the 2.0 collection —
+`fontSize`, `lineHeight`, `letterSpacing`, `fontFamily`, `fontStyle`.
+**Verified after the fact: 237 bindings, all on 2.0, zero stray.** The legacy
+collection now has no local variables and is no longer referenced.
+
+Sample after the fix: Display 2xl 72/**80** · Display xl 60/**68** ·
+Display lg 48/**56** · Text 2xs 10/**14**.
+
+### ✅ Your code was right — do not change it
+
+`@momlee/tokens` already carries 56/68/80/14 from the 2.0 collection. **Figma now
+matches the code**, not the other way round. Nothing to re-sync.
+
+**One bonus worth knowing for native:** the rebind also corrected
+`Font weight/semibold` from `"Semibold"` to `"SemiBold"` — which is the actual TTF
+style name (`GoogleSans-SemiBold.ttf`). On native the style string must match the
+file exactly, so this one mattered more than it looks.
+
+### Also checked, so you can drop them from your list
+
+- **Fonts:** web is fully done (self-hosted variable Google Sans, Hebrew subset,
+  `font-optical-sizing:auto`). Tokens are on Google Sans. **Mobile is still Noto
+  by deliberate deferral** — native is frozen and the code says so. Left alone.
+- **The "raw -2px letterSpacing on Display xl"** you flagged: it is actually on
+  **`Text sm/Bold`**, and the unit is **percent, not px** (`-2%`), and it is
+  unbound. Still open — see below.
+
+### Small design items still on Maor (not blockers)
+
+- `Display 2xl/Medium` resolves to **Bold**, and `Text xl/Semi Bold` resolves to
+  **Medium** — bound to the wrong weight variable.
+- `Display xl/Regular` and `Display xl/Medium` have **no `fontStyle` binding**.
+- `Text sm/Bold` letterSpacing is raw `-2%` and unbound (its siblings use
+  `Letter Space/text` = 0.4).
+
+---
+
 ## ⚠️ CORRECTION + ❓ OPEN (2026-08-16) — the phone-change security notice. I got this wrong earlier; here is the corrected version.
 
 ### 🔴 First, a correction to something I pushed on 2026-08-14
