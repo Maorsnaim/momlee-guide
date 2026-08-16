@@ -6,6 +6,44 @@
 
 ## Tasks for Maor
 
+### 🚨 2026-08-16 — URGENT BLOCKER: we need the Variable COLLECTIONS (the Local-variables tables) to finish the token basics + full ❖ Variables scan findings
+
+The token basics are being closed against Momlee 2.0 (Sivan pasted every ❖
+Variables sub-page). Typography is fully synced from the sheet; the asset pages
+are inventoried (registry on the Web Design System Foundation Feature page in
+the OS). **One thing blocks completion:**
+
+- [ ] **The color/spacing/radius/width definitions are nowhere on the canvas.**
+  The ↳ Colors page contains raw swatches (no variable bindings, auto layer
+  names), and there are no sheets at all for spacing/radius/widths — so the
+  ONLY source of the name→value tables is the **Local variables window**
+  (the `{}` / left-rail "Variables" button — a popup, not a page). Please open
+  it and, for EVERY collection listed on the popup's left side, send a
+  screenshot of the full table (scroll so every row's name + value is visible)
+  — via Sivan or any channel. Until these arrive the code carries flagged
+  stand-in values for: input Focused/Disabled colors, shadows/focus-ring, and
+  the outer spacing/radius steps. **This is the current blocker for the whole
+  build.**
+
+**Findings from the scan — design hygiene, fix at your convenience:**
+
+1. **↳ Typography (22-98):** some display specimens are still bound to
+   Noto Sans Hebrew; the Display xl styles carry a RAW `-2px` letterSpacing
+   (off-token); `font-size/text-2xs` (10px) is paired with
+   `line-height/text-xxs` = **8px** (smaller than the font — intended? also
+   note the 2xs/xxs naming mismatch); one specimen binds `display-2xl → 60px`.
+2. **↳ Icons (91-299):** 8 glyphs lack the `lucide/` prefix (coffee,
+   footprints, waves-ladder, ice-cream-cone, utensils-crossed, dumbbell,
+   loader, mail); `lucide/heart` exists TWICE (92:480 and 199:5682); only
+   `chevrons-left` exists (no right/up) — fine, mirroring is code-side, just
+   noting.
+3. **↳ Avatars (8-190):** the property name "Placholder text" is misspelled
+   (we will never copy it into code); `Avatar Add Button` md/lg states are
+   unnamed defaults ("State5"–"State12"); `User Avatar` sizes skip `xl`
+   (2xs…lg, then 2xl); the `Logo` wordmark skips `sm` (xs→md).
+
+### 🧩 (previous entries below)
+
 ### 🎨 2026-08-13 — Token sync DONE from Momlee 2.0 + three findings from the scan (Sivan approved raising all of them)
 
 The full token re-sync you green-lit yesterday is built: `@momlee/tokens` now
