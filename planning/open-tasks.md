@@ -3,6 +3,86 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🆕 THE ACCOUNT RECOVERY FLOW IS DESIGNED (Maor, 2026-08-17) — 11 screens, ~57k characters of annotation. Read this before you touch it.
+
+**Section `Account Recovery` — `1034:38367`, on the `↳ Mobile` page.**
+
+### When this flow triggers — the system-level rule
+
+**An existing mom re-onboards from scratch** (new phone, full onboarding), and at
+the Didit step **her face and/or her identity document are recognised as already
+present in the system**. At that moment she is not a new user and must not get a
+second account — she is routed here to **prove she owns the existing one**.
+
+Everything upstream of this flow is the provisional-account model already in the
+channel: the new phone only ever created a provisional identity, and the existing
+account stays canonical throughout.
+
+### The 11 screens
+
+| # | Screen | Annotated |
+|---|---|---|
+| 10.1 | Recovery method — **Phone selected** (default) | ✅ 10.1k chars |
+| 10.2 | Recovery method — **Email selected** | ✅ 8.7k |
+| 11.1 | Phone OTP — default | ✅ 3.6k |
+| 11.2 | Phone OTP — filled | ✅ 2.4k |
+| 11.3 | Phone OTP — **error** | ❌ **empty** |
+| 12.1 | Email OTP | ✅ 2.3k |
+| 12.2 | Email OTP — filled | ✅ 1.5k |
+| 12.3 | Email OTP — **error** | ❌ **empty** |
+| 13.1 | Manual team review — request sent | ✅ 16.7k |
+| 14.1 | **Main phone selection** | ✅ 12.5k |
+| 15.1 | **Finalizing recovery** | ❌ **empty** |
+
+### ⛔ What you must NOT invent — the annotations say so themselves
+
+The annotations deliberately stop at 19 points and instruct that the value be
+surfaced rather than guessed. The ones that will actually block you:
+
+- **OTP expiry, attempt limit, resend limit, rate limits** — undefined in every
+  OTP annotation. Already an open question in the OS. **Do not pick numbers.**
+- **Manual-review recipient address/list** — not supplied.
+- **Admin role / permission names** for approving a recovery — not supplied.
+- **Audit schema and field naming** — not supplied.
+- **Backend recovery-state names** — not supplied.
+
+Several other "not provided" notes are just **missing cross-references**, not
+missing design: 10.1/10.2 say "the OTP screen route has not been provided" and
+"the error-state screen has not been provided" — **those screens exist** (11.1,
+12.1, 11.3, 12.3). They only need naming.
+
+### What is already nailed down, so you can build against it
+
+- **The copy trap is handled.** The screen says *"בואי נאחד את החשבונות"* and the
+  annotation explicitly warns this is **user-facing copy only** — it is **not** a
+  merge of two canonical accounts. The existing account stays canonical.
+- **The backend decides eligibility, never the frontend.** The client may say
+  "phone method selected" but must never supply the destination. Masked values
+  should reach the client already masked.
+- **Method isolation:** a Phone OTP must never validate an Email challenge, and a
+  code from another recovery attempt must never be accepted.
+- **PWA navigation bypass is covered** — browser back/forward, refresh, reopening
+  the PWA and direct URL must all be resolved from **trusted persisted state**,
+  not from a hidden Back button.
+- **14.1 already names the Supabase phone-uniqueness constraint** and warns
+  against a partial transfer that could lock her out of both — the exact trap
+  flagged in the channel earlier.
+
+### ⚠️ Four things Maor still owes, and they are not cosmetic
+
+1. **`15.1 FinalizingRecovery` has no annotation** — and it is the cutover step:
+   phone swap, provisional teardown, session switch, audit. **Do not build it
+   from inference.**
+2. **Both OTP error screens are empty.**
+3. **A blocked account is not excluded from this flow.** 10.1 lists five cases
+   that must never reach the method chooser, but **a blocked/banned account is
+   not one of them** — and this screen reveals that an account exists plus masked
+   contacts. Hold until Maor rules.
+4. **No outcome screens for manual review** — 13.1 covers "request sent" only.
+   There is no approved / rejected / still-pending screen.
+
+---
+
 ## ✅ FOUR MORE FIXED (Maor, 2026-08-17) — focus ring, two orphan tokens, radius-full. Plus your sm/lg question answered.
 
 ### 1. ✅ The focus ring — fixed, and it IS a visible change
