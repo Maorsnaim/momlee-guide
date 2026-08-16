@@ -3,6 +3,57 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 📧 THE EMAIL TEMPLATES EXIST — page `↳ Email Templates` (`950:16786`). Registered in the OS, and one contradiction to fix.
+
+Maor asked to confirm these exist and make sure everyone knows. **They do.** Four
+components, now registered in the OS **Components** DB with their Figma links:
+
+| Component | Node | Axes |
+|---|---|---|
+| **Email Template** | `950:17498` | `Device`: Mobile / Desktop · `Type`: Admin System / Users / For Users |
+| **Email Template Footer** | `950:17271` | `Email Type`: Marketing / Transactional / System Admin |
+| **Momlee Team Signature** | `953:17684` | — |
+| **Slogan Footer Line** | `953:17824` | — |
+
+**Every outgoing email is built from these.** Do not create a new email layout.
+
+### The footer choice is a LEGAL decision, not a visual one
+
+- **Marketing** footer carries the unsubscribe link and the consent explanation
+  (*"קיבלת הודעה זו מאחר שאישרת לקבל..."*).
+- **Transactional** footer states it is an automated message (*"זוהי הודעה
+  אוטומטית... אין להשיב"*).
+
+**A transactional email must never carry the marketing footer, and the reverse is
+worse** — a marketing email without the unsubscribe/consent block is a compliance
+problem, not a design slip. Pick the footer from the email's **Message Category**,
+never by eye.
+
+### ⚠️ A contradiction to resolve before you wire the recovery email
+
+The `13.1` annotation says: *use `950:17498` with **`Email Type = System Admin`***.
+
+**That combination does not exist.** `950:17498` (**Email Template**) has
+`Device` + `Type`, and its admin value is **`Type = Admin System`**.
+`Email Type = System Admin` lives on a **different component** — the **Footer**
+(`950:17271`).
+
+So the internal recovery-alert email is: **Email Template `Type = Admin System`**
++ **Footer `Email Type = System Admin`**. Two components, two properties. Maor to
+confirm the wording is corrected on the annotation.
+
+### Two naming inconsistencies reported to Maor
+
+1. `Email Template.Type` has **both `Users` and `For Users`** — and they split by
+   device (Mobile uses `Users`, Desktop uses `For Users`). Same concept, two names.
+2. **`Admin System`** (Template) vs **`System Admin`** (Footer) — same concept,
+   reversed word order. This is exactly what produced the contradiction above.
+3. Minor: the component is spelled **`Slogen`** in Figma (should be `Slogan`) —
+   registered under the correct spelling in the OS, **do not copy the typo into
+   code**.
+
+---
+
 ## ⚖️ MANUAL RECOVERY — THE REMAINING RULINGS (Maor, 2026-08-17). One of them raises the bar on the whole review policy.
 
 Updates the `13.1` addendum below. **The resume link and the rejection are now
