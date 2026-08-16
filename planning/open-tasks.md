@@ -3,6 +3,50 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## ⚖️ MANUAL RECOVERY — THE REMAINING RULINGS (Maor, 2026-08-17). One of them raises the bar on the whole review policy.
+
+Updates the `13.1` addendum below. **The resume link and the rejection are now
+decided; the OTP values are downgraded.**
+
+### The resume link — decided
+
+| | |
+|---|---|
+| **Lifetime** | **24 hours** from issuance |
+| **Use** | single-use, consumed on first successful use |
+| **Expired or unused?** | the representative **generates a new one from the Admin system** |
+| **On reissue** | **any previous unused link for that request is invalidated** |
+
+Everything else stands: bound to the request + account + provisional context,
+unguessable, revocable, audited on every issuance, and it **resumes** the flow
+rather than completing it.
+
+**This is a build item for you** — the Admin system needs an "issue / reissue
+recovery link" action with that behaviour.
+
+### 🔴 Rejection is FINAL — and this changes what the reject button costs
+
+**A rejected manual recovery request cannot be resubmitted.** No second request
+for that identity, no link, ever. **An email must be sent to the user** telling
+her the outcome (copy not yet approved — do not invent it; and it must not read as
+an accusation or imply any account is blocked).
+
+**The consequence, stated plainly so nobody discovers it later:** a wrongly
+rejected woman **loses access to her account permanently, with no route back
+through the product.** There is no appeal path in the design.
+
+So the reject action is the most consequential control in this whole flow.
+**Do not ship a reject button before the manual review policy exists** — the
+evidence bar, who may approve, whether a second approver is required, and the
+audit fields. That policy is still the open Blocking question in the OS.
+
+### The OTP security values — **downgraded to important, not urgent**
+
+Maor's call. Still yours to decide and still gating implementation of the OTP
+step, but it is not blocking you today. The OS task priority was lowered to match.
+
+---
+
 ## 🔴 THREE MORE RULINGS ON ACCOUNT RECOVERY (Maor, 2026-08-17) — one of them is a security hole you must not build past, and one is urgent and yours
 
 ### 1. 🔒 A blocked account must NEVER reach the recovery method chooser
