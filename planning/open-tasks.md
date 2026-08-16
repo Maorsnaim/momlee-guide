@@ -3,6 +3,68 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🔴 THREE MORE RULINGS ON ACCOUNT RECOVERY (Maor, 2026-08-17) — one of them is a security hole you must not build past, and one is urgent and yours
+
+### 1. 🔒 A blocked account must NEVER reach the recovery method chooser
+
+**Added as an addendum on `10.1` and `10.2`.** The exclusion list on those screens
+named five cases; **a blocked / banned / suspended account was missing from it.**
+
+Why it matters more than the others: **that screen reveals an account exists and
+shows two masked contacts.** For a blocked woman that IS the leak — it confirms
+her account is still there and hands her hints to work with.
+
+- The blocked check runs **BEFORE the chooser renders**, never as a failure after
+  she picks a method.
+- **No hint of any kind**: no masked phone, no masked email, no different wording,
+  **and no different timing** that could be measured.
+- She falls through to **the same neutral screen any non-matching identity gets**.
+- Same rule on the Manual Review path — a blocked account must not be able to open
+  a request that reveals the account exists.
+
+### 2. What happens after a manual review — **and there is no "approved" screen**
+
+**Added as an addendum on `13.1`.** Maor's ruling: the outcome arrives **by email
+within up to 72 hours**, and the process is run **by a Momlee representative**.
+
+**On approval the representative sends a single-use resume link** that drops her
+back into **`14.1 MainPhoneSelection`** — she picks her phone and continues through
+the normal finalization. So the email *is* the approval; no new screen is needed.
+**The Admin system needs this capability** — that is on you.
+
+⚠️ **That link grants access to an existing account, so it is an authentication
+step:** single-use, expiring, **bound** to the request + account + provisional
+context, unguessable, **revocable**, audited on issue/use/expiry/revoke, and it
+must **resume** the flow rather than complete it — it can never skip the phone
+decision or the controlled finalization.
+
+**On rejection:** email too, no access, **no link**, and never worded as an
+accusation or implying a block.
+
+### 3. 🚨 URGENT AND YOURS — the OTP security values
+
+**Task opened in the OS** (High, under *Mom verifies her phone via OTP*).
+
+Maor's point, and it moves this up your queue: **these values gate the ONBOARDING
+OTP as well** — the very first step every mom takes — not just recovery. Every
+recovery annotation deliberately refuses to invent them, so **implementation is
+blocked until you decide.**
+
+Decide: code lifetime · max verification attempts · max resends + cooldown · rate
+limits (per phone / email / account / IP) · what happens when a limit is reached ·
+whether onboarding and recovery share counters · whether switching Phone↔Email
+resets anything (**the annotations say it must not**) · and that limits survive
+refresh and PWA reopen (**server-side store, not client state**).
+
+**Same pass:** the lifetime of the representative's resume link from (2).
+
+Already fixed by the annotations and **not open for reinterpretation**: codes never
+reach the frontend, a URL, analytics or logs; a code is bound to account + attempt
++ method; a Phone code can never validate an Email challenge; consumed and expired
+codes never replay; the UI never reveals whether a digit was right.
+
+---
+
 ## ✅ ALL 11 ACCOUNT RECOVERY SCREENS ARE NOW ANNOTATED (2026-08-17) — the three empty ones are filled
 
 Follow-up to the review below. The three screens that had **no annotation** now
