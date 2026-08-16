@@ -6,7 +6,9 @@
 
 ## Tasks for Maor
 
-### 🚨 2026-08-16 — URGENT BLOCKER: we need the Variable COLLECTIONS (the Local-variables tables) to finish the token basics + full ❖ Variables scan findings
+### ✅ HANDLED same day (2026-08-16): Sivan delivered the collections herself (plugin export + panel screenshots) — the token basics are COMPLETE, zero stand-ins (see design-system/tokens.md + CHANGELOG). ONE NEW FINDING for you: the ↳ Typography sheet's specimens bind STALE line-heights (display-lg 60 / display-xl 72 / display-2xl 90 / text-2xs 8) — the collections define 56/68/80/14; please rebind the sheet. Also resolved: the "raw link hexes" flag — `#835258`/`#9d636b` in running text ARE the `text-link`/`text-brand-display` tokens.
+
+### ~~🚨 2026-08-16 — URGENT BLOCKER: we need the Variable COLLECTIONS (the Local-variables tables) to finish the token basics + full ❖ Variables scan findings~~
 
 The token basics are being closed against Momlee 2.0 (Sivan pasted every ❖
 Variables sub-page). Typography is fully synced from the sheet; the asset pages

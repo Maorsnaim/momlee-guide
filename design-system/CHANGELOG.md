@@ -2,6 +2,26 @@
 
 > Maor-maintained. Flows to Sivan via git. Clear English (dev docs).
 
+## 2026-08-16
+
+- **The token basics are COMPLETE — zero stand-ins.** The full Momlee 2.0
+  variable set (466 variables across 6 collections) is mirrored in
+  `@momlee/tokens`: the complete Primitives ramps + all 205 semantic color
+  tokens (from Sivan's plugin export), and the Radius/Spacing/Typography/
+  Border collections confirmed row-by-row from the Variables panel.
+- New in code: full palette ramps, state colors (hover/pressed/disabled),
+  `text-link`, status families (error/warning/success), focus rings, 17
+  shadow colors, badge/featured-icon/RSVP component palettes, alpha ramps,
+  the full border-width set (0/1/2/4/8), `text-2xs` 10/14, and CORRECTED
+  display line-heights (lg 48/56, xl 60/68, 2xl 72/80 — the sheet's
+  60/72/90 specimens are stale, see tokens.md flags).
+- Input state mapping locked from the phone screens: Empty=interactive,
+  Focused=brand, Filled=strong, Error=error, Disabled=disabled; primitives
+  on both platforms updated to the semantic names (input-*/on-brand/tertiary
+  aliases removed).
+- The Tailwind preset now FLATTENS the semantic groups mechanically, so it
+  can never drift from tokens.ts.
+
 ## 2026-08-13
 
 - **Full token re-sync from the canonical Momlee 2.0 file** (Maor's 2026-08-12
