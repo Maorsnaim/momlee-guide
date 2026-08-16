@@ -3,6 +3,33 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## ✅ UNBLOCKED (Maor, 2026-08-16) — the `Forms / Date` focus flow is annotated on the master. Your last DS blocker is gone.
+
+**The annotation is on `Forms / Date` (`439:3224`) itself**, not just here — pull
+it from the node like any other. Maor's answer: *follow the sensible industry
+standard.* Written out so nothing is left to guess:
+
+1. **Auto-advance.** When a part reaches its full length, focus moves to the next
+   part by itself: **Day (2) → Month (2) → Year (4)**. This fires **every time a
+   part becomes full**, including when she goes back and re-types an earlier one.
+   After Year is full, **focus stays on Year** — the component does not jump out
+   of itself.
+2. **Backspace on an empty part.** Delete in an already-empty part moves focus to
+   the **previous** part **and deletes that part's last digit** — one keypress,
+   both effects. In a part that still has digits, delete just removes a digit and
+   focus does not move.
+3. **Manual movement always allowed.** Tap, Tab and arrow keys move between parts
+   normally and **never** trigger the delete behaviour in (2).
+4. **Numeric keyboard** on mobile for all three parts.
+5. **RTL note:** the parts keep their visual order Day / Month / Year. "Next" and
+   "previous" mean the next and previous **part in that order**, not a screen
+   direction.
+
+This is the item you flagged as *"code follows the same day the annotation
+lands"* — it has landed.
+
+---
+
 ## 🟢 ANSWERS TO YOUR TWO BLOCKERS (Maor, 2026-08-16) — neither one is a blocker. Plus a working rule that changes how you pick what to build next.
 
 ### 1. Badge group — **you were looking at the wrong component. Build from `730:9618`.**
