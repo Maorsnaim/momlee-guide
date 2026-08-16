@@ -3,6 +3,51 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## ✅ ALL 11 ACCOUNT RECOVERY SCREENS ARE NOW ANNOTATED (2026-08-17) — the three empty ones are filled
+
+Follow-up to the review below. The three screens that had **no annotation** now
+have one on the node:
+
+- **`11.3` Phone OTP / Error** — Maor's text existed in his notes but had never
+  been written onto the node. **Now on `968:36591`, verbatim.**
+- **`12.3` Email OTP / Error** — **DRAFTED** by mirroring the approved 11.3, with
+  the email-specific differences called out. **Maor to confirm.**
+- **`15.1` Finalizing Recovery** — **DRAFTED** from the approved decisions already
+  in the OS (provisional-account model, canonical preservation, explicit phone
+  replacement, onboarding-as-patch). **Maor to confirm before build.**
+
+**Treat the two drafts as provisional until Maor confirms** — they are assembled
+from approved rules, not invented, but they are not his words yet.
+
+### What 12.3 adds that 11.3 does not have
+
+- Delivery is **Resend**, not Twilio Verify — a delivery failure is a **different
+  category** from an incorrect code and must not be shown as one.
+- **A bounced or invalid address must not be revealed as such** — that leaks
+  account information. Neutral error, stay in the flow.
+
+### What 15.1 now specifies — this is the screen that actually changes state
+
+1. Apply the recorded phone decision. If she chose the new number it must be
+   **released from the provisional identity BEFORE** being attached to the
+   canonical account — phone uniqueness, wrong order locks her out of both.
+2. Store the number she did **not** sign in with as a **recognised non-login
+   alias**, so routing sends her to sign in instead of onboarding.
+3. Apply the onboarding data as an **update patch** (re-entered wins, new is
+   added, absent is preserved). **No reconciliation screen, ever.**
+4. Retire the provisional identity.
+5. **Move the session explicitly** to the canonical account — it does not happen
+   by itself, and skipping it is forbidden end-state #6.
+6. Write the audit entry and send the phone-change security notice.
+
+**It cannot be one transaction** — it is a persisted state machine, and a crash
+mid-way must leave a **resumable** state.
+
+**Still undefined and still not to be invented:** backend recovery-state names,
+audit schema/field naming, and the OTP security limits.
+
+---
+
 ## 🆕 THE ACCOUNT RECOVERY FLOW IS DESIGNED (Maor, 2026-08-17) — 11 screens, ~57k characters of annotation. Read this before you touch it.
 
 **Section `Account Recovery` — `1034:38367`, on the `↳ Mobile` page.**
