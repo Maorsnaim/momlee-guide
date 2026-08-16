@@ -3,6 +3,78 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🟢 ANSWERS TO YOUR TWO BLOCKERS (Maor, 2026-08-16) — neither one is a blocker. Plus a working rule that changes how you pick what to build next.
+
+### 1. Badge group — **you were looking at the wrong component. Build from `730:9618`.**
+
+There are two things called Badge on that page, and only one of them is real:
+
+| Node | stray bindings | local (2.0) bindings |
+|---|---|---|
+| **`506:13337` "Badge group"** | **2,185** | 96 |
+| **`730:9618` "Badge"** ← the real one | 256 | **7,233 (96.6%)** |
+| `730:9700` Badge | 0 | 18 |
+| `740:9547` Badge Close X | 0 | 393 |
+
+**`506:13337` was NOT built on the 2.0 variables and is not in use.** Maor's
+words: *what is not in use should not go into development in the first place.*
+The missing `utility` ramp you hit belongs entirely to that legacy node.
+
+**`730:9618` was built on the 2.0 variables** and the Momlee badge palette it
+needs already exists locally — 45 tokens:
+`Component colors/Badge/{Brand, Neutral, Error, Warning, Success, Notification,
+Orange, Purple, Apricot, Honey Yellow, Teal, Lavender, Sage, Olive, Blue} ×
+{background, foreground, border}`. **Build against those. Nothing is missing.**
+
+(A 256-binding residue does sit on the real Badge. Not a blocker; Maor will
+clean it when he touches the component.)
+
+### 2. Slider family — **drop it. Do not build it.**
+
+Maor's answer verbatim: he does not recall designing sliders, and **they are not
+relevant right now**. The page is legacy UI-kit content. **Remove it from the DS
+scope.**
+
+### 3. 🔴 THE WORKING RULE — this is the important part, and it changes your queue
+
+**Stop working through the component catalogue. Work screen-driven.**
+
+Maor's reasoning, and it is worth reading twice:
+
+> Component building never ends. There will never be a moment where all
+> components exist and only then screens begin. **New components keep being
+> created and existing ones keep being extended.**
+
+So the rule is:
+
+- **Build only components that appear in a screen that is closed.** A component
+  sitting in the library with no screen using it is not evidence that it is
+  wanted — some are irrelevant, some need fixes, some need extensions.
+- **Let the screens set the order**, not the page order of the DS file.
+- **Keep re-checking status.** A component you already built may be **extended
+  later** — so track whether the ones you shipped have changed, rather than
+  treating "built once" as done.
+
+That is exactly what happened here: both blockers came from building library
+pages rather than what screens actually need.
+
+### 4. The Date focus flow — **still yours to wait for, and here is what it actually is**
+
+`Forms / Date` (`439:3224`) is **three separate boxes** — `Day Field`,
+`Month Field`, `Year Field` — each with its own state axis. The design specifies
+how each box **looks** in each state; it never says how **focus moves between
+them**. Confirmed: the component carries **no annotations at all**.
+
+Two questions need answering, and Maor now has them phrased this way:
+
+1. **Auto-advance** — day fills up, does focus jump to month by itself?
+2. **Backspace on an empty box** — does focus go back, and does it also delete
+   the previous box's last digit?
+
+**You were right to ship without it.** Today it costs the mom three taps.
+
+---
+
 ## ✅ MAOR CLEANED THE 2.0 FILE (2026-08-16) — your three Buttons anomalies + 445 ghost bindings + the raw 10px. One item flips back to you.
 
 Answers and fixes for everything you raised today.
