@@ -6,6 +6,34 @@
 
 ## Tasks for Maor
 
+### 🛑 2026-08-16 — READ NOW (Sivan is pinging you): what the component build needs from you to keep moving
+
+The 2.0 component build-out shipped today: Field, PhoneField, OTP Field,
+Date, and Input verified against its master (PRs #36–#40), on top of the
+completed token basics. **These items now block full completion:**
+
+- [ ] **`Forms / Date` focus-flow annotation — the one thing built with a
+  deliberate hole.** The split day/month/year field has NO annotation for the
+  typing flow, so per the never-invent rule it shipped WITHOUT auto-advance
+  (each part is tapped/tabbed into manually). Please annotate the intended
+  behavior on the master or the 05.x flow's first frame: does focus jump
+  day→month→year when a part fills? what happens on delete at an empty part?
+  Code follows the same day the annotation lands.
+- [ ] **`text-on-unread` naming** (from the 2026-08-13 note): it is the white
+  label color on every brand CTA but reads like a notifications token —
+  confirm or rename before more components bake it in.
+- [ ] **`State=Placeholder` vs code `Empty`:** the Input state that Figma
+  calls `Placeholder` is `Empty` in both code implementations (pre-2.0
+  naming). We will do the coordinated rename to your name on your word —
+  just say go.
+- [ ] Still open at your convenience: the raw `10px` button paddings +
+  `gap: 10px/12px` literals in the 2.0 components (tokenize when you touch
+  them).
+
+FYI, resolved without action needed: your library republish + the Variables
+collections (via Sivan) closed everything else; the typography-sheet rebind
+you pushed matches our code exactly.
+
 ### ✅ HANDLED same day (2026-08-16): Sivan delivered the collections herself (plugin export + panel screenshots) — the token basics are COMPLETE, zero stand-ins (see design-system/tokens.md + CHANGELOG). ONE NEW FINDING for you: the ↳ Typography sheet's specimens bind STALE line-heights (display-lg 60 / display-xl 72 / display-2xl 90 / text-2xs 8) — the collections define 56/68/80/14; please rebind the sheet. Also resolved: the "raw link hexes" flag — `#835258`/`#9d636b` in running text ARE the `text-link`/`text-brand-display` tokens.
 
 ### ~~🚨 2026-08-16 — URGENT BLOCKER: we need the Variable COLLECTIONS (the Local-variables tables) to finish the token basics + full ❖ Variables scan findings~~
