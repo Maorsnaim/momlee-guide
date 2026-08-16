@@ -3,6 +3,72 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## ⚠️ CORRECTIONS AFTER MAOR'S REVIEW (2026-08-17) — one of my annotations over-specified your architecture. Read before building 15.1.
+
+Maor reviewed the annotations. **`11.3` and `12.3` are APPROVED** (12.3 subject to
+final copy). **`15.1` was revised** and one thing became a blocking question.
+
+### 🔴 1. I over-specified the phone transfer. That instruction is withdrawn.
+
+The earlier `15.1` text said the number **"must be RELEASED from the provisional
+identity BEFORE it is attached to the canonical account."** **Do not build that.**
+
+Maor's point, and he is right on both counts: it is an **implementation decision
+written as product policy**, and it is also **the riskiest ordering** — release
+first, second step fails, and she is left holding nothing.
+
+Replaced with:
+
+> *Claude must implement the phone-ownership transfer using the **safest
+> recoverable sequence** supported by the approved Supabase/Auth architecture.
+> **Do not assume the exact detach/attach order** from this annotation.*
+
+**The product requirement is the outcome only:** no failure may leave her without
+a usable authentication identity, and a failed transfer must be **recoverable, not
+terminal**. Phone uniqueness is a known factor the sequence must account for —
+**how is yours to decide.**
+
+### 2. The "recognised number" is a behaviour, not a field
+
+The annotation no longer implies stored structure. **The requirement:** when she
+later arrives with the number she did **not** sign in with, routing recognises it
+and sends her to **sign in** rather than into onboarding. **How it is stored is not
+decided — do not invent a field, status or entity name for it.**
+
+*(The behaviour itself is Maor's decision of 2026-08-16 — he picked option 1 of
+three. The framing as a stored "alias" was mine, and is gone.)*
+
+### 🔴 3. BLOCKING — the contact channel contradicts itself. Build neither yet.
+
+- The **screen copy** says the team contacts her **on the active phone** within 72
+  hours.
+- **My addendum** said the outcome and the resume link arrive **by email**.
+
+Both were live at once. `13.1` now marks this **OPEN**.
+
+**The constraint that should settle it:** this path is reached precisely when she
+has access to **none** of the existing account's recovery methods — **so she may
+have no usable verified email at all.** The one channel that is certainly verified
+and reachable is **the new phone she just registered with**.
+
+Three questions before build: does the representative **call and then send the
+link**, is it **all in writing**, and **what is the channel when there is no
+usable email**. Opened as a Blocking question in the OS.
+
+### 4. One thing of mine still needs your sign-off, Sivan
+
+**"No measurable timing difference"** in the blocked-account case. It is a real
+anti-enumeration requirement and it carries an implementation cost —
+constant-time responses so a blocked account cannot be detected by how long the
+answer takes. **Maor likes it but wants you to confirm it is policy**, not just a
+good idea. If you accept it, it belongs in the security docs.
+
+*(Also mine and disclosed: invalidating a previous unused resume link when a new
+one is issued. Everything else in that block — 24h lifetime, reissue from Admin,
+final rejection, blocked-account no-hint — is Maor's own ruling.)*
+
+---
+
 ## 📧 THE EMAIL TEMPLATES EXIST — page `↳ Email Templates` (`950:16786`). Registered in the OS, and one contradiction to fix.
 
 Maor asked to confirm these exist and make sure everyone knows. **They do.** Four
