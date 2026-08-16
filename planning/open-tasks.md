@@ -3,6 +3,98 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## ✅ MAOR CLEANED THE 2.0 FILE (2026-08-16) — your three Buttons anomalies + 445 ghost bindings + the raw 10px. One item flips back to you.
+
+Answers and fixes for everything you raised today.
+
+### 1. `text-on-unread` → **rebound to `text-on-solid`. Your code was already right.**
+
+Investigated properly: **it is not a legacy token.** It lives in the 2.0
+`1. Color modes` collection and aliases `Colors/Base/White` — **the exact same
+primitive `text-on-solid` aliases.** Usage told the story: `text-on-unread` had
+**76 bindings, every one of them on the Buttons page**, while `text-on-solid` was
+already used on Navigation and Callouts.
+
+So it was never a naming problem — the Buttons set simply grabbed the wrong
+token. `text-on-unread` is legitimate for the unread/notification context (it
+pairs with `bg-unread`). **74 bindings rebound, 0 remaining, zero visual change**
+(identical value). **No code change needed — you already bind `text-on-solid`.**
+
+### 2. 🔄 `Placeholder` vs `Empty` — **the rename goes the OTHER way. This one is on you.**
+
+I first recommended renaming Figma's `Placeholder` → `Empty`. **That was wrong,
+and Maor caught it.** They are not two names for one thing — **they are two
+different axes that coexist in the same component:**
+
+| Axis | Values | Sets |
+|---|---|---|
+| **`State`** | **Placeholder** · Focused · Filled · Error · Disabled | OTP, Input, Phone, Date, Email |
+| **`Content`** | Filled · **Empty** | Input, Phone, Address Search Field |
+
+`Forms / Input` carries **both** `State=Placeholder` **and** `Content=Empty`.
+Renaming the state to `Empty` would have collided head-on with the `Content` axis.
+
+**So the correct fix is on the code side: rename the input *state* to
+`Placeholder`** to match Figma, and keep `Empty` for the has-a-value axis if you
+model that separately. Figma is consistent here; the code conflates two concepts.
+
+**One real inconsistency found in Figma (Maor's to fix):**
+`Forms/Address Search Field` uses `State=Default` where its five siblings use
+`State=Placeholder`.
+
+### 3. Focus ring + Link label — still queued
+
+The RSVP-aliased focus ring and the raw Link label are on Maor's list; not done
+in this pass.
+
+### 4. ✅ The raw 10px paddings — **tokenized, and nothing resized**
+
+327 nodes now bind a spacing token; **0 remain at raw 10px.** Maor's split:
+
+| Size | token | height before → after |
+|---|---|---|
+| xl / lg / md | `spacing-lg` (12) | **unchanged** |
+| sm / xs | `spacing-md` (8) | **unchanged** |
+
+**Heights did not move at all**, because the button frames are
+`layoutSizingVertical: FIXED` — the height is authored, not derived from padding.
+Verified per variant before and after: xl 58/48, lg 48/44, md 44/40, sm 40/36,
+xs 30/32. So this was a pure provenance fix. (Two INSTANCE nodes inside the
+Destructive Dialog composite were skipped deliberately — instance overrides.)
+
+### 5. 🔴 A whole-file sweep found something you could not have seen
+
+All 31 pages, ~52k bindings. **445 bindings pointed at DELETED variable
+collections** — the same ghost class as the typography sheet: same names, frozen
+at their last values, **and completely invisible in the UI.**
+
+**648 bindings rewritten, 0 errors, 445 → 16 remaining.** Only **12 changed
+value**, all of them corrections toward 2.0:
+
+- 11 × text/foreground `#494949` → **`#232323`** (`text-primary`, `fg-primary`)
+- 1 × `Line height/display-2xl` 90 → 80
+
+⚠️ **Worth a look on your side:** if any component you built read
+`text-primary` or `fg-primary` off the file rather than off `@momlee/tokens`,
+those eleven nodes just got darker. The token value is unchanged.
+
+**16 left, deliberately:**
+- **4 have no local token at all** — `Component colors/Badge/badge-attention`,
+  `Colors/Background/bg-secondary` (×2), `Colors/Text/text-tertiary (600)`.
+  **Maor decides: add them to the 2.0 collections, or rebind elsewhere.**
+- **12 are font bindings on text nodes** — the plugin sandbox cannot load
+  "Google Sans" to apply them. Known wall.
+
+### 6. Not touched, and it is an architecture question rather than a bug
+
+**13,712 bindings still resolve to REMOTE LIBRARY collections** (spacing, radius,
+component colors from other files). They work and they update on publish — but
+**Momlee 2.0 is not self-contained.** 42 of those library variables have **no
+local equivalent**, so bringing them home would first mean adding the missing
+tokens. Recommendation: leave it until after MVP.
+
+---
+
 ## 🔴 SIMPLIFICATION (Maor, 2026-08-16) — SUPERSEDES the recovery merge logic. Onboarding is a PATCH, and there are no reconciliation screens at all.
 
 **Read this before building anything from the 2026-08-14 reconciliation blocks
