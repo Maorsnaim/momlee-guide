@@ -6,6 +6,33 @@
 
 ## Tasks for Maor
 
+### 🎨 2026-08-16 (later) — three more Figma anomalies from the Buttons-set harvest (Sivan asked to pass these on)
+
+The web Button was rebuilt today from your 2.0 `Buttons` set (all 7
+hierarchies × 5 sizes × 5 states — it's a beautiful system). The full-variant
+harvest surfaced three binding anomalies in the file:
+
+- [ ] **The focus ring's OUTER color is aliased to
+  `component-colors/meetup-rsvp/interested/border`** (#b37a81) on every
+  Focused variant — same value as `border-brand`, but semantically it's an
+  RSVP component color inside the core Button. Rebinding to a focus-ring (or
+  border-brand) variable keeps the system honest; code already binds the
+  same-valued `border-brand`.
+- [ ] **The Link hierarchy's label text is raw, not token-bound**: 14px /
+  20px line-height / 0.4px tracking typed directly, while every other
+  variant uses the Text style tokens. Rebind to `Text sm/Medium` (or
+  whichever style you intend).
+- [ ] **White-on-solid label text binds `text-on-unread`** across Brand
+  Solid / Inverse / Destructive — the same naming question already open from
+  2026-08-13; the Buttons set is now the biggest consumer, so the
+  confirm-or-rename decision got more urgent. Code uses the same-valued
+  `text-on-solid`.
+
+Also for completeness: only the xs/md/xl label styles were verifiable from
+the set + the Destructive Dialog composite; sm/lg were implemented per the
+size↔type-scale naming pattern and are marked "verify at first use" — a
+quick confirm from you closes that too.
+
 ### 🛑 2026-08-16 — READ NOW (Sivan is pinging you): what the component build needs from you to keep moving
 
 The 2.0 component build-out shipped today: Field, PhoneField, OTP Field,
