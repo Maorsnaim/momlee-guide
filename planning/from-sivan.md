@@ -6,6 +6,30 @@
 
 ## Tasks for Maor
 
+### ⛔ 2026-08-16 (night) — the Sliders page is bound to the OLD UI-kit tokens, not Momlee variables — blocked until rebound
+
+The ↳ Sliders page (Slider set 302:4779 + Control handle set 302:4960) can't be
+built from the current bindings — they point at the Untitled-UI-style token
+layer instead of the Momlee 2.0 variables:
+
+- Track background → `colors/background/bg-quaternary` (#e5e5e5) — no such
+  Momlee variable.
+- Progress line → `colors/foreground/fg-brand-primary-(500)` (#b05f64) — the
+  "(500)" naming is the UI kit's; Momlee's `fg-brand-primary` is #b37a81.
+- Handle → `component-colors/components/sliders/slider-handle-bg/-border`
+  (#8d4c50) — the sliders family is absent from the variables export, and
+  #8d4c50 is in none of the exported ramps.
+- Handle label / tooltip → `text-primary-(900)` #171717,
+  `text-secondary-(700)` #404040, `bg-primary_alt` #f8eff0,
+  `border-secondary_alt` rgba(0,0,0,0.1) — all UI-kit names.
+- Focus ring → the same `bg-primary` + `focus-ring`(#b05f64) pair from the
+  evening note below.
+
+Once you rebind the set to Momlee variables (or export the sliders family if
+it's intentional), Sivan re-runs the export and the Slider builds in one pass.
+The shadow tokens it uses (shadow-sm01/02, shadow-md01/02) ARE in the export —
+those are fine.
+
 ### 🎨 2026-08-16 (evening) — Badges + Checkboxes harvest: one BLOCKER (missing utility tokens) + three binding questions
 
 The web Checkbox family (base + labeled rows) and Badge family (Badge + Badge
