@@ -3,6 +3,68 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## ⚠️ CORRECTION + ❓ OPEN (2026-08-16) — the phone-change security notice. I got this wrong earlier; here is the corrected version.
+
+### 🔴 First, a correction to something I pushed on 2026-08-14
+
+In the phone-decision block I wrote: *"send the security notice to the OLD number,
+during the change, because afterwards there is nobody left to warn."*
+
+**That is wrong. Please do not build it.** Maor's section 11 caught the flaw: if
+the recovery did **not** prove control of the old number — she recovered by email,
+or through manual review — then **that number may already belong to someone else**.
+Numbers get reassigned. Writing account information to it is the leak, not the
+protection.
+
+### What IS decided
+
+- **Every successful primary-phone change writes a security audit event** —
+  regardless of whether it came from recovery, settings or an admin approval.
+  Records: account id, recovery/session ref, previous number in a protected
+  representation, new number, source, method, whether explicit confirmation was
+  given, reviewer id, and whether a notice was sent plus its delivery status.
+  **Never store codes.**
+- **A success notice is sent only after finalisation actually succeeded** — the
+  provisional identity released the number, the number is attached to the canonical
+  account, recovery completed, and the correct session was established. **If
+  finalisation fails, no "phone changed successfully" message goes out.**
+
+### 🔴 The observation that reframes the whole feature
+
+**The email we want to notify is the same email that can be used to recover.**
+
+So if a takeover was performed **through the email**, the notification lands in
+**the attacker's own mailbox** and protects nobody. The email notice's real value
+is against a **phone-based** takeover — not an email-based one. Worth knowing
+before anyone treats it as complete protection.
+
+**The rule that follows: notify on a channel that was NOT used to authenticate
+this recovery.** Notifying the channel she just used adds nothing.
+
+### Still open — 10 questions, each with my recommendation on the OS row
+
+The two that matter most for you:
+
+- **When there is no verified email:** it depends on the method. Recovered by a
+  code to the old number → that phone is demonstrably in her hands, there is
+  nobody left to warn. Recovery that did **not** prove the old number → **do not
+  write to it**; in-app security history + the audit entry are all that remain.
+- **"לא אני ביצעתי את השינוי" → opens a high-priority manual security case, and
+  nothing else.** ⛔ Never an automatic rollback: whoever controls the mailbox
+  clicks that link, so auto-rollback would let control of the email undo a
+  legitimate change — a takeover channel in its own right. And ⛔ never an
+  automatic lock, sign-out or suspension.
+
+My recommendation on restrictions while a report is reviewed: **do not lock** —
+block only further security-sensitive actions (another phone change, account
+deletion) until the case closes. Proportionate, and it does not punish a
+legitimate user.
+
+**Recorded in the OS:** a Decision for the two settled parts + an Open Question
+holding all ten with a recommendation on each.
+
+---
+
 ## 🔴 DECISION (Maor, 2026-08-14) — recovery UPDATES the existing account. Never migrate it into a new one. ⚠️ One ordering contradiction to resolve.
 
 **The existing `user_id` stays.** ⛔ The pattern *copy everything into a new
@@ -503,10 +565,12 @@ second login phone, it is a recognised alias. Your call.
 - **Is the old number removed after replacement?** Recommend: removed as a login
   credential, retained in the security audit log. It is the single most useful
   record if the change is ever disputed.
-- **Security notification: yes, and send it to the OLD number.** A phone change is
-  a classic account-takeover step. Send it **as part of the change, while the old
-  number still receives** — afterwards is too late to warn anyone. Also to a
-  verified email if we have one.
+- **Security notification: yes.** ⚠️ **CORRECTED 2026-08-16 — do not build what
+  this line originally said.** I first recommended sending it to the **old number
+  during the change**. That is wrong, and Maor's section 11 caught it: if recovery
+  did **not** prove control of the old number, that number **may already belong to
+  someone else** — so writing account information to it is the leak, not the
+  protection. See the corrected policy block at the top of this file.
 - **More than one login phone?** Current direction is one. Nothing here needs to
   change that (see the alias option above).
 - **Admin visibility + audit log:** yes to both. Phone changes belong in the
