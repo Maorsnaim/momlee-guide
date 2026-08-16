@@ -6,6 +6,35 @@
 
 ## Tasks for Maor
 
+### 🎨 2026-08-16 (evening) — Badges + Checkboxes harvest: one BLOCKER (missing utility tokens) + three binding questions
+
+The web Checkbox family (base + labeled rows) and Badge family (Badge + Badge
+Close X) were built today from the ↳ Checkboxes / ↳ Badges pages. Findings:
+
+- [ ] ⛔ **BLOCKER — `component-colors/utility/brand/*` is not in the variables
+  export.** `Badge group` (506:13337, Pill color) binds utility-brand-50 (bg),
+  utility-brand-200 (border) and utility-brand-700 (message text), but the
+  2026-08-16 Variables-to-JSON export contains ZERO `utility` variables — the
+  ramp either lives outside the exported collections or was added after the
+  export. **Badge group is on hold until the utility ramp reaches an export**
+  (Sivan re-runs the plugin once you confirm it's final).
+- [ ] **`colors/background/bg-primary` (#faf8f6) is also unexported.** The
+  Checkbox base Focused ring binds its inner 2px to `bg-primary`, which does
+  not exist in the export's background group (surface/canvas/...). New
+  variable? Please confirm and include it in the next export round.
+- [ ] **The checkbox focus ring resolves #b05f64 (velvet-500) in the file
+  today, while the export captured `focus-ring` = #494949.** Same family as
+  the Buttons RSVP-alias anomaly — which value is intended? Code binds the
+  focus-ring variables BY NAME, so your fix flows in at the next token sync.
+- [ ] **Badge borders bind the FOREGROUND token** (`badge/*/foreground`) on
+  every pulled master, while the palette's dedicated `badge/*/border` tokens
+  (#e5c7c9 etc.) appear unused. Intended look (foreground-colored border) or
+  should the border tokens be bound? Code follows the masters as-is.
+
+FYI, no action needed: the Avatar master (54:379) bakes a raw
+rgba(0,0,0,0.16) hairline (no variable) — code uses the nearest token
+(alpha-black20) until the Avatar primitive is built.
+
 ### 🎨 2026-08-16 (later) — three more Figma anomalies from the Buttons-set harvest (Sivan asked to pass these on)
 
 The web Button was rebuilt today from your 2.0 `Buttons` set (all 7
