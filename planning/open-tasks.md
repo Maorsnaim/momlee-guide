@@ -3,6 +3,70 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🔴 SIMPLIFICATION (Maor, 2026-08-16) — SUPERSEDES the recovery merge logic. Onboarding is a PATCH, and there are no reconciliation screens at all.
+
+**Read this before building anything from the 2026-08-14 reconciliation blocks
+below — they are superseded.** Conflict-resolution screens, old-vs-new family
+comparison, field-by-field reconciliation, child-conflict screens and the
+pregnancy-to-child confirmation are **all out for MVP**.
+
+The reasoning: the scenario is rare, and **she can already edit everything once
+she is inside**. So the priority is *simple, predictable recovery* over *perfect
+historical reconciliation*.
+
+### The model: existing account + onboarding patch → updated existing account
+
+| Case | Behaviour |
+|---|---|
+| Identical | Keep existing. No duplicate. No action. |
+| **Re-entered and different** | **The new value wins, automatically. Never ask.** |
+| **Absent from onboarding** | **PRESERVE it. Absence is never deletion.** |
+| Clearly new | Add it, without asking her to confirm. |
+
+**Rule 3 is the one that must not be got wrong.** Old family `Yoni, Shira, Maya`
++ onboarding `Yoni, Lia` → **`Yoni, Shira, Maya, Lia`**. Never `Yoni, Lia`.
+Deleting requires an explicit action inside the app.
+
+### ⚠️ The engineering detail that decides whether rule 2 is safe
+
+**A field counts as "explicitly entered" only if she actually filled it in this
+session.** An empty, skipped or defaulted field must fall under rule 3 and
+preserve the existing value. Otherwise a skipped step **silently wipes good
+data** — which is precisely what rule 3 exists to prevent. Please make the patch
+distinguish *"entered as empty"* from *"never asked"*.
+
+### Ambiguous child match — chosen implementation, documented as Maor asked
+
+**Treat the incoming record as a NEW child.** Never overwrite an arbitrary record,
+never first-matching-child. Maor's ruling: *an occasional duplicate is preferable
+to corrupting an existing child's information* — and she can delete it herself.
+
+**Still binding from the earlier analysis** (these are correctness, not UI):
+resolve all 3-of-3 matches first and remove them from the pool; treat matching as
+an assignment between two sets so the result is order-independent; `Unknown`/null
+counts as **neither** a match nor a mismatch; define name normalisation.
+
+### Pregnancy — simplified
+
+Expired → **archived as historical, automatically**. New pregnancy → **added as
+active**. Old + new are separate events, **never a date conflict**. ⛔ **No
+mandatory pregnancy-to-child linking during recovery.**
+
+### Identity and security are NOT covered by "new input wins"
+
+Verified identity, national identity references, verification status, verified
+recovery methods, account ownership and security history keep following the
+identity/recovery security rules. The patch model is for **editable profile and
+family data only**.
+
+**Recorded in the OS:** new Decision + Product Rule `auth_access.onboarding_as_patch`.
+The previous decision is **Superseded**, `auth_access.recovery_data_reconciliation`
+is **Deprecated**, `auth_access.child_record_matching` was restated as
+backend-only, and the expired-pregnancy Story is **out of recovery scope**. Both
+tasks were rewritten.
+
+---
+
 ## ✅ FIXED BY MAOR (2026-08-16) — the "stale typography sheet" was a DUPLICATE COLLECTION. Rebound, and your code was right.
 
 **You asked for the ↳ Typography sheet to be rebound. Done — and the root cause
