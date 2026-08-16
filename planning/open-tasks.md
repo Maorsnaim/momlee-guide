@@ -3,6 +3,65 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## ✅ FOUR MORE FIXED (Maor, 2026-08-17) — focus ring, two orphan tokens, radius-full. Plus your sm/lg question answered.
+
+### 1. ✅ The focus ring — fixed, and it IS a visible change
+
+The 10 `State=Focused` variants drew their **outer** ring with
+`Component colors/Meetup RSVP/Interested/Border`. They now bind
+**`Colors/Effects/Focus rings/focus-ring`**.
+
+⚠️ **Not the same value after all** — you noted it matched `border-brand`, but the
+RSVP token was **`#b37a81`** and the focus-ring token is **`#b05f64`**. So the
+outer ring is slightly deeper now. Verified after: 10 on `focus-ring`, 65 on
+`focus-ring-inner`, 10 on `focus-ring-error`, **0 on anything RSVP**.
+
+### 2. ✅ Two orphan tokens rebound to their Momlee equivalents
+
+| Was (UI-kit, no local equivalent) | Now (Momlee 2.0) | Effect |
+|---|---|---|
+| `Colors/Background/bg-secondary` `#ffffff` ×22 | **`Colors/Background/bg-surface`** `#ffffff` | **none** — identical |
+| `Colors/Text/text-tertiary (600)` `#525252` ×6 | **`Colors/Text/text-muted`** `#5d5d5d` | imperceptible |
+
+The first was the hover background of `Type=Badge modern`; the second was the
+supporting text in List Items, the message preview, and one Mobile text.
+
+### 3. ✅ `radius-full` brought home — 760 bindings
+
+You saw 256 of these inside the Badge master; file-wide there were more. **760
+rebound from the library's `radius-full` to the local one — same name, same value
+(9999), zero visual change.** ~936 remain, most likely on instance children where
+the main component owns the binding; harmless, and we will sweep them when the
+remote-library question is settled.
+
+### 4. ✅ Your sm/lg "verify at first use" — **confirmed correct**
+
+Measured every label in the set. Your pattern-based inference was right:
+
+| Size | label style |
+|---|---|
+| xl | `Text xl/Medium` |
+| lg | **`Text lg/Medium`** ✓ |
+| md | `Text md/Medium` |
+| sm | **`Text sm/Medium`** ✓ |
+| xs | `Text xs/Medium` |
+
+**You can drop the "verify at first use" marker.**
+
+### 5. 🔍 The "raw Link label" — I think this is what you actually saw
+
+I could not reproduce a raw label: **every text node on the Buttons page has a
+text style and variable bindings, zero exceptions.** But there is a second text
+layer in the set — the **`Link CTA`** property — and it is **`Text sm/Medium` in
+every size**, including xl and lg where the main label is `Text xl`/`Text lg`.
+
+So the Link hierarchy's label does not scale with the button size. That is
+probably the inconsistency you spotted. **It is a design question for Maor, not a
+missing binding** — if you have a node id showing a genuinely unbound label,
+send it and we will look again.
+
+---
+
 ## ✅ UNBLOCKED (Maor, 2026-08-16) — the `Forms / Date` focus flow is annotated on the master. Your last DS blocker is gone.
 
 **The annotation is on `Forms / Date` (`439:3224`) itself**, not just here — pull
