@@ -1305,3 +1305,50 @@ The dependency gate also wants a **row in `knowledge/stack.md`** — please add 
 (name: `@googlemaps/js-api-loader`; used by: web meetup location search; why:
 official loader for the Google Places New API; note: the MAP itself stays Mapbox,
 Google is search-box only — see the 2026-07-23 map-provider note above).
+
+## 2026-08-17 (Sivan → Maor) — 🔒 FINAL: Sivan went through the whole decisions file and ruled on every item. Account recovery is now EMAIL-BASED and much simpler. Please remove the decisions content from open-tasks.md.
+
+Sivan reviewed every decision block in `open-tasks.md` (2026-08-13 → 2026-08-17)
+and made the final product rulings. **The record of record is Notion — the
+[Account Recovery Feature page](https://app.notion.com/3bb450ad0ae68124b2b0c8fc415da159)
+now carries the full final flow.** Where the file's decision blocks conflict with
+it, Notion wins.
+
+### The final recovery flow, in short
+
+1. **After OTP on an unrecognized number: a NEW choice screen** — "יש לי כבר
+   חשבון" / "אני חדשה — בואי נתחיל".
+2. **Existing-account path: email only.** She types her email (UI never confirms
+   an account exists) → 6-digit code → signed into her existing account. **The
+   new number becomes a second valid login number — both numbers sign in, no
+   choose-a-number screen.** One notification email ("your account was recognized
+   with a new number; both now work"). She edits her profile herself — **no data
+   merge, no reconciliation, no child matching.**
+3. **Missed-link path:** she fills her data, reaches Didit, the identity matches
+   an existing account → dedicated "we recognized an existing account" screen →
+   code to that account's email → fail = try again / contact us.
+4. **No verified email → she contacts support directly. No manual-review queue,
+   no manual-review policy, no admin resume links.**
+
+### What this means for the 11 recovery screens
+
+- **Survive:** the Email OTP screens (12.1/12.2/12.3) and the trigger concept of
+  the recognized-identity screen.
+- **Superseded (do not finish/annotate further):** 10.1/10.2 method chooser (replaced
+  by a simple email-entry screen), 11.1–11.3 old-phone OTP, 13.1 manual review,
+  14.1 main-phone selection (both numbers simply work), and 15.1 shrinks to:
+  attach the number + one notice + analytics under one identity.
+- **Now needed instead (4 screens):** post-OTP choice screen · email entry + code ·
+  "we recognized an existing account" · failure (try again / contact us).
+
+The related Notion Stories were already deprecated and the superseded tasks
+removed; the phone-change-notice questions are closed
+([here](https://app.notion.com/3be450ad0ae681c58cebfba86d81c22b)) with the single
+email-notice rule.
+
+### The ask
+
+**Please remove the decision blocks from `open-tasks.md`** (the 2026-08-13→17
+recovery/decision sections) so they stop surfacing as open items in standups —
+the rulings live in Notion now. The DS answers/fixes sections are read and
+appreciated; those can go too once you've seen this note.
