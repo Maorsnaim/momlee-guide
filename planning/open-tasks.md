@@ -3,6 +3,63 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## ✅ FORM VALIDATION TIMING — the standard, decided (2026-08-18)
+
+Applies to **every input field in Momlee**, not just phone. New Product Rule
+**`platform.validation_timing`** (Approved, MVP scope). Worth reading once and
+then building every form the same way.
+
+### The rule: reward early, punish late
+
+**A field does not scold someone who has not finished yet.**
+
+| Trigger | Behaviour |
+|---|---|
+| Keystroke, no error showing | Format / mask only. **No error.** Continue stays disabled |
+| Keystroke, input becomes valid | **Enable continue immediately** — do not wait for blur |
+| Keystroke, error IS showing | Re-validate every keystroke, **clear the error the moment it is valid** |
+| Blur, field touched and invalid | **Show the error** |
+| Blur, field untouched and empty | Nothing. Not an error |
+| Continue tapped while invalid | Show the error, move focus to the offending field |
+
+### Why not validate on every keystroke
+
+It sounds more helpful, but it puts a red error under a phone field **after the
+first digit**. She has not made a mistake, she is mid-task. In onboarding the cost
+is highest because it is her first minute in the product. So: errors appear late,
+success is rewarded early — which is why the *clearing* direction genuinely is
+on-keystroke.
+
+### It maps onto Maor's five phone frames exactly — no new design
+
+| State | Frame | Node |
+|---|---|---|
+| Arrived, untouched, continue disabled | `Onboarding/Mom/Phone/Default` | `425:4871` |
+| Focused, empty, **nothing red** | `Onboarding/Mom/Phone/Focused` | `464:4940` |
+| Typing, no error, continue enables when valid | `Onboarding/Mom/Phone/Focused/Filled` | `463:3359` |
+| Valid + blurred | `Onboarding/Mom/Phone/Filled` | `439:1969` |
+| Blurred invalid, or submit invalid | `Onboarding/Mom/Phone/Error` | `257:8334` |
+
+All five are now rows in the Design Screens DB with the frame IDs and links above.
+Two of them (`focused`, `focused_filled`) did not exist as rows before today.
+
+### Boundaries
+
+- **Client-side validation is convenience only.** The server always re-validates.
+  A frontend format check is never a protection layer.
+- **Format is not existence.** A well-formed Israeli number that does not exist
+  fails at the **OTP** step, not here.
+- The `972+` prefix is shown and is not backspace-deletable (Israel only, MVP).
+
+### Four tests
+
+1. Typing one digit shows no error.
+2. Blurring with a partial number shows the error.
+3. Fixing it while the error shows clears it **without** blurring.
+4. An untouched empty field is never flagged.
+
+---
+
 ## 🔴 SCREEN NUMBERS ARE GONE — names are semantic paths now (Maor, 2026-08-17)
 
 **Read this before you next open the Figma file or reference a screen.**
