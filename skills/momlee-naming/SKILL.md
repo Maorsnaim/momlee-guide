@@ -33,6 +33,30 @@ NAMING: <the new identifier>
 
 Files and hooks don't need the printed block — just comply.
 
+## Screen names carry no sequence number (locked, Maor 2026-08-17)
+
+**A screen frame's name is its semantic path and nothing else:**
+`Flow/Actor/Screen/State` — `Onboarding/Mom/MomLocation/Filled`.
+
+**Never add a number to a screen name.** Not a prefix, not a suffix. A number
+encodes position, position is the most volatile property a screen has, and the
+first mid-flow insert makes every downstream number wrong. This already happened
+here: 62 screens carried numbers and **12 number slots were claimed by more than
+one screen** before the numbers were removed (`02.1` meant three different
+screens). Full history + the old-number map: `../../design-system/screen-naming.md`.
+
+- **Identity** = the semantic path, plus the Figma **node ID** as the stable
+  machine reference. Reference screens by node ID (`1084:10539`), never by an
+  ordinal.
+- **Order** = the canvas position and the Notion Story. Not the name.
+- **Grouping** = the Figma `Section`. Not the name.
+- **The path maps 1:1 onto the Notion `Key`**: `/` → `.`, lowercased.
+  `Onboarding/Mom/Phone/Error` ↔ `onboarding.phone.error`. When you create a
+  screen frame or a Design Screen row, make both sides agree.
+
+If you are asked to insert a screen mid-flow, place it on the canvas and name it
+semantically. **There is nothing to renumber.**
+
 ## Figma Layer Naming Guard
 
 **Auto-generated Figma layer names are NEVER copied into code:** `Frame 12`,

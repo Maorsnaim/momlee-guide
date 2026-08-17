@@ -3,6 +3,55 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🔴 SCREEN NUMBERS ARE GONE — names are semantic paths now (Maor, 2026-08-17)
+
+**Read this before you next open the Figma file or reference a screen.**
+
+All **62 numbered screens** on `↳ Mobile` were renamed. The sequence-number
+prefix is removed everywhere and **is not coming back**:
+
+```
+06.5_Onboarding/Mom/MomLocation/Filled   ->   Onboarding/Mom/MomLocation/Filled
+2.3_AccountRecovery/Mom/ViaPhone/OTP/Error  ->  AccountRecovery/Mom/ViaPhone/OTP/Error
+```
+
+**The full old-number-to-new-name map is in `design-system/screen-naming.md`.**
+Keep it — any older message, doc or screenshot that says "06.5" resolves there.
+
+### Why (this is not a style preference)
+
+The numbering had already broken. Measured across the 62 frames: **12 number
+slots were claimed by more than one screen.** `02.1` meant three different
+screens - `Onboarding/Mom/Phone/Default`, `Login/Mom/Phone/Default` and
+`AccountRecovery/Mom/ViaPhone/OTP/Default`. `07.2` meant four.
+
+That last one is the cause: when the mandatory-email screen went into the middle
+of onboarding, renumbering everything after it was not realistic, so four screens
+were stacked onto `07.2` instead. **"Build 02.1" had stopped being a resolvable
+instruction.** A number that no longer identifies a screen costs more than no
+number at all.
+
+### What this means for you
+
+- **Reference screens by node ID.** `1084:10539`, not "07.2". Node IDs are stable
+  and were already how 106 of the references in this repo worked.
+- **Order does not live in the name any more.** It lives in the canvas position
+  and in the Notion Story that delivers the screen. Grouping lives in the Figma
+  `Section` (`Onboarding / Login`, `Account Recovery`).
+- **The Figma name now maps 1:1 onto the Notion `Key`** - swap `/` for `.` and
+  lowercase. `Onboarding/Mom/Phone/Error` ↔ `onboarding.phone.error`. The layer
+  name and the OS key can no longer drift apart.
+
+### Nothing you have breaks
+
+**Node IDs do not change on rename, and annotations attach to the node, not the
+name.** Verified after the pass: 31 annotations across 29 frames intact, all 106
+node-ID references still resolving. The only thing that needed fixing in this
+whole repo was one line that referenced a numbered name - **and it had the wrong
+number** (it said `09.6` for a frame that was `10.6`; `09.6` was `Children/Twins`).
+
+---
+
 ## 🎨 TWO NEW GREY TOKENS — `fg-muted` + `fg-subtle` (Maor, 2026-08-17)
 
 The `Foreground` group was missing its light end. Between `fg-secondary`
@@ -1743,7 +1792,7 @@ in the product ever tells a mom she is barred.
 
 1. **⚠️ CORRECTION — "we have no email address for her" is not accurate.**
    Maor designed an **optional email capture inside the waiting state itself**:
-   `09.6_Onboarding/Mom/Verification/Pending` has an email field ("כתובת
+   `Onboarding/Mom/Verification/Pending` (`858:9397`) has an email field ("כתובת
    הדוא״ל הכי טובה שלך") plus a separate marketing-consent checkbox. So the
    Under-review / Pending copy does not have to send her away empty-handed —
    the screen is now annotated with the full logic:
