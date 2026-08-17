@@ -3,6 +3,97 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🎨 TWO NEW GREY TOKENS — `fg-muted` + `fg-subtle` (Maor, 2026-08-17)
+
+The `Foreground` group was missing its light end. Between `fg-secondary`
+(`#5d5d5d`) and `fg-on-solid` (`#ffffff`) there was nothing usable, so light grey
+graphics were being faked with **opacity on a dark token** — which is not a token,
+does not survive dark mode, and cannot be read from code.
+
+Two tokens now fill the gap. Both in `1. Color modes` → `Colors/Foreground`, both
+`ALL_SCOPES` like every other `Foreground` token:
+
+| Token | Alias | Value | Use it for |
+|---|---|---|---|
+| **`fg-muted`** | `Colors/Neutral/500` | `#878787` | mid-grey graphics: active indicators, secondary icon shapes |
+| **`fg-subtle`** | `Colors/Neutral/100` | `#e7e7e7` | the lightest grey graphics: inactive indicators, dividers inside icons |
+
+**Note for whoever wires these in code:** both tokens *already existed* in the
+Figma collection with **no value assigned**, so they resolved to `#ffffff`. They
+were live-but-invisible. If a stale export gave you either of these as white,
+that is why — re-pull.
+
+The neutral `Foreground` ramp is now monotonic and complete:
+
+```
+#232323  fg-primary            #878787  fg-muted      <- new
+#333333  fg-primary-hover      #9e9e9e  fg-disabled
+#494949  fg-secondary-hover    #e7e7e7  fg-subtle     <- new
+#5d5d5d  fg-secondary          #ffffff  fg-on-solid
+```
+
+Two ordering bugs were fixed in the same pass: `fg-secondary-hover` pointed at
+`Neutral/300` (**lighter** than its base — a hover that got paler) and
+`fg-secondary-pressed` at `Neutral/800`. Now `800` / `900`, so hover and pressed
+both darken.
+
+### First consumers
+
+**`Pagination Dot`** (`1048:38509`, `State=Active|Unactive`) was `fg-primary` at
+**40% / 10% node opacity**. Now `fg-muted` / `fg-subtle` at **opacity 1**.
+The opacity hack was compositing to `~#8f8f8f` and `~#e8e8e8`, so the new tokens
+land within ~2 values of the old render — **effectively no visual change**, but
+now it is a real token pair. **In code: no opacity on pagination dots.**
+
+**`File type icon`** (`1048:41566`) — see below.
+
+---
+
+## 🧹 FILE TYPE ICON — 318 bindings brought home (Maor, 2026-08-17)
+
+The `File type icon` set (`1048:41566`, `↳ Misc Icons`, 153 variants) came in with
+the File Upload components. Its greys looked wrong because they *were* wrong: the
+layers were bound to tokens, but to the **foreign library's** tokens, so the whole
+set rendered the old library's neutral ramp. **142 of 442 bindings were local.**
+
+**Now 460 local / 38 foreign.** The mapping applied:
+
+| Foreign | Momlee target | Count | Value |
+|---|---|---|---|
+| `Border/border-primary` | `Border/border-primary` (local twin) | 102 | `#d4d4d4` → `#e7e7e7` |
+| `Background/bg-quaternary` — **the page fold** | **`Foreground/fg-subtle`** | 51 | `#e5e5e5` → `#e7e7e7` |
+| `Background/bg-tertiary` — the page body | `Background/bg-neutral-subtle` | 51 | `#f5f5f5` → `#f3f3f3` |
+| `Foreground/fg-secondary (700)` | `Foreground/fg-secondary` | 50 | `#404040` → `#5d5d5d` |
+| `Brand/Velvet/600` | local twin | 23 | unchanged |
+| `Blue/600` · `Green/600` · `Orange/600` · `Red/600` · `Purple/600` · `Neutral/700` · `Neutral/600` | local twins | 41 | retinted to Momlee's ramps |
+
+The page fold that had no token now has one: **`fg-subtle`**.
+
+### The 38 that were left, and why
+
+All of them sit on file types **Momlee will never accept**. `Colors/Indigo/600`
+(21) is every `Development/*` icon — HTML, CSS, SQL, XML, JS, JSON, JAVA, EXE,
+DMG. `Colors/Pink/600` (5) is audio — MP3, WAV. `Colors/Fuchsia/600` (2) is
+InDesign. The 9 `Component colors/Utility/*` strokes are the `Simple/*` style
+family. **Momlee has no Indigo, Pink or Fuchsia ramp and no `Component colors`
+collection**, so there is nothing correct to map them to.
+
+**Recommendation (needs Maor's call): trim the set.** Momlee uploads are
+certification docs, provider title docs and photos — realistically **PDF, JPG,
+JPEG, PNG, WebP, HEIC**. That is ~6 file types out of 153 variants. Deleting the
+rest removes all 38 orphan bindings and the 24 stray white `Icon wrap` fills at
+once, with zero mapping decisions. Keeping the set means inventing three ramps
+Momlee does not want.
+
+**Also flagged:** the 23 `Brand/Velvet/600` bindings were rebound to the *local*
+Velvet twin — ghost removed, colour identical. But Velvet is on the delete list
+in the token audit. When it goes, those 23 need to move to `Brand/Dusty Pink/600`.
+
+**Still open from the File Upload pass:** the warm off-white `#faf8f6` (see the
+next section) — one binding in this set hits it too.
+
+---
+
 ## 🆕 FILE UPLOAD — three new components, aligned to the design system (Maor, 2026-08-17)
 
 New page **`↳ File Upload`**. Three sets, **copied in from another file** and now
