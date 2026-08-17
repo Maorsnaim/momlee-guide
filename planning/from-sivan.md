@@ -1352,3 +1352,43 @@ email-notice rule.
 recovery/decision sections) so they stop surfacing as open items in standups —
 the rulings live in Notion now. The DS answers/fixes sections are read and
 appreciated; those can go too once you've seen this note.
+
+## 2026-08-17 (Sivan → Maor) — Technical flags from the first New Look screen (/auth is live on staging) + how the channels work from now on
+
+Per Sivan: **product decisions now flow through your face-to-face meetings — you
+update the screens + annotations after each one, and Claude implements exactly
+what the screens say.** This git channel stays for TECHNICAL items only, like
+the ones below.
+
+### 1. The Welcome register-link color — the MCP returned it UNBOUND
+
+On `01.1` (114:9149), the "הירשמי כאן" link came back from the Figma MCP as a
+**raw `#2f67a6`** — no variable reference — while every neighboring text node
+returned its `var(--colors/text/…)` binding. So at pull time (2026-08-17
+morning) the node was not bound to any token, and no blue text token exists in
+the 2026-08-16 variables export. The code binds `text-link` (#835258)
+meanwhile. If you have since bound it (or the blue should become a token),
+note that **the token only reaches code after a fresh Variables-to-JSON
+export** (Sivan runs it) — until then staging shows the link in the rose
+text-link color.
+
+### 2. Welcome CTAs — annotation/prototype gap, closed by Sivan's ruling
+
+The frame carried **no `data-development-annotations`**, and the MCP's design
+context does not expose prototype wiring — which is why the prototype
+connections you mentioned were invisible on this side. Sivan ruled it in your
+meeting: **התחברות → the OTP flow; הירשמי כאן → the registration flow (her
+info + kids)** — both necessarily begin at the phone screen, and after the
+code an existing number signs in while a new one continues into the info
+steps. Where navigation logic matters and annotations are absent, a short
+annotation on the frame remains the reliable channel — prototype links do not
+survive the MCP.
+
+### 3. Raw values on 01.1, mapped to canonical tokens (flagged, not changed)
+
+- headline color raw black → rendered `text-primary`; its raw −0.2px tracking
+  is exactly `letter-space/display-half`.
+- the column's raw 10px side gutter (the known raw-10 family) → `px-lg`.
+- (Already on the components.md rows: the Callout md/sm circles are scaled
+  renders needing authored sizes, and the pencil + empty-state baby assets
+  stroke raw black.)
