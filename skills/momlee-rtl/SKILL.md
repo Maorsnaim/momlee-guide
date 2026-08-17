@@ -86,7 +86,7 @@ text goes through **`AppText`** (`apps/mobile/src/components/AppText.tsx` — fi
 
 ## Directional icons — the semantic-forward principle (Figma EN↔HE frames, 2026-06-11)
 
-Maor authored a mirrored English frame (03_Onboarding/English/.../Phone/Empty) to define the rule. Comparing it to the Hebrew frame:
+Maor authored a mirrored English frame (`03_Onboarding/English/.../Phone/Empty` — the **old** Design System file, before screen numbers were dropped) to define the rule. Comparing it to the Hebrew frame:
 
 | Element | RTL (he) | LTR (en) | Rule |
 |---|---|---|---|

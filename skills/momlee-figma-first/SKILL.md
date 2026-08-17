@@ -101,7 +101,7 @@ Before writing a single line of UI code, you MUST pull context from Figma. No ex
 The Figma node already encodes most of the screen. **Read it from the file; never require a per-screen list of components in annotations.**
 
 **Derived automatically from the node (NOT written in annotations):**
-- **Screen name + state** — from the frame name, format `NN_Module/Sub/Screen/State` (e.g. `03_Onboarding/Mom/Phone/Empty`). The trailing segment is the state.
+- **Screen name + state** — from the frame name, format `Flow/Actor/Screen/State` (e.g. `Onboarding/Mom/Phone/Error`). The trailing segment is the state. **No number prefix** — sequence numbers were removed 2026-08-17 (`../../design-system/screen-naming.md`).
 - **Component instances + variants** — from layer/component names (e.g. `Forms/PhoneField`, `Forms/CountryDropdown/iOS/Unselected/HE`, `CTA Next button`).
 - **Layout, hierarchy, spacing, sizes, text content.**
 - **Tokens/variables by name** (e.g. `colors/text/input/empty`, `spacing-xl`, `radius-md`).
@@ -113,7 +113,7 @@ The Figma node already encodes most of the screen. **Read it from the file; neve
 
 ### Naming conventions
 - **Anything NEW gets named through the momlee-naming gate** — glossary terms only (`../../knowledge/glossary.md`), and NEVER copy auto-generated layer names (`Frame 12`, `Group`, `Rectangle`, `Component 1`) into code.
-- **Screen frames:** `NN_Module/Sub/Screen/State` — e.g. `03_Onboarding/Mom/Phone/Empty`, `08_Onboarding/Mom/Phone/UnsupportedCountryError`.
+- **Screen frames:** `Flow/Actor/Screen/State` — e.g. `Onboarding/Mom/Phone/Error`, `AccountRecovery/Mom/ViaPhone/OTP/Filled`. **Never prefix a number** — a number encodes position, position is the most volatile thing about a screen, and the first mid-flow insert makes every downstream number wrong. Reference screens by **node ID** (`257:8334`). The path maps 1:1 onto the Notion `Key` (`/`→`.`, lowercased). Full rationale + the old-number map: `../../design-system/screen-naming.md`.
 - **Components:** `Domain/Component/Platform/Variant/Locale` — e.g. `Forms/CountryDropdown/iOS/Unselected/HE`, `Forms/PhoneField`.
 - Map each component to `@momlee/ui` via **Code Connect** (figma-code-connect) so every instance resolves to real code automatically — then component reuse needs no annotation at all.
 
