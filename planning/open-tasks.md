@@ -3,6 +3,68 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🆕 FILE UPLOAD — three new components, aligned to the design system (Maor, 2026-08-17)
+
+New page **`↳ File Upload`**. Three sets, **copied in from another file** and now
+converted to Momlee's system. Registered in the OS Components DB.
+
+| Component | Node |
+|---|---|
+| **File Upload** | `1048:40972` |
+| **File Upload Base** — the drag-and-drop area | `1048:40781` |
+| **File Upload Item Base** — the file row with progress / complete / failed | `1048:40809` |
+
+### What was converted
+
+They arrived with **784 bindings, every one pointing at a foreign library and none
+at ours.** Now:
+
+- **~600 bindings moved to the local Momlee collections** — colours, spacing,
+  radius, border widths, shadows. 90% matched by name; the rest via an explicit
+  map (`bg-secondary`→`bg-surface`, `shadow-2xl_01`→`shadow-2xl-01`,
+  `text-tertiary (600)`→`text-muted`, `text-secondary (700)`→`text-secondary`,
+  `text-error-primary (500)`→`text-error`, and so on).
+- **Raw radius tokenised:** `12` → **`radius-xl`**, `2` → **`radius-xxs`** — exact
+  values, **zero visual change**.
+- **Raw white fills** → `bg-surface`. **`paddingLeft: 32`** → `spacing-4xl`.
+- **Typography was already correct.** All 40 text nodes carry our styles:
+  `Text sm/Regular` (19), `Text sm/Medium` (18), `Text xs/Regular` (3).
+
+*(The `#7b61ff` 1px borders and radius 5 on the three set frames are Figma's own
+component-set decoration, not design values — deliberately untouched.)*
+
+### ⚠️ One colour change that needs Maor's decision
+
+`Colors/Background/bg-primary` was **`#faf8f6`** — a **warm** off-white — used on
+**37 bindings**. It has **no equivalent in the Momlee collections**, so it was
+mapped to `bg-canvas` = **`#fafafa`**, which is **neutral**.
+
+**So those surfaces lost their warmth.** This is the same "Warm Off White" item
+still open in Maor's token audit. Either a warm off-white token gets added and
+these rebind to it, or neutral is accepted. **Do not build against this colour
+until he rules.**
+
+### 🔒 Two things the plugin could not fix — the font wall
+
+- **200 node-level font bindings** on four text layers (`Text`,
+  `Supporting text`, `Status`, `Percentage`) still reference the source library:
+  `Font size/text-sm`, `Font family/font-family-body`, `Line height/text-sm`,
+  `Font weight/*`. **They are inert** — every one of those nodes has a Momlee text
+  style applied and the style governs rendering.
+- **Five text layers carry a `letterSpacing: 0%` override**, suppressing the
+  style's tracking.
+
+Both need Google Sans installed in Figma to clear via the API. **They are a
+seconds-long UI fix for Maor** (select the layers, reset the overrides) and
+neither blocks you.
+
+### 📝 Content bug
+
+One variant reads **`בהלעאה..`** — should be **`בהעלאה..`**. The sibling variant
+has it right.
+
+---
+
 ## ⚠️ CORRECTIONS AFTER MAOR'S REVIEW (2026-08-17) — one of my annotations over-specified your architecture. Read before building 15.1.
 
 Maor reviewed the annotations. **`11.3` and `12.3` are APPROVED** (12.3 subject to
