@@ -3,6 +3,63 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🚨 SIVAN — DO THIS FIRST: get `56690a9` onto `staging.momlee.app` (Maor, 2026-08-20)
+
+**Maor is blocked on this.** He is clicking through the onboarding flow on
+staging to review it, and four fidelity fixes he asked for are sitting in the
+branch but **are not visible on the site**.
+
+### The ask
+
+1. **Deploy `56690a9` to Vercel.** It is already the tip of `momlee-staging`
+   (verified on the remote). Whatever the normal path is on your side - waiting
+   out the build, re-running it, or promoting it - please get it live and tell
+   Maor when it is.
+2. **Then confirm which branch `staging.momlee.app` is actually assigned to**
+   (Vercel → Settings → Domains) and correct `docs/DEV_SETUP.md`, because **the
+   doc contradicts itself** and that is a live guess for anyone who reads it:
+   - the branch table says merge → `momlee-staging` deploys `staging.momlee.app`
+   - the prose ~40 lines below says "`staging.momlee.app` is assigned to the
+     **`momlee-web`** branch"
+   `momlee-web` is production (`momlee.app`), so the prose looks like a typo -
+   but if it is literally true, **nothing pushed to `momlee-staging` will ever
+   appear on that domain**, which would explain exactly what Maor is seeing.
+
+### How to tell in one second whether the new code is live
+
+In the browser console on `/onboarding`:
+
+```js
+getComputedStyle(document.querySelector('input')).fontWeight
+```
+
+`"400"` = the new build. `"500"` = still the old one.
+
+### Two more that only you can do (neither is code)
+
+3. **Test OTP on the STAGING Supabase project** (`xmxlpkojpylhsrzjpykt`) - Auth →
+   Providers → Phone → Test OTP numbers. `DEV_SETUP.md` step 2 says to add the
+   test phone there. **Maor cannot receive a code at all**, so please confirm it
+   exists. `config.toml` carries `972528547424` / `123456` for local.
+4. **Invite Maor to the Vercel team** (`bills@webecy.com`). His Vercel scope
+   shows no MomLee project, so he cannot watch builds or read logs - which is
+   why this whole round-trip needed you. This one prevents the next one.
+
+### And one live failure worth your eyes
+
+5. **Google Places is throwing on staging.** Maor's screenshot shows *your* new
+   `Error` state ("חלה שגיאה, נסו שוב"), which means `useGooglePlacesSearch`
+   raised. No address suggestions appear at all, so **the location step cannot be
+   completed** and he cannot reach the steps after it. The env table lists
+   `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` as shared on purpose, so a missing key is
+   not the obvious cause - check the browser console and the key's referrer /
+   API restrictions.
+
+*(What is in `56690a9` and why one line of your PR #64 was removed: the section
+right below.)*
+
+---
+
 ## 📥 PUSHED STRAIGHT TO `momlee-staging` — Input fidelity fixes (Maor, 2026-08-20)
 
 **Heads up: `56690a9` went directly onto `momlee-staging`, not through a PR.**
