@@ -3,6 +3,79 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 📥 PUSHED STRAIGHT TO `momlee-staging` — Input fidelity fixes (Maor, 2026-08-20)
+
+**Heads up: `56690a9` went directly onto `momlee-staging`, not through a PR.**
+Maor asked for it so he could keep clicking through the flow. CI ran (`ci.yml`
+triggers on push to this branch), and everything was verified locally first:
+type-check 8/8, lint 6/6, 349 tests, all 12 Momlee gates, and a full production
+`next build`. Nothing touches the database.
+
+### One of your lines was removed — here is why
+
+PR #64 added this to `PhoneField`:
+
+```
+inputClassName="text-md font-normal tracking-text-half"
+```
+
+That correction was **right, but one level too low.** The real problem is that
+the `Input` base itself never matched its master. Verified on `421:2198`:
+
+| | Master | Was in code |
+|---|---|---|
+| type | `Text md/Regular` — 16/24, letter-spacing 0.2 | `text-lg` `font-medium` |
+| box | 32px, padding **4 top / 4 bottom** | `pb-md` only, **no top padding** |
+
+So the base is now `text-md font-normal tracking-text-half py-xs`, which makes
+the PhoneField override an exact duplicate — removed. Same rendering, one source
+of truth.
+
+**This also fixed the phone alignment Maor kept reporting.** The dial box is
+built to the master's 32px/`py-xs`; the Input was not. Two boxes of different
+heights cannot put their underlines on the same line, no matter what you do to
+the text. That was always the cause.
+
+### The other three
+
+- **`AddressSearch`** — the results panel was a flex sibling, so it took flow
+  height and pushed the map down. Now `absolute`, anchored `top-full` so an
+  error message above it still displaces it. It already had `bg-bg-surface`, so
+  it reads as an opaque overlay with no new tokens.
+- **`DateField`** — a date reads left-to-right even on an RTL page, and the
+  master agrees (`439:3224`: Day x=0, Month x=101, Year x=202). The parts row
+  now carries `dir="ltr"`. Title and help text stay RTL.
+- **`Input.textAlign`** — new typed prop, `"start" | "center"`, default `start`.
+  The master centers date parts (`justify=CENTER`) where the plain field is
+  `justify=MAX`, so this is the component finally expressing what the design
+  already draws — not a screen-level className. **Alignment is a layout
+  property, not a token**, so nothing was added to any scale.
+  It replaced a **dead ternary** whose two branches were both `"text-start"`,
+  which is why alignment had never actually been wired to anything.
+
+### ⚠️ Separate live failure on staging, NOT fixed here
+
+Maor's address-search screenshot shows your new `Error` state — "חלה שגיאה, נסו
+שוב". That means **`useGooglePlacesSearch` is throwing on staging**, which is why
+no address suggestions appear at all and the location step cannot be completed.
+The env table lists `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` as shared on purpose, so a
+missing key is not the obvious explanation — worth a look at the browser console
+and the key's referrer/API restrictions.
+
+### Two dashboard settings only you can do
+
+Neither is code, so neither can be fixed by a commit:
+
+1. **Test OTP on the staging Supabase project** (`xmxlpkojpylhsrzjpykt`) — Auth
+   → Providers → Phone → Test OTP numbers. `DEV_SETUP.md` step 2 says to add the
+   test phone there; Maor cannot get a code, so please confirm it exists.
+   `config.toml` has `972528547424` / `123456` for local.
+2. **Vercel team access for Maor** — he is logged in as `bills@webecy.com` but
+   his Vercel scope shows no MomLee project, so he cannot watch builds or read
+   logs. An invite to the team that owns the project fixes it.
+
+---
+
 ## ✅ FORM VALIDATION TIMING — the standard, decided (2026-08-18)
 
 Applies to **every input field in Momlee**, not just phone. New Product Rule
