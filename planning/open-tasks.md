@@ -3,6 +3,105 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 🆕 LOGIN + ACCOUNT RECOVERY — 14 screens annotated, ready to build (Maor, 2026-08-24)
+
+Maor designed a **second door into account recovery**, reached from the login OTP
+screen. All screens are annotated in Dev Mode; the notes are deliberately short
+and defer to `platform.validation_timing` instead of restating OTP behaviour.
+
+### ⚡ First, a wiring fix that is blocking the whole entry
+
+`apps/web/src/app/auth/page.tsx` sends **both** CTAs to `/onboarding`:
+
+```tsx
+<Button label="התחברות" onClick={() => router.push("/onboarding")} />   // line 86
+<Link href="/onboarding">הירשמי כאן</Link>                              // line 90
+```
+
+Your own comment on line 29 says why - *"The frame carries NO behavior
+annotation"* - so you had nothing to route to. **Both are now resolved:** the
+login screens exist, and `Onboarding/Shared/Mom-Welcome/Default` (`114:9149`)
+carries an annotation naming its two exits.
+
+- **התחברות** → the new login flow (`Login/Mom/Phone/Default`, `1084:9884`)
+- **הירשמי כאן** → `/onboarding` (unchanged)
+
+There is currently **no login route in the app at all** (`apps/web/src/app/` has
+`auth/` and `onboarding/`, no `login/`). That is the build.
+
+### The 14 screens
+
+| Screen | Node |
+|---|---|
+| `Onboarding/Shared/Mom-Welcome/Default` | `114:9149` |
+| `Login/Mom/Phone/Default` | `1084:9884` |
+| `Login/Mom/OTP/Default` · `Filled` · `Error` | `1131:10993` · `11007` · `11020` |
+| `Login/Mom/AccountRecovery/ViaEmail` | `1131:10789` |
+| `…/ViaEmail/OTP/Default` · `Filled` · `Error` | `1167:10657` · `10675` · `10641` |
+| `…/OTPSuccess/Newphone` | `1167:10907` |
+| `…/Newphone/OTP/Default` · `Filled` · `Error` | `1167:11057` · `11075` · `11092` |
+| `Login/Mom/AccountRecovery/Didit` | `1131:10714` |
+
+### ⚠️ ONE state machine, TWO doors
+
+The `Onboarding Account Recovery` section is the **same process** entered from the
+other side — an existing mom redoing onboarding whom Didit recognises. **They are
+split in Figma on purpose** (different journeys, different context), but in code
+they are **one state machine, one audit trail, one set of rules**. The difference
+is which steps are shown or hidden, never what is enforced. **Do not build this
+twice.**
+
+### New rules, both Approved in the OS
+
+- **`auth_access.no_account_enumeration`** — the login screen behaves identically
+  whether or not the number is registered: same next screen, same copy, and **no
+  measurable difference in response time**. Copy is conditional: "אם המספר קיים
+  אצלנו במערכת, שלחנו קוד למספר הטלפון…". The timing half is the one that gets
+  missed — a real send takes longer than a skipped one, and that gap is
+  measurable. Momlee is women-only, so membership is itself sensitive.
+- **`auth_access.phone_ownership_is_absolute`** — if the new number she picks
+  during recovery already belongs to another account and she passes OTP on it,
+  **sign her into that account**. Not an error: that OTP is exactly the credential
+  that logs into it at the normal login screen, so there is no escalation. The
+  account she was recovering stays **completely unchanged**. Never merge, never
+  detach a number from its owner.
+
+### The Didit recovery path — the rule that makes it safe
+
+A successful Didit check proves *"a real person holding a real document"*. It does
+**not** prove *"the owner of this account"*. It is only meaningful **cross-matched
+against the identity reference stored for the account**, and even a match **does
+not grant access** — it opens a **manual review** in Admin plus an email to the
+team. Only an approved review sends her a hotlink to bind a new phone. A rejection
+is final. A failure still sends her an email; the screen is never a dead end.
+
+### 🔴 Two things you own that BLOCK building that screen
+
+Both follow from Maor's Decision of 2026-08-13 (*"Identity references are
+retained"*, Blocking), which settled that images are purged per policy while a
+**non-reversible reference — a face template plus a hash of the document id — is
+kept for as long as the account exists.** That reference is what recovery matches
+against.
+
+1. **The 6-month retention in IDV-9 contradicts it.** Establish whether Didit can
+   retain a face template **without** the images. If not, Momlee stores the
+   reference itself. Until this is settled, a mom returning after the window has
+   **nothing to match against** — and long-absent moms are exactly the population
+   that loses access.
+2. **A retained face template is sensitive biometric data.** It needs a lawful
+   basis plus explicit wording in the privacy policy and the terms of use.
+
+### Also
+
+A prior decision read as forbidding this path — *"never a second Didit
+verification"* (2026-08-14). It is **scoped to the onboarding door**, where Didit
+has just run and is what opened recovery, so asking again adds no evidence. It
+does **not** forbid the login door, where nothing has run in that journey. The
+decision has been amended to say so explicitly, rather than leaving two records
+that appear to disagree.
+
+---
+
 ## 🚨 SIVAN — DO THIS FIRST: get `56690a9` onto `staging.momlee.app` (Maor, 2026-08-20)
 
 **Maor is blocked on this.** He is clicking through the onboarding flow on
