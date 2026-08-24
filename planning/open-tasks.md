@@ -3,6 +3,75 @@
 > Maor-maintained. Flows to Sivan via git. This is the live "what's pending /
 > what changed" channel between us. Check it whenever you update the plugin.
 
+## 📅 MEETUP DATE & TIME PICKER — annotated, and the schema cannot store it yet (Maor, 2026-08-24)
+
+Maor built the meetup scheduling picker. **7 nodes annotated** on `↳ Date Time Pickers`.
+
+### The contract
+
+- **One calendar day.** A start time is **required**, an end time is **optional** —
+  a meetup with only a start is entirely valid. **There is no date range and none
+  may become expressible.**
+- **Future only, and at most six months ahead.** Minutes step by **5**.
+- **`State: Day + Start Time Selection | End Time Selection`** — the same sheet,
+  the same calendar, only the wheel changes meaning. `Cancel End Time Action`
+  (18×18 icon) removes an end time and returns to the first state.
+
+### 🟢 There is deliberately NO error state
+
+Every invalid value is **unreachable**, not rejected: past, beyond six months, or
+at/before the start when picking an end, is rendered `Disabled`.
+
+**Do not add validation messages to this component.** If a build needs one, an
+input that should have been disabled was left enabled. This is now the Approved
+rule **`platform.invalid_input_is_unreachable`**, and it is the companion to
+`platform.validation_timing`.
+
+### 🔴 The database cannot store this — verified on the live DB today
+
+```
+public.meetups
+  meetup_date   date                       NOT NULL
+  meetup_time   time without time zone     NOT NULL
+  -- no end column of any kind
+```
+
+Two problems:
+
+1. **The optional end time has nowhere to go.** No column exists.
+2. **`time without time zone` does not express an instant.** It is ambiguous
+   twice a year at the DST switch, and it makes "must be in the future"
+   awkward to enforce in SQL. Note the same table already stores `created_at`
+   as `timestamptz` — the meetup's own moment is the outlier.
+
+**Recommendation: move to `starts_at timestamptz` + `ends_at timestamptz NULL`,
+and do it now**, while there are no real users. Logged as a **Blocking** Open
+Question in the OS. Your call — this is a schema decision, so nothing was changed.
+
+### On libraries — the answer is ZERO new dependencies
+
+Checked `apps/web/package.json`: **`react-day-picker` `^8.10.1` and `date-fns`
+`^3.6.0` are already installed.**
+
+| Concern | Answer |
+|---|---|
+| **Calendar** | Use `react-day-picker`, already there. Not for the grid math — for keyboard nav, ARIA and focus, which are easy to get wrong and invisible until they bite. It takes `dir="rtl"` and `locale` from `date-fns/locale/he`, and the window is one line: `disabled={{ before: today, after: addMonths(today, 6) }}`. Rebuild the shadcn `calendar.tsx` wrapper against the Momlee design. |
+| **Time wheel** | **No library.** `scroll-snap-type: y mandatory` + `scroll-snap-align: center` + `mask-image`. The gradient masks Maor designed map **literally** onto CSS `mask-image`. A scroll container is also natively accessible. |
+| **Time zone** | **No library.** `date-fns-tz` would be a new dependency and is not needed — the server is the authority anyway, and Postgres does it natively with `timestamptz` + `AT TIME ZONE 'Asia/Jerusalem'`. |
+
+**One trap that costs an hour if missed:** the mask overlay must be
+`pointer-events: none`. Otherwise the wheel looks perfect and refuses to scroll,
+because the overlay swallows the drag.
+
+### Two small build notes
+
+- `Cancel End Time Action` is an 18×18 glyph — **below the minimum touch target**.
+  Give it a 44×44 hit area (padding, not a bigger icon), and an accessible name.
+- `Calendar` is a **single-variant COMPONENT_SET** still carrying Figma's
+  placeholder property `Property 1: Default`. Flagged to Maor.
+
+---
+
 ## 🆕 LOGIN + ACCOUNT RECOVERY — 14 screens annotated, ready to build (Maor, 2026-08-24)
 
 Maor designed a **second door into account recovery**, reached from the login OTP
