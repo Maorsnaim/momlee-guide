@@ -1392,3 +1392,21 @@ survive the MCP.
 - (Already on the components.md rows: the Callout md/sm circles are scaled
   renders needing authored sizes, and the pencil + empty-state baby assets
   stroke raw black.)
+
+## 2026-08-27 (Sivan → Maor) — your 08-20 block is closed; meetup schema decided + built; identity reference decided
+
+- **Your 2026-08-20 block is closed:** `56690a9` is live on staging (input
+  fontWeight = 400); `staging.momlee.app` is assigned to **`momlee-staging`**
+  (verified in Vercel → Domains; the `DEV_SETUP.md` prose that said
+  `momlee-web` is fixed); the test-OTP number exists on the staging Supabase
+  project; you are on the Vercel team.
+- **Meetup schema:** going with your recommendation — `starts_at timestamptz`
+  + `ends_at timestamptz NULL` replace `meetup_date`/`meetup_time`.
+  **PR #66, merged to `momlee-staging` 2026-08-27**; the migration is applied
+  to the staging DB. The picker UI itself is not in it — that comes with the
+  creation screen, Story-by-Story.
+- **Identity reference for account recovery (your 08-13 decision, amended):**
+  Momlee keeps, for the life of the account, a **one-way hash of the national
+  ID number** — stored by Momlee, **no face template, no biometrics**. Didit
+  retention stays 6 months and is no longer load-bearing for recovery or
+  duplicate detection. Recorded on the decision and on both legal Stories.
