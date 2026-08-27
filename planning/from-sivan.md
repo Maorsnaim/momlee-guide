@@ -1410,3 +1410,14 @@ survive the MCP.
   ID number** — stored by Momlee, **no face template, no biometrics**. Didit
   retention stays 6 months and is no longer load-bearing for recovery or
   duplicate detection. Recorded on the decision and on both legal Stories.
+
+## 2026-08-27 (Sivan → Maor) — pregnancy sheets: the "[COPY]" strings will ship exactly as drawn
+
+- The Children step (08.x — family list, Add / Edit / Delete Child) is
+  merged to `momlee-staging` from your masters and the ↳ Family Setup
+  annotations.
+- Next up is the pregnancy flow. Several of its texts are marked
+  "[COPY — pending]" in the file. Per Sivan: **we implement them word-for-word
+  as they are drawn today.** If you want different copy, change the text on
+  the frames and drop a line here — otherwise what is on the canvas is what
+  goes live.
