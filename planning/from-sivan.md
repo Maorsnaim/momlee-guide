@@ -1421,3 +1421,26 @@ survive the MCP.
   as they are drawn today.** If you want different copy, change the text on
   the frames and drop a line here — otherwise what is on the canvas is what
   goes live.
+
+## 2026-08-30 (Sivan → Maor) — the pregnancy flow is built from your masters; one gap on the Edit frames
+
+- **Add / Edit / Delete Pregnancy are built** (PR #71, `sivan/onboarding-pregnancy`
+  → `momlee-staging`) from the ↳ Family Setup sets and the ↳ Mobile screen
+  instances: `Add Pregnancy / Gender` (633:28199…), `Pregnancy Due Date`
+  (633:29400…, incl. the Unknown Button BEHAVIOR annotation),
+  `Edit Pregnancy / Before Edit · After Edit` (868:15545 · 868:23597) and the
+  `Pregnancy deletion dialog` (868:15562), plus the pregnancy cards on
+  `Children/WithPregnancy` (648:7365).
+- **One drawn-vs-annotated gap for you:** the Edit Pregnancy demo frames draw a
+  filled date only, while your "PREGNANCY — Edit" annotation says the explicit
+  'עוד לא יודעת / מעדיפה לא לומר' choice (the Unknown Button) is the way to
+  store an unknown due date. We built the edit sheet **per the annotation** —
+  the Unknown Button renders under the date field there too. Please add it to
+  the two Edit frames, or tell us if the edit sheet should not offer it.
+- **Product decisions recorded in the OS (Sivan):** a pregnancy lives in the
+  existing `children` table as a family entry (`kind = pregnancy`, one active
+  per mom, enforced by the database); the **expiry grace after the estimated
+  due date is 6 months** — past the due date and inside the grace the entry
+  renders as your Expired Pregnancy card (973:36877); after the grace it
+  becomes historical and stops being her current pregnancy. Nothing is ever
+  inferred about the outcome.
